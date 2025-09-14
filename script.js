@@ -83,6 +83,24 @@ const endpointsConfig = [
             }
         },
     },
+    {
+        name: "Validate Problem Plan",
+        endpoint: "validate/plan/pddl",
+        method: "POST",
+        params: null,
+        requestBody: {
+            placeholder: {
+                "domain": "string",
+                "problem": "string",
+                "plan": "string"
+            },
+            default: {
+                "domain": "(define (domain simple_switch)\n   (:requirements :typing)\n   (:types switch)\n   (:predicates (off ?s - switch)\n        (on ?s - switch))\n\n   (:action switchon\n       :parameters (?s - switch)\n       :precondition (and (off ?s))\n       :effect (and  (not (off ?s))\n            (on ?s)))\n   (:action switchoff\n       :parameters (?s - switch)\n       :precondition (and (on ?s))\n       :effect (and (not (on ?s)) (off ?s))))",
+                "plan": "SequentialPlan:\n    switchon(switch2)",
+                "problem": "(define (problem problem0)\n   (:domain simple_switch)\n   (:objects\n        switch1 - switch\n        switch2 - switch\n    )\n   (:init (on switch1)\n          (off switch2))\n   (:goal (and\n          (on switch1)\n          (on switch2))))\n"
+            }
+        },
+    },
 ];
 
 
