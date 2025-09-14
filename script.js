@@ -101,6 +101,58 @@ const endpointsConfig = [
             }
         },
     },
+    {
+        name: "Post Generate Pddl",
+        endpoint: "convert/natural_language",
+        method: "POST",
+        params: [
+            { name: "pddl_type", useQueryParam: true, required: true, type: "string"},
+            { name: "generate_both", useQueryParam: true },
+            { name: "attempts", useQueryParam: true, type: "integer"},
+        ],
+        requestBody: {
+            placeholder: {
+                "text": "string",
+                "domain": "string"
+            },
+            default: {
+                "domain": "(define (domain simple_switch)\n   (:requirements :typing)\n   (:types switch)\n   (:predicates (off ?s - switch)\n        (on ?s - switch))\n\n   (:action switchon\n       :parameters (?s - switch)\n       :precondition (and (off ?s))\n       :effect (and  (not (off ?s))\n            (on ?s)))\n   (:action switchoff\n       :parameters (?s - switch)\n       :precondition (and (on ?s))\n       :effect (and (not (on ?s)) (off ?s))))",
+                "text": "blocks world example to move 2 blocks from table a to b"
+            }
+        },
+    },
+    {
+        name: "Post Validate Pddl",
+        endpoint: "validate/pddl",
+        method: "POST",
+        params: [
+            { name: "pddl_type", useQueryParam: true},
+        ],
+        requestBody: {
+            placeholder: {
+                "pddl": "string"
+            },
+            default: {
+                "pddl": "(define (domain simple_switch)\n   (:requirements :typing)\n   (:types switch)\n   (:predicates (off ?s - switch)\n        (on ?s - switch))\n\n   (:action switchon\n       :parameters (?s - switch)\n       :precondition (and (off ?s))\n       :effect (and  (not (off ?s))\n            (on ?s)))\n   (:action switchoff\n       :parameters (?s - switch)\n       :precondition (and (on ?s))\n       :effect (and (not (on ?s)) (off ?s))))"
+            }
+        },
+    },
+    {
+        name: "Post Validate Pddl Match",
+        endpoint: "validate/match/pddl",
+        method: "POST",
+        params: [],
+        requestBody: {
+            placeholder: {
+                "domain": "string",
+                "problem": "string"
+            },
+            default: {
+                "domain": "(define (domain simple_switch)\n   (:requirements :typing)\n   (:types switch)\n   (:predicates (off ?s - switch)\n        (on ?s - switch))\n\n   (:action switchon\n       :parameters (?s - switch)\n       :precondition (and (off ?s))\n       :effect (and  (not (off ?s))\n            (on ?s)))\n   (:action switchoff\n       :parameters (?s - switch)\n       :precondition (and (on ?s))\n       :effect (and (not (on ?s)) (off ?s))))",
+                "problem": "(define (problem problem0)\n   (:domain simple_switch)\n   (:objects\n        switch1 - switch\n        switch2 - switch\n    )\n   (:init (on switch1)\n          (off switch2))\n   (:goal (and\n          (on switch1)\n          (on switch2))))\n"
+            }
+        },
+    },
 ];
 
 
