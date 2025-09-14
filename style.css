@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 2.5em;
+    display: flex;           /* or display: grid */
+    flex-direction: column;  /* stack items vertically */
+    gap: 1.5em;                /* space between items */
+}
+
+button {
+  padding: 10px 15px;
+  background: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #005a9e;
+}
+
+pre {
+  background: #f4f4f4;
+  padding: 10px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+}
+
+form > div {
+    display: flex;
+    align-items: center; /* vertical alignment */
+    margin-bottom: 10px;
+}
+
+form > label,
+form > input,
+form > select {
+    width: 200px;       /* same width */
+    height: 40px;       /* same height in px, easier than em */
+    box-sizing: border-box; /* include padding and border in width/height */
+}

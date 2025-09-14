@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pianista API</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <h1>Pianista API</h1>
+
+    <form id="apiForm">
+        <!-- Dropdown for endpoint -->
+         <div class="selection mb-3">
+            <label for="endpoint" class="col-sm-2 col-form-label">Choose Request:</label>
+            <select id="endpoint" name="endpoint" class="form-select"></select>
+        </div>
+        
+        <!-- ID input (hidden by default) -->
+        <div id="endpointParams" class="mb-3" style="display: none;"></div>
+        <!-- <div id="paramNote"></div> -->
+
+        <!-- POST Body (hidden by default)-->
+        <div id="bodyField" class="mb-3" style="display: none;">
+            <label for="endpointBody" class="col-sm-2 col-form-label">Request Body (JSON):</label>
+            <textarea id="endpointBody" rows="5" placeholder='{"name":"example"}'></textarea>
+        </div>
+
+        <br>
+        <button type="submit">Call API</button>
+    </form>
+
+    <div class="response" style="display: none;">
+        <h2 id="responseTitle">Response:</h2>
+        <pre id="responseMsg"></pre>
+    </div>
+
+    <!-- <script src="server.js"></script> -->
+    <script src="script.js"></script>
+</body>
+</html>
