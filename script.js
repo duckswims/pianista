@@ -171,14 +171,44 @@ document.getElementById("apiForm").addEventListener("submit", async (e) => {
 
             if (!val) return; // skip empty
 
+            // Type validation
+            if (param.type) {
+                let isValid = true;
+                switch (param.type) {
+                    case "string":
+                        // all values are valid as string
+                        break;
+                    case "number":
+                        if (isNaN(Number(val))) isValid = false;
+                        break;
+                    case "boolean":
+                        if (!["true", "false"].includes(val.toLowerCase())) isValid = false;
+                        break;
+                    case "object":
+                        try {
+                            const parsed = JSON.parse(val);
+                            if (typeof parsed !== "object" || Array.isArray(parsed)) isValid = false;
+                        } catch (err) {
+                            isValid = false;
+                        }
+                        break;
+                    default:
+                        console.warn(`Unknown type ${param.type} for param ${param.name}`);
+                }
+
+                if (!isValid) {
+                    alert(`Invalid value for ${param.name}. Expected type: ${param.type}`);
+                    throw new Error(`Invalid value for ${param.name}`);
+                }
+            }
+
+            // Append to URL
             if (param.useQueryParam) {
                 url += `?${encodeURIComponent(param.name)}=${encodeURIComponent(val)}`;
-            } 
-            if (param.choose) {
-                url += `[${encodeURIComponent(val)}]`;
+            } else {
+                url += `/${encodeURIComponent(val)}`;
             }
         });
-
     }
 
     let options = {
