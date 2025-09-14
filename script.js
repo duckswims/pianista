@@ -5,35 +5,77 @@ const endpointSelect = document.getElementById("endpoint");
 const endpointParams = document.getElementById("endpointParams");
 // const endpointLabel = document.querySelector("#endpointParams label");
 // const endpointInput = document.getElementById("endpointId");
-const bodyField = document.getElementById("bodyField");
-const bodyInput = document.getElementById("endpointBody");
+// const bodyField = document.getElementById("bodyField");
+// const bodyInput = document.getElementById("endpointBody");
 
 // Configuration: list of available requests
 const endpointsConfig = [
-    { name: "Root", endpoint: "", params: null, useQueryParam: false, method: "GET" },
-    { name: "Get Planner(s)", endpoint: "planners", params: ["planner_id"], useQueryParam: false, method: "GET" },
-    { name: "Get Solver(s)", endpoint: "solvers", params: ["solver_id"], useQueryParam: false, method: "GET" },
-    { name: "Get Plan", endpoint: "solve/pddl", params: ["id"], useQueryParam: true, method: "GET", required: true },
-    { name: "Get Solution", endpoint: "solve/minizinc", params: ["id"], useQueryParam: true, method: "GET", required: true },
-
-    // {
-    //     name: "Post Solve",
-    //     value: "solve/minizinc",
-    //     endpointParams: "solver_name",   // optional query param
-    //     useQueryParam: true,      // append as ?solver_name=...
-    //     method: "POST",
-    //     bodyTemplate: {
-    //         "model_str": "string",
-    //         "model_params": {}
-    //     }
-    // }
+    {
+        name: "Root",
+        endpoint: "",
+        method: "GET",
+        params: null
+    },
+    {
+        name: "Get Planner(s)",
+        endpoint: "planners",
+        method: "GET",
+        params: [
+            { name: "planner_id", type: "string"}
+        ]
+    },
+    {
+        name: "Get Solver(s)",
+        endpoint: "solvers",
+        method: "GET",
+        params: [
+            { name: "solver_id", type: "string"}
+        ]
+    },
+    {
+        name: "Get Plan",
+        endpoint: "solve/pddl",
+        method: "GET",
+        params: [
+            { name: "id", useQueryParam: true, required: true, type: "string"}
+        ]
+    },
+    {
+        name: "Get Solution",
+        endpoint: "solve/minizinc",
+        method: "GET",
+        params: [
+            { name: "id", useQueryParam: true, required: true, type: "string"}
+        ]
+    },
+    {
+        name: "Post Solve",
+        endpoint: "solve/minizinc",
+        method: "POST",
+        params: [
+            { name: "solver_name", useQueryParam: true, required: false, type: "string"},
+        ],
+        requestBody: {
+            placeholder: {
+                "model_str": "string",
+                "model_params": {}
+            },
+            default: {
+                "model_str": "int: target;\\nvar 0..100: x;\\nvar 0..100: y;\\n\\nconstraint x + y == target;\\n\\nsolve satisfy;",
+                "model_params": {
+                    "target": 199
+                }
+            }
+        },
+    }
 ];
 
 
 // Dynamically populate the select dropdown
 endpointsConfig.forEach(opt => {
     const option = document.createElement("option");
-    option.value = opt.endpoint;
+    option.value = opt.name;
+    option.endpoint = opt.endpoint;
     option.textContent = opt.name;
     option.dataset.method = opt.method; 
     endpointSelect.appendChild(option);
@@ -45,13 +87,10 @@ endpointsConfig.forEach(opt => {
 
 
 endpointSelect.addEventListener("change", () => {
-    const selected = endpointsConfig.find(e => e.endpoint === endpointSelect.value);
+    const selected = endpointsConfig.find(e => e.name === endpointSelect.value);
 
     // Clear previous inputs
     endpointParams.innerHTML = "";
-
-    // const paramNote = document.getElementById("paramNote");
-    // paramNote.innerHTML = "";
 
     if (selected && selected.params && selected.params.length > 0) {
         endpointParams.style.display = "flex";
@@ -61,44 +100,38 @@ endpointSelect.addEventListener("change", () => {
             const label = document.createElement("label");
             label.className = "col-sm-2 col-form-label";
             label.htmlFor = `param_${index}`;
-            label.innerHTML = selected.required ? `${param}: <span style="color:red">*</span>` : `${param}:`;
+            label.innerHTML = param.required ? `${param.name}: <span style="color:red">*</span>` : `${param.name}:`;
 
             // Create input
             const input = document.createElement("input");
-            input.type = "text";
+            input.type = param.type || "text";
             input.id = `param_${index}`;
-            input.name = param;
-            input.placeholder = `e.g. ${param}123`;
+            input.name = param.name;
+            input.placeholder = `Enter a ${param.type || "value"}`;
             input.className = "form-control";
-            input.required = !!selected.required;
+            input.required = !!param.required;
 
             // Append to container (no nested div)
             endpointParams.appendChild(label);
             endpointParams.appendChild(input);
         });
 
-        // // Add standard "* required" note if needed
-        // if (selected.required) {
-        //     const note = document.createElement("p");
-        //     note.style.color = "red";
-        //     note.style.fontSize = "0.9em";
-        //     note.textContent = "required*";
-        //     paramNote.appendChild(note);
-        // }
-
     } else {
         endpointParams.style.display = "none";
     }
 
-    // Show/hide body input for POST
+    // Show/hide POST request body
+    const requestField = document.getElementById("requestField");
+    const requestBody = document.getElementById("requestBody");
+
     if (selected && selected.method === "POST") {
-        bodyField.classList.remove("d-none");
-        if (selected.bodyTemplate) {
-            bodyInput.value = JSON.stringify(selected.bodyTemplate, null, 2);
+        requestField.style.display = "block";
+        if (selected.requestBody && selected.requestBody.default) {
+            requestBody.value = JSON.stringify(selected.requestBody.default, null, 4);
         }
     } else {
-        bodyField.classList.add("d-none");
-        bodyInput.value = "";
+        requestField.style.display = "none";
+        requestBody.value = "";
     }
 });
 
@@ -107,45 +140,52 @@ endpointSelect.addEventListener("change", () => {
 document.getElementById("apiForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Look up the selected config using the new "endpoint" property
-    const selectedConfig = endpointsConfig.find(e => e.endpoint === endpointSelect.value);
+    const selectedConfig = endpointsConfig.find(e => e.name === endpointSelect.value);
     if (!selectedConfig) return;
 
-    const endpoint = selectedConfig.endpoint.toLowerCase();
-    const method = selectedConfig.method || "GET";
-
     let url = BASE;
-    if (endpoint) {
-        url += `/${endpoint}`;
+    if (selectedConfig.endpoint) {
+        url += `/${selectedConfig.endpoint}`;
     }
 
     // Handle dynamic parameters
     if (selectedConfig.params && selectedConfig.params.length > 0) {
-        const paramValues = selectedConfig.params.map(param => {
-            const input = document.querySelector(`#endpointParams input[name="${param}"]`);
-            return input ? input.value.trim() : "";
+        selectedConfig.params.forEach(param => {
+            const input = document.querySelector(`#endpointParams input[name="${param.name}"]`);
+            const val = input ? input.value.trim() : "";
+
+            if (!val) return; // skip empty
+
+            if (param.useQueryParam) {
+                url += `?${encodeURIComponent(param.name)}=${encodeURIComponent(val)}`;
+            } 
+            if (param.choose) {
+                url += `[${encodeURIComponent(val)}]`;
+            }
         });
 
-        // For GET requests with query parameter
-        if (selectedConfig.useQueryParam) {
-            const query = selectedConfig.params
-                .map((param, i) => `${encodeURIComponent(param)}=${encodeURIComponent(paramValues[i])}`)
-                .join("&");
-            if (query) url += `?${query}`;
-        } else {
-            // Append as path segments
-            paramValues.forEach(val => {
-                if (val) url += `/${encodeURIComponent(val)}`;
-            });
-        }
     }
 
     let options = {
-        method,
+        method: selectedConfig.method,
         headers: {
             "Ocp-Apim-Subscription-Key": API_KEY
         }
     };
+
+    // Handle POST body if present
+    if (selectedConfig.method === "POST") {
+        const requestBody = document.getElementById("requestBody").value;
+        if (requestBody) {
+            options.headers["Content-Type"] = "application/json";
+            try {
+                options.body = JSON.stringify(JSON.parse(requestBody));
+            } catch (err) {
+                alert("Invalid JSON in request body");
+                return;
+            }
+        }
+    }
 
     callApi(url, options);
 });
