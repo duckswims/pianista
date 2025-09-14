@@ -3,10 +3,6 @@ const API_KEY = "YOUR_API_HERE";
 
 const endpointSelect = document.getElementById("endpoint");
 const endpointParams = document.getElementById("endpointParams");
-// const endpointLabel = document.querySelector("#endpointParams label");
-// const endpointInput = document.getElementById("endpointId");
-// const bodyField = document.getElementById("bodyField");
-// const bodyInput = document.getElementById("endpointBody");
 
 // Configuration: list of available requests
 const endpointsConfig = [
@@ -67,7 +63,26 @@ const endpointsConfig = [
                 }
             }
         },
-    }
+    },
+    {
+        name: "Post Plan",
+        endpoint: "solve/pddl",
+        method: "POST",
+        params: [
+            { name: "planner_id", useQueryParam: true, required: false},
+            { name: "convert_real_types", useQueryParam: true, required: false, type: "boolean"},
+        ],
+        requestBody: {
+            placeholder: {
+                "domain": "string",
+                "problem": "string"
+            },
+            default: {
+                "domain": "(define (domain simple_switch)\n   (:requirements :typing)\n   (:types switch)\n   (:predicates (off ?s - switch)\n        (on ?s - switch))\n\n   (:action switchon\n       :parameters (?s - switch)\n       :precondition (and (off ?s))\n       :effect (and  (not (off ?s))\n            (on ?s)))\n   (:action switchoff\n       :parameters (?s - switch)\n       :precondition (and (on ?s))\n       :effect (and (not (on ?s)) (off ?s))))",
+                "problem": "(define (problem problem0)\n   (:domain simple_switch)\n   (:objects\n        switch1 - switch\n        switch2 - switch\n    )\n   (:init (on switch1)\n          (off switch2))\n   (:goal (and\n          (on switch1)\n          (on switch2))))\n"
+            }
+        },
+    },
 ];
 
 
@@ -104,7 +119,7 @@ endpointSelect.addEventListener("change", () => {
 
             // Create input
             const input = document.createElement("input");
-            input.type = param.type || "text";
+            input.type = "text";
             input.id = `param_${index}`;
             input.name = param.name;
             input.placeholder = `Enter a ${param.type || "value"}`;
