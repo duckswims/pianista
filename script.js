@@ -141,7 +141,7 @@ const endpointsConfig = [
         name: "Post Validate Pddl Match",
         endpoint: "validate/match/pddl",
         method: "POST",
-        params: [],
+        params: null,
         requestBody: {
             placeholder: {
                 "domain": "string",
@@ -150,6 +150,39 @@ const endpointsConfig = [
             default: {
                 "domain": "(define (domain simple_switch)\n   (:requirements :typing)\n   (:types switch)\n   (:predicates (off ?s - switch)\n        (on ?s - switch))\n\n   (:action switchon\n       :parameters (?s - switch)\n       :precondition (and (off ?s))\n       :effect (and  (not (off ?s))\n            (on ?s)))\n   (:action switchoff\n       :parameters (?s - switch)\n       :precondition (and (on ?s))\n       :effect (and (not (on ?s)) (off ?s))))",
                 "problem": "(define (problem problem0)\n   (:domain simple_switch)\n   (:objects\n        switch1 - switch\n        switch2 - switch\n    )\n   (:init (on switch1)\n          (off switch2))\n   (:goal (and\n          (on switch1)\n          (on switch2))))\n"
+            }
+        },
+    },
+    {
+        name: "Post Convert Pddl To Mermaid",
+        endpoint: "convert/mermaid",
+        method: "POST",
+        params: [
+            { name: "pddl_type", useQueryParam: true, required: true, type: "string"},
+        ],
+        requestBody: {
+            placeholder: {
+                "pddl": "string"
+            },
+            default: {
+                "pddl": "(define (domain simple_switch)\n   (:requirements :typing)\n   (:types switch)\n   (:predicates (off ?s - switch)\n        (on ?s - switch))\n\n   (:action switchon\n       :parameters (?s - switch)\n       :precondition (and (off ?s))\n       :effect (and  (not (off ?s))\n            (on ?s)))\n   (:action switchoff\n       :parameters (?s - switch)\n       :precondition (and (on ?s))\n       :effect (and (not (on ?s)) (off ?s))))"
+            }
+        },
+    },
+    {
+        name: "Post Convert Mermaid To Pddl",
+        endpoint: "convert/mermaid",
+        method: "POST",
+        params: [
+            { name: "attempts", useQueryParam: true, type: "integer"},
+        ],
+        requestBody: {
+            placeholder: {
+                "text": "string",
+                "domain": "string"
+            },
+            default: {
+                "text": "graph TD     A[off ?s - switch]    B[on ?s - switch]    C[switchon]    D[switchoff]    A --> C    B --> D    C --> |precondition| A    C --> |effect| B    D --> |precondition| B    D --> |effect| A"
             }
         },
     },
@@ -313,6 +346,7 @@ async function callApi(url, options = { method: "GET", headers: {} }) {
 
     // Show the response section
     responseContainer.style.display = "block";
+    responseMsg.textContent = "";
 
     try {
         const response = await fetch(url, options);
@@ -324,7 +358,7 @@ async function callApi(url, options = { method: "GET", headers: {} }) {
             data = await response.text();
         }
 
-        const message = response.ok ? "✅ Success" : `❌ Error ${response.status}`;
+        
 
         // Helper to clean up whitespace and newlines in a string
         function cleanMessage(msg) {
@@ -354,7 +388,7 @@ async function callApi(url, options = { method: "GET", headers: {} }) {
                     result += "\n"; // space between items
                 });
             } else if (typeof obj === "object" && obj !== null) {
-                // Handle objects
+                // Handle object
                 for (const [key, value] of Object.entries(obj)) {
                     result += `${key}: ${cleanMessage(value)}\n`;
                 }
@@ -366,7 +400,15 @@ async function callApi(url, options = { method: "GET", headers: {} }) {
             return result.trim(); // remove trailing newline
         }
 
-        const formattedData = typeof data === "object" ? formatData(data) : data;
+
+        let message, formattedData;
+        if (response.ok) {
+            message = "✅ Success";
+            formattedData = typeof data === "object" ? formatData(data) : data;
+        } else {
+            message = `❌ Error ${response.status}`;
+            formattedData = typeof data === "object" ? formatData(data.detail) : data;
+        }
 
         responseMsg.textContent = `URL: ${url}\n\nStatus: ${message}\n\n${formattedData}`;
 
