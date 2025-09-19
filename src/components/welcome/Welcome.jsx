@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchApi } from "../../scripts/api";
+import { fetchApi } from "../../scripts/api/index.js";
 import { removeExtraWhitespaces } from "../../scripts/functions";
 
 function Welcome() {

@@ -2,11 +2,12 @@ const baseUrl = import.meta.env.VITE_BASE_URL;
 const apiKey = import.meta.env.VITE_API_KEY;
 
 /**
- * Fetch data from the base API (no additional endpoint)
+ * Generic API fetcher
+ * @param {string} path - API endpoint path (e.g. "/", "/planners")
  */
-export async function fetchApi() {
+export async function fetchApi(endpoint = "/") {
   try {
-    const response = await fetch(baseUrl, {
+    const response = await fetch(`${baseUrl}${endpoint}`, {
       headers: {
         "Ocp-Apim-Subscription-Key": apiKey
       }
