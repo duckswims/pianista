@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/sidebar/Sidebar";
 import Home from "./pages/Home";
 import Planner from "./pages/Planner";
+import Solver from "./pages/Solver";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/planner" element={<Planner />} />
+              <Route path="/solver" element={<Solver />} />
             </Routes>
           </div>
         </div>
