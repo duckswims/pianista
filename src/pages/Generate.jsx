@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PostGeneratePddl from "../components/generate/post-generate-pddl/PostGeneratePddl";
 import PostConvertPddlToMermaid from "../components/generate/post-convert-pddl-to-mermaid/PostConvertPddlToMermaid";
+import PostConvertMermaidToPddl from "../components/generate/post-convert-mermaid-to-pddl/PostConvertMermaidToPddl";
 
 function Generate() {
   const [activeTab, setActiveTab] = useState("post-generate-pddl");
@@ -27,12 +28,21 @@ function Generate() {
             Convert PDDL to Mermaid
           </button>
         </li>
+        <li className="nav-item">
+          <button
+            className={`nav-link ${activeTab === "post-convert-mermaid-to-pddl" ? "active" : ""}`}
+            onClick={() => setActiveTab("post-convert-mermaid-to-pddl")}
+          >
+            Convert Mermaid to PDDL
+          </button>
+        </li>
       </ul>
 
       {/* Tab content */}
       <div>
         {activeTab === "post-generate-pddl" && <PostGeneratePddl />}
         {activeTab === "post-convert-pddl-to-mermaid" && <PostConvertPddlToMermaid />}
+        {activeTab === "post-convert-mermaid-to-pddl" && <PostConvertMermaidToPddl />}
       </div>
     </div>
   );

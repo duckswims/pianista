@@ -1,0 +1,3 @@
+{
+  "text": "graph TD     A[off ?s - switch]    B[on ?s - switch]    C[switchon]    D[switchoff]    A --> C    B --> D    C --> |precondition| A    C --> |effect| B    D --> |precondition| B    D --> |effect| A"
+}
