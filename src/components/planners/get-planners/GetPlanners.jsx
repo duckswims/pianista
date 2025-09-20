@@ -21,8 +21,7 @@ function GetPlanners({ onSelectPlanner }) {
   }, []);
 
   return (    
-    
-    <div className="card shadow-sm p-4 mb-4">
+    <div>
 
       <h4 className="card-title mb-3">Available Planners</h4>
 
@@ -34,17 +33,17 @@ function GetPlanners({ onSelectPlanner }) {
 
       {planners.length > 0 ? (
         <>
-          <div className="d-flex flex-wrap gap-3">
+          <div className="d-flex flex-wrap gap-2">
             {planners.map((planner, index) => (
               <div
                 key={`${planner.id}-${planner.name}-${index}`}
                 className="card p-3 shadow-sm"
-                style={{ width: "12rem", cursor: "pointer" }}
+                // style={{ width: "12rem", cursor: "pointer" }}
                 onClick={() => onSelectPlanner && onSelectPlanner(planner.id)}
               >
                 <h6 className="card-title">{planner.name}</h6>
                 <p className="card-text text-muted" style={{ fontSize: "0.85rem" }}>
-                  ID: {planner.id}
+                  id: {planner.id}
                 </p>
               </div>
             ))}
