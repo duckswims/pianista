@@ -2,6 +2,7 @@ import Welcome from "../components/home/welcome/Welcome";
 import HomePlanner from "../components/home/planner/HomePlanner";
 import HomeSolver from "../components/home/solver/HomeSolver";
 import HomeValidation from "../components/home/validation/HomeValidation";
+import HomeGenerate from "../components/home/generate/HomeGenerate";
 
 function Home() {
   return (
@@ -23,7 +24,9 @@ function Home() {
           <div className="col-md-6">
             <HomeValidation description="Run solvers to execute plans or validate solutions." />
           </div>
-          {/* You can add a 4th component here to complete the 2x2 grid */}
+          <div className="col-md-6">
+            <HomeGenerate description="Run solvers to execute plans or validate solutions." />
+          </div>
         </div>
       </div>
     </>

@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Planner from "./pages/Planner";
 import Solver from "./pages/Solver";
 import Validation from "./pages/Validation";
+import Generate from "./pages/Generate";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
               <Route path="/planner" element={<Planner />} />
               <Route path="/solver" element={<Solver />} />
               <Route path="/validate" element={<Validation />} />
+              <Route path="/generate" element={<Generate />} />
             </Routes>
           </div>
         </div>

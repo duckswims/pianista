@@ -31,6 +31,7 @@ function Sidebar() {
                 <Link to="/planner" className="nav-link">Planner</Link>
                 <Link to="/solver" className="nav-link">Solver</Link>
                 <Link to="/validate" className="nav-link">Validation</Link>
+                <Link to="/generate" className="nav-link">Generate</Link>
             </nav>
 
         </div>
