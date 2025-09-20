@@ -1,6 +1,7 @@
 import React from "react";
 import GetPlanners from "../components/planners/get-planners/GetPlanners";
-import PostPlan from "../components/solvers/post-plan/PostPlan";
+import PostPlan from "../components/planners/post-plan/PostPlan";
+import GetPlan from "../components/planners/get-plan/GetPlan";
 
 function Planner() {
   return (
@@ -11,13 +12,17 @@ function Planner() {
         <div className="col-12">
           <GetPlanners />
         </div>
+        
         <div className="col-12 mt-4">
           <PostPlan />
+        </div>
+
+        <div className="col-12 mt-4">
+          <GetPlan />
         </div>
       </div>
     </div>
   );
 }
-
 
 export default Planner;
