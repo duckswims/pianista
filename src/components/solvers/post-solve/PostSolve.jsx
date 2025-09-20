@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { postSolve } from "../../../scripts/api/post_solve";
 
-function PostSolve() {
+function PostSolve({ solverName: selectedSolverName }) {
   const [modelStr, setModelStr] = useState("");
   const [solverName, setSolverName] = useState("or-tools");
   const [parameters, setParameters] = useState([{ key: "", value: "" }]);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+
+  // Update solverName when selectedSolverName prop changes
+  useEffect(() => {
+    if (selectedSolverName) {
+      setSolverName(selectedSolverName);
+    }
+  }, [selectedSolverName]);
 
   // Handle adding a new parameter row
   const addParameter = () => setParameters([...parameters, { key: "", value: "" }]);
@@ -32,7 +39,6 @@ function PostSolve() {
     const modelParams = {};
     for (const param of parameters) {
       if (param.key) {
-        // Attempt to parse value as JSON (number, boolean, array, etc.)
         try {
           modelParams[param.key] = JSON.parse(param.value);
         } catch {
@@ -96,7 +102,7 @@ function PostSolve() {
               <input
                 type="text"
                 className="form-control"
-                placeholder='Parameter value'
+                placeholder="Parameter value"
                 value={param.value}
                 onChange={(e) => handleParamChange(index, "value", e.target.value)}
                 required
