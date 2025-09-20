@@ -30,6 +30,7 @@ function Sidebar() {
                 <Link to="/" className="nav-link">Home</Link>
                 <Link to="/planner" className="nav-link">Planner</Link>
                 <Link to="/solver" className="nav-link">Solver</Link>
+                <Link to="/validate" className="nav-link">Validation</Link>
             </nav>
 
         </div>

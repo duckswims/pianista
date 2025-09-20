@@ -5,6 +5,7 @@ import Sidebar from "./components/sidebar/Sidebar";
 import Home from "./pages/Home";
 import Planner from "./pages/Planner";
 import Solver from "./pages/Solver";
+import Validation from "./pages/Validation";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/planner" element={<Planner />} />
               <Route path="/solver" element={<Solver />} />
+              <Route path="/validate" element={<Validation />} />
             </Routes>
           </div>
         </div>
