@@ -1,23 +1,22 @@
-import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function HomePlanner({ description }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/planner");
+  };
+
   return (
-    <div className="d-flex justify-content-center mt-4">
-      <div className="card" style={{ width: "18rem" }}>
-        <div className="card-body d-flex flex-column justify-content-between" style={{ height: "200px" }}>
-          {/* Title */}
-          <h5 className="card-title text-center">Planner</h5>
-
-          {/* Description */}
-          <p className="card-text text-center">{description}</p>
-
-          {/* Button centered */}
-          <div className="d-flex justify-content-center mt-auto">
-            <Link to="/planner" className="btn btn-primary">
-              Go to Planner
-            </Link>
-          </div>
+    <div className="container mt-4">
+      <div className="card shadow-sm">
+        <div className="card-body text-center">
+          <h2 className="card-title">Planner</h2>
+          <p className="card-text mt-3">{description}</p>
+          <button className="btn btn-primary mt-3" onClick={handleClick}>
+            Go to Planner
+          </button>
         </div>
       </div>
     </div>
