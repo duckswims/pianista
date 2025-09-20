@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getPlanners } from "../../../scripts/api/get_planners";
 
-function GetPlanners() {
+function GetPlanners({ onSelectPlanner }) {
   const [planners, setPlanners] = useState([]);
   const [error, setError] = useState(null);
 
@@ -12,45 +12,49 @@ function GetPlanners() {
       if (result.error) {
         setError(result.message);
       } else {
-        // Ensure it's always an array
-        if (Array.isArray(result)) {
-          setPlanners(result);
-        } else if (result && typeof result === "object") {
-          setPlanners([result]); // wrap single object in array
-        } else {
-          setPlanners([]);
-        }
+        if (Array.isArray(result)) setPlanners(result);
+        else if (result && typeof result === "object") setPlanners([result]);
+        else setPlanners([]);
       }
     }
     fetchPlanners();
   }, []);
 
-  return (
-    <div className="container mt-4">
-      {error && <div className="alert alert-danger">{error}</div>}
+  return (    
+    
+    <div className="card shadow-sm p-4 mb-4">
 
-      <div className="card shadow-sm">
-        <div className="card-body">
-          <h5 className="card-title mb-3">Available Planners</h5>
-          {console.log(planners)}
+      <h4 className="card-title mb-3">Available Planners</h4>
 
-          {planners.length > 0 ? (
-            <div className="d-flex flex-wrap gap-2">
-              {planners.map((planner, index) => (
-                <button
-                  key={`${planner.id}-${planner.name}-${index}`}
-                  className="btn btn-primary"
-                  onClick={() => alert(`Selected planner: ${planner.id}`)}
-                >
-                  {planner.name}
-                </button>
-              ))}
-            </div>
-          ) : (
-            !error && <p>No planners available.</p>
-          )}
+      {error && (
+        <div className="alert alert-danger">
+          <strong>Error {error.status}:</strong> {error.message}
         </div>
-      </div>
+      )}
+
+      {planners.length > 0 ? (
+        <>
+          <div className="d-flex flex-wrap gap-3">
+            {planners.map((planner, index) => (
+              <div
+                key={`${planner.id}-${planner.name}-${index}`}
+                className="card p-3 shadow-sm"
+                style={{ width: "12rem", cursor: "pointer" }}
+                onClick={() => onSelectPlanner && onSelectPlanner(planner.id)}
+              >
+                <h6 className="card-title">{planner.name}</h6>
+                <p className="card-text text-muted" style={{ fontSize: "0.85rem" }}>
+                  ID: {planner.id}
+                </p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-2 text-muted">{planners.length} available planners found.</p>
+        </>
+      ) : (
+        !error && <p>No planners available.</p>
+      )}
+
     </div>
   );
 }

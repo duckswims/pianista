@@ -13,12 +13,12 @@ function App() {
       <div className="container-fluid">
         <div className="row" style={{ minHeight: "100vh" }}>
           {/* Sidebar */}
-          <div className="col-3 p-0">
+          <div className="col-2 p-0">
             <Sidebar />
           </div>
 
           {/* Content */}
-          <div className="col-9">
+          <div className="col-10">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/planner" element={<Planner />} />

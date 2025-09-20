@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { postPlan } from "../../../scripts/api/post_plan";
 
-function PostPlan() {
+function PostPlan({ plannerId }) {
   const [domain, setDomain] = useState("");
   const [problem, setProblem] = useState("");
-  const [plannerId, setPlannerId] = useState("");
+  const [plannerIdState, setPlannerIdState] = useState(plannerId || "");
   const [convertRealTypes, setConvertRealTypes] = useState(true);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setPlannerIdState(plannerId || "");
+  }, [plannerId]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -15,12 +19,11 @@ function PostPlan() {
     const requestBody = { domain, problem };
     const response = await postPlan(
       requestBody,
-      plannerId || null,
+      plannerIdState || null,
       convertRealTypes
     );
 
     if (response.error) {
-      // keep full error object
       setError(response);
       setResult(null);
     } else {
@@ -33,6 +36,17 @@ function PostPlan() {
     <div className="card shadow-sm p-4">
       <h3 className="mb-3">Post Plan</h3>
       <form onSubmit={handleSubmit}>
+        {/* Planner ID */}
+        <div className="mb-3">
+          <label className="form-label">Planner ID (optional)</label>
+          <input
+            type="text"
+            className="form-control"
+            value={plannerIdState}
+            onChange={(e) => setPlannerIdState(e.target.value)}
+          />
+        </div>
+
         {/* Domain */}
         <div className="mb-3">
           <label className="form-label">Domain</label>
@@ -54,17 +68,6 @@ function PostPlan() {
             value={problem}
             onChange={(e) => setProblem(e.target.value)}
             required
-          />
-        </div>
-
-        {/* Planner ID */}
-        <div className="mb-3">
-          <label className="form-label">Planner ID (optional)</label>
-          <input
-            type="text"
-            className="form-control"
-            value={plannerId}
-            onChange={(e) => setPlannerId(e.target.value)}
           />
         </div>
 

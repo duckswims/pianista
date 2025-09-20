@@ -19,12 +19,12 @@ function Sidebar() {
 
     return (
         <div className="d-flex flex-column p-3 bg-light" style={{ minHeight: "100%" }}>
-            <h3 className="d-flex align-items-center">
+            <h5 className="d-flex align-items-center">
                 Pianista API
                 <div className={`online-indicator ${apiStatus ? "online" : "offline"} ms-2`}>
                     <span className="blink"></span>
                 </div>
-            </h3>
+            </h5>
 
             <nav className="nav flex-column">
                 <Link to="/" className="nav-link">Home</Link>
