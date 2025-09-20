@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchApi } from "../../scripts/api/index.js";
-import { removeExtraWhitespaces } from "../../scripts/functions";
+import { fetchApi } from "../../../scripts/api/index.js";
+import { removeExtraWhitespaces } from "../../../scripts/functions.js";
 
 function Welcome() {
   const [apiResult, setApiResult] = useState(null);

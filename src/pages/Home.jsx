@@ -1,4 +1,4 @@
-import Welcome from "../components/welcome/Welcome";
+import Welcome from "../components/home/welcome/Welcome";
 import HomePlanner from "../components/home/planner/HomePlanner";
 import HomeSolver from "../components/home/solver/HomeSolver";
 
