@@ -1,0 +1,6 @@
+{
+  "model_str": "int: target;\nvar 0..100: x;\nvar 0..100: y;\n\nconstraint x + y == target;\n\nsolve satisfy;",
+  "model_params": {
+    "target": 199
+  }
+}
