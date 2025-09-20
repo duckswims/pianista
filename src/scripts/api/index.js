@@ -4,31 +4,53 @@ const apiKey = import.meta.env.VITE_API_KEY;
 /**
  * Generic API fetcher
  * @param {string} path - API endpoint path (e.g. "/", "/planners")
+ * @param {Object} options - Fetch options (method, body, headers)
  */
-export async function fetchApi(endpoint = "/") {
+export async function fetchApi(path = "/", options = {}) {
   try {
-    const response = await fetch(`${baseUrl}${endpoint}`, {
+    const response = await fetch(`${baseUrl}${path}`, {
+      ...options,
       headers: {
-        "Ocp-Apim-Subscription-Key": apiKey
-      }
+        "Ocp-Apim-Subscription-Key": apiKey,
+        ...options.headers, // merge instead of override
+      },
     });
-    
-    // HTTP error
-    if (!response.ok) {
-      return {
-        error: response.status,
-        message: `Error ${response.status}: ${response.statusText}. Please check if you have a valid API token.`,
-      };
+
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      data = { detail: response.statusText };
     }
 
+    if (!response.ok) {
+      let errorObj = {
+        error: true,
+        status: response.status,
+        message: response.statusText,
+      };
+
+      // If validation error with structured details
+      if (Array.isArray(data.detail)) {
+        errorObj.details = data.detail;
+      }
+      // If generic error with string detail
+      else if (typeof data.detail === "string") {
+        errorObj.message = data.detail;
+      }
+
+      return errorObj;
+    }
+
+
     // Successful response
-    const data = await response.json();
     return data;
   } catch (err) {
-    // Network or other errors
     return {
-        error: true, 
+      error: true,
       message: "Network Error. Please check your internet connection.",
+      type: "NetworkError",
+      detail: err?.message || null,
     };
   }
 }
