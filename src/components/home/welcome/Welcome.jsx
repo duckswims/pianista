@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { fetchApi } from "../../../scripts/api/index.js";
 
 function Welcome() {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const apiKey = import.meta.env.VITE_API_KEY || "";
@@ -14,31 +13,33 @@ function Welcome() {
     }
 
     async function getData() {
-      setLoading(true);
       setError("");
       try {
-        await fetchApi("/", {}, apiKey); // call API but ignore message
+        const response = await fetchApi("/", {}, apiKey);
+        if (!response.ok) {
+          setError("Failed to fetch API message. Please check your API key.");
+        }
       } catch (err) {
         console.error(err);
         setError("Failed to fetch API message. Please check your API key.");
-      } finally {
-        setLoading(false);
       }
     }
 
     getData();
   }, [apiKey]);
 
-  const displayMessage = "AI-powered planning made fast and intuitive. Turn your ideas into optimised plans in seconds.";
+  const displayMessage =
+    "AI-powered planning made fast and intuitive. Turn your ideas into optimised plans in seconds.";
 
   return (
     <div className="container mt-4">
       <h1 className="mb-4">Welcome to Pianista! 🚀</h1>
-      {error ? (
-        <p className="text-danger mb-4">{error}</p>
-      ) : (
-        <p className={loading ? "text-muted mb-4" : "mb-4"}>{displayMessage}</p>
-      )}
+
+      {/* Always show display message */}
+      <p className="mb-4">{displayMessage}</p>
+
+      {/* Show error if API fails */}
+      {error && <p className="text-danger mb-4">{error}</p>}
     </div>
   );
 }
