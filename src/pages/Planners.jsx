@@ -3,7 +3,7 @@ import GetPlanners from "../components/planners/get-planners/GetPlanners";
 import PostPlan from "../components/planners/post-plan/PostPlan";
 import GetPlan from "../components/planners/get-plan/GetPlan";
 
-function Planner() {
+function Planners() {
   const [activeTab, setActiveTab] = useState("post"); // "post" or "get"
   const [selectedPlannerId, setSelectedPlannerId] = useState(null);
 
@@ -45,4 +45,4 @@ function Planner() {
   );
 }
 
-export default Planner;
+export default Planners;

@@ -3,7 +3,7 @@ import PostSolve from "../components/solvers/post-solve/PostSolve";
 import GetSolution from "../components/solvers/get-solution/GetSolution";
 import GetSolvers from "../components/solvers/get-solvers/GetSolvers";
 
-function HomeSolver() {
+function Solvers() {
   const [activeTab, setActiveTab] = useState("post");
   const [selectedSolverName, setSelectedSolverName] = useState(null);
 
@@ -45,4 +45,4 @@ function HomeSolver() {
   );
 }
 
-export default HomeSolver;
+export default Solvers;

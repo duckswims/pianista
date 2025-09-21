@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchApi } from "../../scripts/api";
+import routes from "../data/components.json";
 
 import "./online-indicator.css";
+import "./styles.css";
 
 function Sidebar() {
   const [apiStatus, setApiStatus] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState(null);
 
   useEffect(() => {
     async function checkApi() {
@@ -14,6 +17,10 @@ function Sidebar() {
     }
     checkApi();
   }, []);
+
+  const toggleDropdown = (key) => {
+    setOpenDropdown(openDropdown === key ? null : key);
+  };
 
   return (
     <div className="d-flex flex-column p-3 bg-light" style={{ minHeight: "100%" }}>
@@ -25,13 +32,34 @@ function Sidebar() {
       </h5>
 
       <nav className="nav flex-column">
-        <Link to="/" className="nav-link">Home</Link>
-        <Link to="/planners" className="nav-link">Planners</Link>
-        <Link to="/solvers" className="nav-link">Solvers</Link>
-        <Link to="/solve" className="nav-link">Solve</Link>
-        <Link to="/validate" className="nav-link">Validation</Link>
-        <Link to="/convert" className="nav-link">Convert</Link>
-        <Link to="/chart" className="nav-link">Interactive Chart</Link>
+        {Object.entries(routes).map(([key, item]) => (
+          <div key={key} className="mb-1">
+            <div className="d-flex align-items-center justify-content-between">
+              <Link to={item.Link} className="nav-link flex-grow-1">
+                {item.Title}
+              </Link>
+
+              {item.Children && (
+                <button
+                  className="btn btn-sm btn-link p-0 ms-2"
+                  onClick={() => toggleDropdown(key)}
+                >
+                  {openDropdown === key ? "▾" : "▸"}
+                </button>
+              )}
+            </div>
+
+            {item.Children && openDropdown === key && (
+              <div className="ms-3">
+                {Object.entries(item.Children).map(([childKey, child]) => (
+                  <Link key={childKey} to={child.Link} className="nav-link small">
+                    {child.Title}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
       </nav>
     </div>
   );

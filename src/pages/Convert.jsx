@@ -3,7 +3,7 @@ import PostGeneratePddl from "../components/generate/post-generate-pddl/PostGene
 import PostConvertPddlToMermaid from "../components/generate/post-convert-pddl-to-mermaid/PostConvertPddlToMermaid";
 import PostConvertMermaidToPddl from "../components/generate/post-convert-mermaid-to-pddl/PostConvertMermaidToPddl";
 
-function Generate() {
+function Convert() {
   const [activeTab, setActiveTab] = useState("post-generate-pddl");
 
   return (
@@ -48,4 +48,4 @@ function Generate() {
   );
 }
 
-export default Generate;
+export default Convert;

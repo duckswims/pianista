@@ -1,4 +1,8 @@
 {
+  "root": {
+    "Title": "Home",
+    "Link": "/"
+  },
   "planners": {
     "Title": "Planners",
     "Description": "View and manage available planners for solving planning problems.",
@@ -12,17 +16,51 @@
   "solve": {
     "Title": "Solve",
     "Description": "Submit a planning problem to be solved using selected planners and solvers.",
-    "Link": "/solve"
+    "Link": "/solve",
+    "Children": {
+      "minizinc": {
+        "Title": "MiniZinc",
+        "Link": "/solve/minizinc"
+      },
+      "pddl": {
+        "Title": "PDDL",
+        "Link": "/solve/pddl"
+      }
+    }
   },
   "validate": {
     "Title": "Validate",
     "Description": "Check the correctness and consistency of generated plans or solutions.",
-    "Link": "/validate"
+    "Link": "/validate",
+    "Children": {
+      "plan": {
+        "Title": "Plan",
+        "Link": "/validate/plan"
+      },
+      "pddl": {
+        "Title": "PDDL",
+        "Link": "/validate/pddl"
+      },
+      "match": {
+        "Title": "Match",
+        "Link": "/validate/match"
+      }
+    }
   },
   "convert": {
     "Title": "Convert",
     "Description": "Convert between different formats, e.g., PDDL, Mermaid, or other supported representations.",
-    "Link": "/convert"
+    "Link": "/convert",
+    "Children": {
+      "natural_language": {
+        "Title": "Natural Language",
+        "Link": "/convert/natural_language"
+      },
+      "mermaid": {
+        "Title": "Mermaid",
+        "Link": "/convert/mermaid"
+      }
+    }
   },
   "chart": {
     "Title": "Interactive Chart",
