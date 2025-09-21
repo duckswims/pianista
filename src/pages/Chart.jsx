@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import MermaidGantt from "../components/chart/mermaid-gantt/MermaidGantt";
-import MermaidGraph from "../components/chart/mermaid-graph/MermaidGraph";
+import MermaidRenderer from "../components/chart/mermaid-renderer/MermaidRenderer";
 
 
 function ConvertMermaid() {
-  const [activeTab, setActiveTab] = useState("mermaid-gantt");
+  const [activeTab, setActiveTab] = useState("mermaid-renderer");
 
   return (
     <div className="container mt-4">
@@ -14,26 +13,17 @@ function ConvertMermaid() {
       <ul className="nav nav-tabs mb-3">
         <li className="nav-item">
           <button
-            className={`nav-link ${activeTab === "mermaid-gantt" ? "active" : ""}`}
-            onClick={() => setActiveTab("mermaid-gantt")}
+            className={`nav-link ${activeTab === "mermaid-renderer" ? "active" : ""}`}
+            onClick={() => setActiveTab("mermaid-renderer")}
           >
-            Mermaid Gantt
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === "mermaid-graph" ? "active" : ""}`}
-            onClick={() => setActiveTab("mermaid-graph")}
-          >
-            Mermaid Gantt
+            Mermaid Renderer
           </button>
         </li>
       </ul>
 
       {/* Tab content */}
       <div>
-        {activeTab === "mermaid-gantt" && <MermaidGantt />}
-        {activeTab === "mermaid-graph" && <MermaidGraph />}
+        {activeTab === "mermaid-renderer" && <MermaidRenderer />}
       </div>
     </div>
   );
