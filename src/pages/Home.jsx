@@ -1,5 +1,5 @@
 import Welcome from "../components/home/welcome/Welcome";
-import HomeCardGrid from "../components/home/HomeCardGrid";
+import CardGrid from "../components/card-grid/CardGrid";
 import componentsData from "../components/data/components.json";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ function Home() {
       <div>
         <Welcome />
       </div>
-      <HomeCardGrid
+      <CardGrid
         data={filteredData}
         onNavigate={(link) => navigate(link)}
       />

@@ -1,12 +1,13 @@
 import React from "react";
+import "./style.css";
 
-function HomeCardGrid({ data, onNavigate }) {
+function CardGrid({ data, onNavigate }) {
   return (
     <div className="container mt-4">
       <div className="row g-4">
         {data.map(([key, comp]) => (
-          <div className="col-md-6" key={key}>
-            <div className="card shadow-sm h-100">
+          <div className="col-12 col-md-6" key={key}>
+            <div className="card shadow-sm h-100 card-hover">
               <div className="card-body text-center">
                 <h2 className="card-title">{comp.Title}</h2>
                 <p className="card-text mt-3">{comp.Description}</p>
@@ -25,4 +26,4 @@ function HomeCardGrid({ data, onNavigate }) {
   );
 }
 
-export default HomeCardGrid;
+export default CardGrid;
