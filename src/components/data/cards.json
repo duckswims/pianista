@@ -1,0 +1,32 @@
+{
+  "planners": {
+    "Title": "Planners",
+    "Description": "View and manage available planners for solving planning problems.",
+    "Link": "/planners"
+  },
+  "solvers": {
+    "Title": "Solvers",
+    "Description": "Access available solvers to compute solutions for defined problems.",
+    "Link": "/solvers"
+  },
+  "solve": {
+    "Title": "Solve",
+    "Description": "Submit a planning problem to be solved using selected planners and solvers.",
+    "Link": "/solve"
+  },
+  "validate": {
+    "Title": "Validate",
+    "Description": "Check the correctness and consistency of generated plans or solutions.",
+    "Link": "/validate"
+  },
+  "convert": {
+    "Title": "Convert",
+    "Description": "Convert between different formats, e.g., PDDL, Mermaid, or other supported representations.",
+    "Link": "/convert"
+  },
+  "chart": {
+    "Title": "Interactive Chart",
+    "Description": "Display interactive Gantt charts or timeline components to visualize planning steps and schedules.",
+    "Link": "/chart"
+  }
+}

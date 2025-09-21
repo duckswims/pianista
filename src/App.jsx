@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-
 import Sidebar from "./components/sidebar/Sidebar";
 import Home from "./pages/Home";
-import Planner from "./pages/Planner";
-import Solver from "./pages/Solver";
+import Planners from "./pages/Planners";
+import Solvers from "./pages/Solvers";
+import Solve from "./pages/Solve";
 import Validation from "./pages/Validation";
-import Generate from "./pages/Generate";
-
+import Convert from "./pages/Convert";
+import Chart from "./pages/Chart";
 
 function App() {
   return (
@@ -23,10 +23,12 @@ function App() {
           <div className="col-10">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/planner" element={<Planner />} />
-              <Route path="/solver" element={<Solver />} />
+              <Route path="/planners" element={<Planners />} />
+              <Route path="/solvers" element={<Solvers />} />
+              <Route path="/solve" element={<Solve />} />
               <Route path="/validate" element={<Validation />} />
-              <Route path="/generate" element={<Generate />} />
+              <Route path="/convert" element={<Convert />} />
+              <Route path="/chart" element={<Chart />} />
             </Routes>
           </div>
         </div>
