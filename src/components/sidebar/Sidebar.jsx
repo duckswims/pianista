@@ -6,91 +6,82 @@ import routes from "../data/components.json";
 import "./online-indicator.css";
 import "./styles.css";
 
-function Sidebar() {
+export default function Sidebar() {
+  const location = useLocation();
   const [apiStatus, setApiStatus] = useState(null);
-  const [openDropdown, setOpenDropdown] = useState(null);
-  const location = useLocation(); // current path
+  const [openMenus, setOpenMenus] = useState({});
 
-  const excludedKeys = ["planners", "solvers"]; 
+  const excludedKeys = ["planners", "solvers"];
 
   useEffect(() => {
     async function checkApi() {
       const result = await fetchApi();
-      setApiStatus(!result?.error); // true if API is online
+      setApiStatus(!result?.error);
     }
     checkApi();
   }, []);
 
-  // Auto-open dropdown if current path matches a child link
-  useEffect(() => {
-    Object.entries(routes)
-      .filter(([key]) => !excludedKeys.includes(key))
-      .forEach(([key, item]) => {
-        if (item.Children) {
-          const childPaths = Object.values(item.Children).map(c => c.Link);
-          if (childPaths.includes(location.pathname)) {
-            setOpenDropdown(key);
-          }
-        }
-      });
-  }, [location.pathname]);
-
-  const toggleDropdown = (key) => {
-    setOpenDropdown(openDropdown === key ? null : key);
+  const toggleMenu = (key) => {
+    setOpenMenus((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   const isActive = (link) => location.pathname === link;
 
   return (
-    <div className="d-flex flex-column p-3 bg-light" style={{ minHeight: "100%" }}>
-      <h5 className="d-flex align-items-center">
+    <aside className="sidebar bg-light shadow-sm p-3">
+      <h5 className="fw-bold mb-4 d-flex align-items-center">
         Pianista API
-        <div className={`online-indicator ${apiStatus ? "online" : "offline"} ms-2`}>
+        <span className={`online-indicator ms-2 ${apiStatus ? "online" : "offline"}`}>
           <span className="blink"></span>
-        </div>
+        </span>
       </h5>
 
-      <nav className="nav flex-column">
+      <nav className="nav flex-column gap-2">
         {Object.entries(routes)
           .filter(([key]) => !excludedKeys.includes(key))
           .map(([key, item]) => (
-          <div key={key} className="mb-1">
-            <div className="d-flex align-items-center justify-content-between">
-              <Link
-                to={item.Link}
-                className={`nav-link flex-grow-1 ${isActive(item.Link) ? "active" : ""}`}
-              >
-                {item.Title}
-              </Link>
+            <div key={key}>
+              {item.Children ? (
+                <>
+                  <button
+                    className="btn text-start w-100 d-flex justify-content-between align-items-center px-2 py-1 text-black"
+                    onClick={() => toggleMenu(key)}
+                  >
+                    {item.Title} 
+                    <span className="ms-2">{openMenus[key] ? "▾" : "▸"}</span>
+                  </button>
 
-              {item.Children && (
-                <button
-                  className="btn btn-sm btn-link p-0 ms-2"
-                  onClick={() => toggleDropdown(key)}
+                  {openMenus[key] && (
+                    <div className="ms-3 mt-1">
+                      {Object.entries(item.Children).map(([childKey, child]) => (
+                        <Link
+                          key={childKey}
+                          to={child.Link}
+                          className={`d-block px-2 py-1 rounded ${
+                            isActive(child.Link)
+                              ? "bg-primary text-white"
+                              : "text-black"
+                          }`}
+                        >
+                          {child.Title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Link
+                  to={item.Link}
+                  className={`d-block px-2 py-1 rounded ${
+                    isActive(item.Link) ? "bg-primary text-white" : "text-black"
+                  }`}
                 >
-                  {openDropdown === key ? "▾" : "▸"}
-                </button>
+                  {item.Title}
+                </Link>
               )}
             </div>
-
-            {item.Children && openDropdown === key && (
-              <div className="ms-3">
-                {Object.entries(item.Children).map(([childKey, child]) => (
-                  <Link
-                    key={childKey}
-                    to={child.Link}
-                    className={`nav-link small ${isActive(child.Link) ? "active" : ""}`}
-                  >
-                    {child.Title}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+          ))}
       </nav>
-    </div>
+    </aside>
   );
 }
-
-export default Sidebar;

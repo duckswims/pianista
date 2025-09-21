@@ -1,20 +1,12 @@
-.nav-link {
-  cursor: pointer;
-  transition: background 0.2s ease;
+/* Sidebar width */
+.sidebar {
+  height: 100%;
+  position: fixed;
+  border-right: 1px solid #dee2e6;
 }
-.nav-link:hover {
-  background: #f0f0f0;
-  border-radius: 5px;
-}
-button.btn-link {
-  color: #333;
+
+/* Remove underline for links and buttons */
+.nav a,
+.btn-link {
   text-decoration: none;
-  font-size: 0.9rem;
-}
-button.btn-link:hover {
-  color: #000;
-}
-.small {
-  font-size: 0.9rem;
-  padding-left: 1rem;
 }
