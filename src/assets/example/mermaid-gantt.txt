@@ -1,0 +1,8 @@
+gantt
+    title Project Timeline
+    dateFormat  YYYY-MM-DD
+    section Development
+    Task 1      :a1, 2025-09-21, 3d
+    Task 2      :a2, 2025-09-24, 2d
+    section Testing
+    QA          :a3, 2025-09-26, 2d
