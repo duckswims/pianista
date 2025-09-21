@@ -2,20 +2,33 @@ import React from "react";
 import { formatKey } from "../../../scripts/helper/formatKey";
 
 function renderValue(value, key) {
-  // Skip empty/null generated_domain or generated_problem
+  // Skip empty/null values for certain keys
   if ((key === "generated_domain" || key === "generated_problem") && !value) {
     return null;
   }
 
-  // For generated or converted result
+  // Handle SVG string
+  if (typeof value === "string" && value.trim().startsWith("<svg")) {
+    return (
+      <div
+        className="d-flex justify-content-center my-2"
+        dangerouslySetInnerHTML={{ __html: value }}
+      />
+    );
+  }
+
+  // For other preformatted text results
   if (key === "generated_domain" || key === "generated_problem" || key === "conversion_result") {
     return <pre className="bg-light p-2 mt-1">{value}</pre>;
   }
 
+  // For objects
   if (typeof value === "object" && value !== null) {
-    return Object.entries(value)
-      .map(([k, v]) => `${formatKey(k)}: ${renderValue(v, k)}`)
-      .join(" | ");
+    return Object.entries(value).map(([k, v]) => (
+      <div key={k}>
+        <strong>{formatKey(k)}:</strong> {renderValue(v, k)}
+      </div>
+    ));
   }
 
   return value?.toString();
@@ -30,9 +43,9 @@ export default function ResultDisplay({ result }) {
       <div className="mt-2">
         {Object.entries(result).map(([key, value]) => {
           const rendered = renderValue(value, key);
-          if (!rendered) return null; // skip if nothing to render
+          if (!rendered) return null;
           return (
-            <div key={key}>
+            <div key={key} className="mb-2">
               <strong>{formatKey(key)}:</strong>{" "}
               {rendered}
             </div>

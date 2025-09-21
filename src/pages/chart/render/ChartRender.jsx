@@ -1,29 +1,29 @@
 import React, { useState } from "react";
-import MermaidRenderer from "../../../components/functions/chart/mermaid-renderer/MermaidRenderer";
+import MermaidRender from "../../../components/functions/chart/mermaid-render/MermaidRender";
 
 
 function ChartRender() {
-  const [activeTab, setActiveTab] = useState("mermaid-renderer");
+  const [activeTab, setActiveTab] = useState("mermaid-render");
 
   return (
     <div className="container mt-4">
-      <h2>Generate Dashboard</h2>
+      <h2>Interactive Chart Generator</h2>
 
       {/* Tabs */}
       <ul className="nav nav-tabs mb-3">
         <li className="nav-item">
           <button
-            className={`nav-link ${activeTab === "mermaid-renderer" ? "active" : ""}`}
-            onClick={() => setActiveTab("mermaid-renderer")}
+            className={`nav-link ${activeTab === "mermaid-render" ? "active" : ""}`}
+            onClick={() => setActiveTab("mermaid-render")}
           >
-            Mermaid Renderer
+            Mermaid Render
           </button>
         </li>
       </ul>
 
       {/* Tab content */}
       <div>
-        {activeTab === "mermaid-renderer" && <MermaidRenderer />}
+        {activeTab === "mermaid-render" && <MermaidRender />}
       </div>
     </div>
   );

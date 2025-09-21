@@ -1,9 +1,12 @@
 import React, { useState, useRef } from "react";
 import mermaid from "mermaid";
+import ErrorDisplay from "../../../response/error/ErrorDisplay";
+import ResultDisplay from "../../../response/result/ResultDisplay";
 
-function MermaidRenderer() {
-  const [mermaidText, setMermaidText] = useState(""); 
-  const [error, setError] = useState("");
+function MermaidRender() {
+  const [mermaidText, setMermaidText] = useState("");
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const diagramRef = useRef(null);
 
@@ -19,26 +22,30 @@ function MermaidRenderer() {
     if (!mermaidText.trim()) return;
 
     setLoading(true);
-    setError("");
+    setError(null);
+    setResult(null);
 
     try {
       // Clear previous diagram
       if (diagramRef.current) diagramRef.current.innerHTML = "";
 
-      console.log("Generating Mermaid diagram...");
-      
-      // Validate syntax first
+      // Validate Mermaid syntax
       mermaid.parse(mermaidText);
 
       // Render diagram
       const { svg } = await mermaid.render("mermaidDiagram", mermaidText);
-      console.log("Diagram generated successfully");
-      
       if (diagramRef.current) diagramRef.current.innerHTML = svg;
+
+      // Send SVG as result
+      setResult({ generated_mermaid: svg });
 
     } catch (err) {
       console.error("Mermaid rendering error:", err);
-      setError("Invalid Mermaid syntax. Please check your code.");
+      setError({
+        status: "Invalid Syntax",
+        message: "Mermaid code could not be rendered.",
+        details: err?.str || err?.message || "Unknown error",
+      });
     } finally {
       setLoading(false);
     }
@@ -46,7 +53,7 @@ function MermaidRenderer() {
 
   return (
     <div className="card shadow-sm p-4 mb-4">
-      <h3 className="mb-3">Dynamic Mermaid Diagram</h3>
+      <h3 className="mb-3">Mermaid Render</h3>
 
       <div className="mb-3">
         <label className="form-label">Mermaid Code</label>
@@ -67,19 +74,11 @@ function MermaidRenderer() {
         {loading ? "Generating..." : "Generate Diagram"}
       </button>
 
-      {error && <div className="alert alert-danger">{error}</div>}
-
-      <div
-        ref={diagramRef}
-        style={{
-          overflowX: "auto",
-          minHeight: "400px",
-          border: "1px solid #ddd",
-          padding: "10px",
-        }}
-      />
+      {/* Error / Result */}
+      <ErrorDisplay error={error} />
+      <ResultDisplay result={result} />
     </div>
   );
 }
 
-export default MermaidRenderer;
+export default MermaidRender;
