@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PostValidatePddl from "../../../components/validate/pddl/post-validate-pddl/PostValidatePddl";
 
-function Validation() {
+function ValidatePddl() {
   const [activeTab, setActiveTab] = useState("post-pddl");
 
   return (
@@ -28,4 +28,4 @@ function Validation() {
   );
 }
 
-export default Validation;
+export default ValidatePddl;
