@@ -1,33 +1,44 @@
 import { useEffect, useState } from "react";
 import { fetchApi } from "../../../scripts/api/index.js";
-import { removeExtraWhitespaces } from "../../../scripts/functions.js";
 
 function Welcome() {
-  const [apiResult, setApiResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  // Get API Result
+  const apiKey = import.meta.env.VITE_API_KEY || "";
+
   useEffect(() => {
-    async function getData() {
-      const result = await fetchApi();
-      setApiResult(result);
+    if (!apiKey) {
+      setError("API key is missing. Please set VITE_API_KEY in your .env file.");
+      return;
     }
-    getData();
-  }, []);
 
-  // Determine what to display
-  let displayMessage = "Loading...";
-  if (apiResult) {
-    displayMessage = removeExtraWhitespaces(apiResult.message);
-  }
+    async function getData() {
+      setLoading(true);
+      setError("");
+      try {
+        await fetchApi("/", {}, apiKey); // call API but ignore message
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch API message. Please check your API key.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getData();
+  }, [apiKey]);
+
+  const displayMessage = "AI-powered planning made fast and intuitive. Turn your ideas into optimised plans in seconds.";
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <main>
-        <h2>API Response</h2>
-        <p style={{ color: apiResult?.error ? "red" : "black" }}>
-          {displayMessage}
-        </p>
-      </main>
+    <div className="container py-4">
+      <h1 className="mb-3">Welcome to Pianista! 🚀</h1>
+      {error ? (
+        <p className="text-danger">{error}</p>
+      ) : (
+        <p className={loading ? "text-muted" : ""}>{displayMessage}</p>
+      )}
     </div>
   );
 }
