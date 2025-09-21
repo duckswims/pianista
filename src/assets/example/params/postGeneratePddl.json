@@ -1,0 +1,4 @@
+{
+  "domain": "(define (domain simple_switch)\n   (:requirements :typing)\n   (:types switch)\n   (:predicates (off ?s - switch)\n        (on ?s - switch))\n\n   (:action switchon\n       :parameters (?s - switch)\n       :precondition (and (off ?s))\n       :effect (and  (not (off ?s))\n            (on ?s)))\n   (:action switchoff\n       :parameters (?s - switch)\n       :precondition (and (on ?s))\n       :effect (and (not (on ?s)) (off ?s))))",
+  "text": "blocks world example to move 2 blocks from table a to b"
+}

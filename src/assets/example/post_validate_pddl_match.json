@@ -1,4 +1,0 @@
-{
-  "domain": "(define (domain simple_switch) (:requirements :typing) (:types switch) (:predicates (off ?s - switch) (on ?s - switch)) (:action switchon :parameters (?s - switch) :precondition (and (off ?s)) :effect (and  (not (off ?s)) (on ?s))) (:action switchoff :parameters (?s - switch) :precondition (and (on ?s)) :effect (and (not (on ?s)) (off ?s))))",
-  "problem": "(define (problem problem0) (:domain simple_switch) (:objects switch1 - switch switch2 - switch) (:init (on switch1) (off switch2)) (:goal (and (on switch1) (on switch2))))"
-}
