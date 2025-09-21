@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postValidatePddl } from "../../../scripts/api/post_validate_pddl";
+import { postValidatePddl } from "../../../../scripts/api/post_validate_pddl";
 
 function PostValidatePddl() {
   const [pddl, setPddl] = useState("");

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { validateProblemPlan } from "../../../scripts/api/validate_problem_plan";
+import { validateProblemPlan } from "../../../../scripts/api/validate_problem_plan";
 
 function ValidateProblemPlan() {
   const [domain, setDomain] = useState("");

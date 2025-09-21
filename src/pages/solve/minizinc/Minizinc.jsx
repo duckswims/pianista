@@ -3,7 +3,7 @@ import GetSolvers from "../../../components/solvers/get-solvers/GetSolvers";
 import PostSolve from "../../../components/solve/minizinc/post-solve/PostSolve";
 import GetSolution from "../../../components/solve/minizinc/get-solution/GetSolution";
 
-function MiniZinc() {
+function SolveMinizinc() {
   const [activeTab, setActiveTab] = useState("post");
   const [selectedSolverName, setSelectedSolverName] = useState(null);
 
@@ -45,4 +45,4 @@ function MiniZinc() {
   );
 }
 
-export default MiniZinc;
+export default SolveMinizinc;

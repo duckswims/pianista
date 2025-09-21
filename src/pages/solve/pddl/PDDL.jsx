@@ -4,7 +4,7 @@ import PostPlan from "../../../components/solve/pddl/post-plan/PostPlan";
 import GetPlan from "../../../components/solve/pddl/get-plan/GetPlan";
 
 
-function PDDL() {
+function SolvePddl() {
   const [activeTab, setActiveTab] = useState("post"); // "post" or "get"
   const [selectedPlannerId, setSelectedPlannerId] = useState(null);
 
@@ -46,4 +46,4 @@ function PDDL() {
   );
 }
 
-export default PDDL;
+export default SolvePddl;
