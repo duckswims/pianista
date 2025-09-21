@@ -6,3 +6,15 @@ Before running the project, you need to configure your environment variables. Cr
 VITE_BASE_URL=https://planner-apim.azure-api.net
 VITE_API_KEY=YOUR_API_KEY_HERE
 ```
+
+1. Installation
+
+```bash
+npm install
+```
+
+2. Running the Development Server
+
+```bash
+npm run dev
+```
