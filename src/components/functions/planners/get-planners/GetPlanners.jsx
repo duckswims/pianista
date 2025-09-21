@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getPlanners } from "../../../../scripts/api/get_planners";
+import { getPlanners } from "../../../../scripts/api/getPlanners";
+import ErrorDisplay from "../../../response/error/ErrorDisplay";
 
 function GetPlanners({ onSelectPlanner }) {
   const [planners, setPlanners] = useState([]);
@@ -7,53 +8,60 @@ function GetPlanners({ onSelectPlanner }) {
 
   useEffect(() => {
     async function fetchPlanners() {
-      const result = await getPlanners();
+      const response = await getPlanners();
 
-      if (result.error) {
-        setError(result.message);
+      if (response.error) {
+        setError(response);
+        setPlanners([]);
       } else {
-        if (Array.isArray(result)) setPlanners(result);
-        else if (result && typeof result === "object") setPlanners([result]);
-        else setPlanners([]);
+        setError(null);
+
+        if (Array.isArray(response)) {
+          setPlanners(response);
+        } else if (response && typeof response === "object") {
+          setPlanners([response]);
+        } else {
+          setPlanners([]);
+        }
       }
     }
+
     fetchPlanners();
   }, []);
 
-  return (    
+  return (
     <div>
-
       <h4 className="card-title mb-3">Available Planners</h4>
 
-      {error && (
-        <div className="alert alert-danger">
-          <strong>Error {error.status}:</strong> {error.message}
-        </div>
-      )}
+      {error && <ErrorDisplay error={error} />}
 
       {planners.length > 0 ? (
         <>
           <div className="d-flex flex-wrap gap-2">
             {planners.map((planner, index) => (
               <div
-                key={`${planner.id}-${planner.name}-${index}`}
+                key={`${planner.id}-${index}`}
                 className="card p-3 shadow-sm"
-                // style={{ width: "12rem", cursor: "pointer" }}
+                style={{ cursor: "pointer" }}
                 onClick={() => onSelectPlanner && onSelectPlanner(planner.id)}
               >
                 <h6 className="card-title">{planner.name}</h6>
-                <p className="card-text text-muted" style={{ fontSize: "0.85rem" }}>
+                <p
+                  className="card-text text-muted"
+                  style={{ fontSize: "0.85rem" }}
+                >
                   id: {planner.id}
                 </p>
               </div>
             ))}
           </div>
-          <p className="mt-2 text-muted">{planners.length} available planners found.</p>
+          <p className="mt-2 text-muted">
+            {planners.length} available planners found.
+          </p>
         </>
       ) : (
         !error && <p>No planners available.</p>
       )}
-
     </div>
   );
 }

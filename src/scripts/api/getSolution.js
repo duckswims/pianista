@@ -6,5 +6,6 @@ import { fetchApi } from "./index";
  * @returns {Promise<Object>} - Returns solution or error object
  */
 export async function getSolution(jobId) {
-  return await fetchApi(`/solve/minizinc?id=${encodeURIComponent(jobId)}`);
+  const endpoint = `/solve/minizinc?id=${encodeURIComponent(jobId)}`
+  return await fetchApi(endpoint);
 }

@@ -6,6 +6,6 @@ import { fetchApi } from ".";
  * @returns {Promise<Array|Object>} List of planners or single planner object
  */
 export async function getPlanners(plannerId = null) {
-    const endpoint = plannerId ? `/planners/${plannerId}` : "/planners";
-    return await fetchApi(endpoint);
+  const endpoint = plannerId ? `/planners/${plannerId}` : "/planners";
+  return await fetchApi(endpoint);
 }

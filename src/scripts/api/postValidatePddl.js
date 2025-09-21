@@ -1,4 +1,6 @@
-import { fetchApi } from "./index";
+import { fetchApi } from ".";
+import { removeExtraWhitespaces } from "../helper/removeExtraWhitespaces";
+
 
 /**
  * Post Validate PDDL
@@ -8,11 +10,15 @@ import { fetchApi } from "./index";
  */
 export async function postValidatePddl(pddl, pddlType = null) {
   const query = pddlType ? `?pddl_type=${encodeURIComponent(pddlType)}` : "";
-  const body = { pddl };
+  const requestBody = { 
+    pddl: removeExtraWhitespaces(pddl)
+  };
 
-  return fetchApi(`/validate/pddl${query}`, {
+  const endpoint = `/validate/pddl${query}`;
+
+  return fetchApi(endpoint, {
     method: "POST",
-    body: JSON.stringify(body),
+    body: JSON.stringify(requestBody),
     headers: { "Content-Type": "application/json" },
   });
 }

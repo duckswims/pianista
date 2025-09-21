@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { postValidatePddlMatch } from "../../../../../scripts/api/post_validate_pddl_match";
+import { postValidatePddlMatch } from "../../../../../scripts/api/postValidatePddlMatch";
+import ErrorDisplay from "../../../../response/error/ErrorDisplay";
+import ResultDisplay from "../../../../response/result/ResultDisplay";
 
 function PostValidatePddlMatch() {
   const [domain, setDomain] = useState("");
@@ -53,32 +55,9 @@ function PostValidatePddlMatch() {
         </button>
       </form>
 
-      {/* Result */}
-      {result && (
-        <div className="alert alert-success mt-3">
-          <strong>Result:</strong> {result.result} <br />
-          <strong>Type:</strong> {result.pddl_type} <br />
-          <strong>Message:</strong> {result.message}
-        </div>
-      )}
-
-      {/* Error */}
-      {error && (
-        <div className="alert alert-danger mt-3">
-          <strong>Error {error.status || ""}:</strong> {error.message || "Validation error"}
-          {error.details && Array.isArray(error.details) && (
-            <ul className="mt-2">
-              {error.details.map((d, i) => (
-                <li key={i}>
-                  <strong>Loc:</strong> {d.loc?.join(" → ") || "unknown"} <br />
-                  <strong>Msg:</strong> {d.msg} <br />
-                  <strong>Type:</strong> {d.type}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
+      {/* Error / Result */}
+      <ErrorDisplay error={error} />
+      <ResultDisplay result={result} />
     </div>
   );
 }

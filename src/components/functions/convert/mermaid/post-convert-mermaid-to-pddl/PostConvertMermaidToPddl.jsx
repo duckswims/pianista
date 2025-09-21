@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { postConvertMermaidToPddl } from "../../../../../scripts/api/post_convert_mermaid_to_pddl";
+import { postConvertMermaidToPddl } from "../../../../../scripts/api/postConvertMermaidToPddl";
+import ErrorDisplay from "../../../../response/error/ErrorDisplay";
+import ResultDisplay from "../../../../response/result/ResultDisplay";
 
 export default function PostConvertMermaidToPddl() {
   const [text, setText] = useState("");
@@ -17,7 +19,7 @@ export default function PostConvertMermaidToPddl() {
 
     try {
       const response = await postConvertMermaidToPddl(
-        { text, domain },
+        text, domain,
         attempts
       );
 
@@ -75,22 +77,9 @@ export default function PostConvertMermaidToPddl() {
         </button>
       </form>
 
-      {/* Error */}
-      {error && (
-        <div className="alert alert-danger mt-3">
-          <strong>Error:</strong> {error.message || "Conversion failed"}
-        </div>
-      )}
-
-      {/* Result */}
-      {result && (
-        <div className="alert alert-success mt-3">
-          <p>
-            <strong>Result:</strong>
-          </p>
-          <pre className="whitespace-pre-wrap">{result.conversion_result}</pre>
-        </div>
-      )}
+      {/* Error / Result */}
+      <ErrorDisplay error={error} />
+      <ResultDisplay result={result} />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { postValidatePddl } from "../../../../../scripts/api/post_validate_pddl";
+import { postValidatePddl } from "../../../../../scripts/api/postValidatePddl";
+import ErrorDisplay from "../../../../response/error/ErrorDisplay";
+import ResultDisplay from "../../../../response/result/ResultDisplay";
 
 function PostValidatePddl() {
   const [pddl, setPddl] = useState("");
@@ -58,31 +60,9 @@ function PostValidatePddl() {
         </button>
       </form>
 
-      {/* Result / Error */}
-      {error && (
-        <div className="alert alert-danger mt-3">
-          <strong>Error {error.status || ""}:</strong> {error.message || "Validation error"}
-          {error.details && Array.isArray(error.details) && (
-            <ul className="mt-2">
-              {error.details.map((d, i) => (
-                <li key={i}>
-                  <strong>Loc:</strong> {d.loc?.join(" → ") || "unknown"} <br />
-                  <strong>Msg:</strong> {d.msg} <br />
-                  <strong>Type:</strong> {d.type}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-
-      {result && (
-        <div className="alert alert-success mt-3">
-          <p><strong>Result:</strong> {result.result}</p>
-          <p><strong>PDDL Type:</strong> {result.pddl_type}</p>
-          <p><strong>Message:</strong> {result.message}</p>
-        </div>
-      )}
+      {/* Error / Result */}
+      <ErrorDisplay error={error} />
+      <ResultDisplay result={result} />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { postGeneratePddl } from "../../../../../scripts/api/post_generate_pddl";
+import { postGeneratePddl } from "../../../../../scripts/api/postGeneratePddl";
+import ErrorDisplay from "../../../../response/error/ErrorDisplay";
+import ResultDisplay from "../../../../response/result/ResultDisplay";
 
 function PostGeneratePddl() {
   const [pddlType, setPddlType] = useState("domain");
@@ -15,7 +17,8 @@ function PostGeneratePddl() {
 
     const response = await postGeneratePddl(
       pddlType,
-      { text, domain },
+      text, 
+      domain,
       generateBoth,
       attempts
     );
@@ -102,31 +105,9 @@ function PostGeneratePddl() {
         </button>
       </form>
 
-      {/* Error */}
-      {error && (
-        <div className="alert alert-danger mt-3">
-          <strong>Error {error.status || ""}:</strong> {error.message || "Generation error"}
-        </div>
-      )}
-
-      {/* Result */}
-      {result && (
-        <div className="alert alert-success mt-3">
-          <p><strong>Result Status:</strong> {result.result_status || "Unknown"}</p>
-          {result.generated_domain && (
-            <div className="mt-2">
-              <strong>Generated Domain:</strong>
-              <pre className="bg-light p-2 mt-1">{result.generated_domain}</pre>
-            </div>
-          )}
-          {result.generated_problem && (
-            <div className="mt-2">
-              <strong>Generated Problem:</strong>
-              <pre className="bg-light p-2 mt-1">{result.generated_problem}</pre>
-            </div>
-          )}
-        </div>
-      )}
+      {/* Error / Result */}
+      <ErrorDisplay error={error} />
+      <ResultDisplay result={result} />
     </div>
   );
 }

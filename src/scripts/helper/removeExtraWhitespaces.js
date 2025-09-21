@@ -5,7 +5,8 @@
  */
 export function removeExtraWhitespaces(str) {
   if (!str) return "";
-  
-  // Replace all sequences of whitespace (space, tab, newline) with a single space
-  return str.replace(/\s+/g, " ").trim();
+
+  return str
+    .replace(/\\n|\s+/g, " ")
+    .trim();
 }

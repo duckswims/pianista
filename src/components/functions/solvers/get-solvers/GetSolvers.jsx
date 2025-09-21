@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getSolvers } from "../../../../scripts/api/get_solvers";
+import { getSolvers } from "../../../../scripts/api/getSolvers";
+import ErrorDisplay from "../../../response/error/ErrorDisplay";
 
 function GetSolvers({ onSelectSolver }) {
   const [solvers, setSolvers] = useState([]);
@@ -7,20 +8,24 @@ function GetSolvers({ onSelectSolver }) {
 
   useEffect(() => {
     async function fetchSolvers() {
-      const result = await getSolvers();
+      const response = await getSolvers();
 
-      if (result.error) {
-        setError(result.message);
+      if (response.error) {
+        setError(response);
+        setSolvers([]);
       } else {
-        if (Array.isArray(result)) {
-          setSolvers(result);
-        } else if (result && typeof result === "object") {
-          setSolvers([result]);
+        setError(null);
+
+        if (Array.isArray(response)) {
+          setSolvers(response);
+        } else if (response && typeof response === "object") {
+          setSolvers([response]);
         } else {
           setSolvers([]);
         }
       }
     }
+
     fetchSolvers();
   }, []);
 
@@ -28,11 +33,7 @@ function GetSolvers({ onSelectSolver }) {
     <div>
       <h4 className="card-title mb-3">Available Solvers</h4>
 
-      {error && (
-        <div className="alert alert-danger">
-          <strong>Error:</strong> {error}
-        </div>
-      )}
+      {error && <ErrorDisplay error={error} />}
 
       {solvers.length > 0 ? (
         <>
@@ -45,13 +46,18 @@ function GetSolvers({ onSelectSolver }) {
                 onClick={() => onSelectSolver && onSelectSolver(solver.name)} // Pass name
               >
                 <h6 className="card-title">{solver.name}</h6>
-                <p className="card-text text-muted" style={{ fontSize: "0.85rem" }}>
+                <p
+                  className="card-text text-muted"
+                  style={{ fontSize: "0.85rem" }}
+                >
                   id: {solver.id}
                 </p>
               </div>
             ))}
           </div>
-          <p className="mt-2 text-muted">{solvers.length} available solvers found.</p>
+          <p className="mt-2 text-muted">
+            {solvers.length} available solvers found.
+          </p>
         </>
       ) : (
         !error && <p>No solvers available.</p>

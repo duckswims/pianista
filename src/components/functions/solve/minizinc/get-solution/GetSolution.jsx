@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { getSolution } from "../../../../../scripts/api/get_solution";
+import { getSolution } from "../../../../../scripts/api/getSolution";
+import ErrorDisplay from "../../../../response/error/ErrorDisplay";
+import ResultDisplay from "../../../../response/result/ResultDisplay";
 
 function GetSolution() {
   const [jobId, setJobId] = useState("");
@@ -22,7 +24,6 @@ function GetSolution() {
   return (
     <div className="card shadow-sm p-4 mb-4">
       <h3 className="mb-3">Get Solution</h3>
-
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Job ID</label>
@@ -34,35 +35,13 @@ function GetSolution() {
             required
           />
         </div>
-
         <button type="submit" className="btn btn-primary">
           Retrieve Solution
         </button>
       </form>
 
-      {error && (
-        <div className="alert alert-danger mt-3">
-          <strong>Error {error.status || ""}:</strong> {error.message || "Validation error"}
-          {error.details && Array.isArray(error.details) && (
-            <ul className="mt-2">
-              {error.details.map((d, i) => (
-                <li key={i}>
-                  <strong>Loc:</strong> {d.loc?.join(" → ") || "unknown"} <br />
-                  <strong>Msg:</strong> {d.msg} <br />
-                  <strong>Type:</strong> {d.type}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-
-      {result && (
-        <div className="alert alert-success mt-3">
-          <strong>Solution:</strong>
-          <pre className="mt-2">{JSON.stringify(result, null, 2)}</pre>
-        </div>
-      )}
+      <ErrorDisplay error={error} />
+      <ResultDisplay result={result} />
     </div>
   );
 }

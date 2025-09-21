@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { postPlan } from "../../../../../scripts/api/post_plan";
+import { postPlan } from "../../../../../scripts/api/postPlan";
+import ErrorDisplay from "../../../../response/error/ErrorDisplay";
+import ResultDisplay from "../../../../response/result/ResultDisplay";
 
 function PostPlan({ plannerId }) {
   const [domain, setDomain] = useState("");
@@ -18,7 +20,8 @@ function PostPlan({ plannerId }) {
 
     const requestBody = { domain, problem };
     const response = await postPlan(
-      requestBody,
+      requestBody.domain,
+      requestBody.problem,
       plannerIdState || null,
       convertRealTypes
     );
@@ -35,6 +38,7 @@ function PostPlan({ plannerId }) {
   return (
     <div className="card shadow-sm p-4">
       <h3 className="mb-3">Post Plan</h3>
+
       <form onSubmit={handleSubmit}>
         {/* Planner ID */}
         <div className="mb-3">
@@ -91,28 +95,8 @@ function PostPlan({ plannerId }) {
       </form>
 
       {/* Error / Result */}
-      {error && (
-        <div className="alert alert-danger mt-3">
-          <strong>Error {error.status}:</strong> {error.message}
-          {error.details && (
-            <ul className="mt-2">
-              {error.details.map((d, i) => (
-                <li key={i}>
-                  <strong>Loc:</strong> {d.loc?.join(" → ") || "unknown"} <br />
-                  <strong>Msg:</strong> {d.msg} <br />
-                  <strong>Type:</strong> {d.type}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-
-      {result && (
-        <div className="alert alert-success mt-3">
-          <strong>Job Created:</strong> ID = {result.id}
-        </div>
-      )}
+      <ErrorDisplay error={error} />
+      <ResultDisplay result={result} />
     </div>
   );
 }

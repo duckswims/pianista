@@ -1,4 +1,5 @@
-import { fetchApi } from "./index";
+import { fetchApi } from ".";
+import { removeExtraWhitespaces } from "../helper/removeExtraWhitespaces";
 
 /**
  * Post a solver request to Minizinc
@@ -9,11 +10,16 @@ import { fetchApi } from "./index";
  */
 export async function postSolve(modelStr, modelParams = {}, solverName = null) {
   const query = solverName ? `?solver_name=${encodeURIComponent(solverName)}` : "";
-  const body = { model_str: modelStr, model_params: modelParams };
+  const requestBody = { 
+    model_str: removeExtraWhitespaces(modelStr), 
+    model_params: modelParams 
+  };
 
-  return await fetchApi(`/solve/minizinc${query}`, {
+  const endpoint = `/solve/minizinc${query}`;
+
+  return await fetchApi(endpoint, {
     method: "POST",
-    body: JSON.stringify(body),
+    body: JSON.stringify(requestBody),
     headers: { "Content-Type": "application/json" },
   });
 }

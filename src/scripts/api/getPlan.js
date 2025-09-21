@@ -5,10 +5,12 @@ import { fetchApi } from "./index";
  * @param {string} id - ID of the plan being requested
  * @returns {Promise<Object>} Response plan or error object
  */
-export async function getPlan(id) {
+export async function getPlan(id = null) {
   if (!id) {
     return { error: true, message: "Plan ID is required." };
   }
 
-  return await fetchApi(`/solve/pddl?id=${encodeURIComponent(id)}`);
+  const endpoint = `/solve/pddl?id=${encodeURIComponent(id)}`;
+
+  return await fetchApi(endpoint);
 }
