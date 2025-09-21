@@ -15,8 +15,12 @@ import ValidatePlan from "./pages/validate/plan/Plan";
 import ValidatePddl from "./pages/validate/pddl/Pddl";
 import ValidateMatch from "./pages/validate/match/Match";
 
-// Other pages
+// Convert pages
 import Convert from "./pages/Convert";
+import ConvertMermaid from "./pages/convert/mermaid/Mermaid";
+import ConvertNaturalLanguage from "./pages/convert/natural_language/NaturalLanguage";
+
+// Other pages
 import Chart from "./pages/Chart";
 
 function App() {
@@ -45,8 +49,12 @@ function App() {
               <Route path="/validate/pddl" element={<ValidatePddl />} />
               <Route path="/validate/match" element={<ValidateMatch />} />
 
-              {/* Other pages */}
+              {/* Convert routes */}
               <Route path="/convert" element={<Convert />} />
+              <Route path="/convert/mermaid" element={<ConvertMermaid />} />
+              <Route path="/convert/natural_language" element={<ConvertNaturalLanguage />} />
+
+              {/* Other pages */}
               <Route path="/chart" element={<Chart />} />
             </Routes>
           </div>

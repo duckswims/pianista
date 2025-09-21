@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postGeneratePddl } from "../../../scripts/api/post_generate_pddl";
+import { postGeneratePddl } from "../../../../scripts/api/post_generate_pddl";
 
 function PostGeneratePddl() {
   const [pddlType, setPddlType] = useState("domain");

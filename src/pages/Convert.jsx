@@ -1,48 +1,47 @@
-import React, { useState } from "react";
-import PostGeneratePddl from "../components/generate/post-generate-pddl/PostGeneratePddl";
-import PostConvertPddlToMermaid from "../components/generate/post-convert-pddl-to-mermaid/PostConvertPddlToMermaid";
-import PostConvertMermaidToPddl from "../components/generate/post-convert-mermaid-to-pddl/PostConvertMermaidToPddl";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import componentsData from "../components/data/components.json";
 
 function Convert() {
-  const [activeTab, setActiveTab] = useState("post-generate-pddl");
+  const navigate = useNavigate();
+  const convertData = componentsData.convert;
+
+  if (!convertData || !convertData.Children) {
+    return (
+      <div className="container mt-4">
+        <h2>No Validate options available</h2>
+      </div>
+    );
+  }
+
+  const renderCard = (key, comp) => (
+    <div className="col-md-6" key={key}>
+      <div className="card shadow-sm h-100">
+        <div className="card-body text-center">
+          <h2 className="card-title">{comp.Title}</h2>
+          {comp.Description && (
+            <p className="card-text mt-3">{comp.Description}</p>
+          )}
+          <button
+            className="btn btn-primary mt-3"
+            onClick={() => navigate(comp.Link)} // absolute path
+          >
+            Go to {comp.Title}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="container mt-4">
-      <h2>Generate Dashboard</h2>
+      <h1 className="mb-4">{convertData.Title}</h1>
+      <p className="mb-4">{convertData.Description}</p>
 
-      {/* Tabs */}
-      <ul className="nav nav-tabs mb-3">
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === "post-generate-pddl" ? "active" : ""}`}
-            onClick={() => setActiveTab("post-generate-pddl")}
-          >
-            Generate PDDL
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === "post-convert-pddl-to-mermaid" ? "active" : ""}`}
-            onClick={() => setActiveTab("post-convert-pddl-to-mermaid")}
-          >
-            Convert PDDL to Mermaid
-          </button>
-        </li>
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === "post-convert-mermaid-to-pddl" ? "active" : ""}`}
-            onClick={() => setActiveTab("post-convert-mermaid-to-pddl")}
-          >
-            Convert Mermaid to PDDL
-          </button>
-        </li>
-      </ul>
-
-      {/* Tab content */}
-      <div>
-        {activeTab === "post-generate-pddl" && <PostGeneratePddl />}
-        {activeTab === "post-convert-pddl-to-mermaid" && <PostConvertPddlToMermaid />}
-        {activeTab === "post-convert-mermaid-to-pddl" && <PostConvertMermaidToPddl />}
+      <div className="row g-4 mb-4">
+        {Object.entries(convertData.Children).map(([childKey, child]) =>
+          renderCard(childKey, child)
+        )}
       </div>
     </div>
   );

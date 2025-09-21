@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postConvertMermaidToPddl } from "../../../scripts/api/post_convert_mermaid_to_pddl";
+import { postConvertMermaidToPddl } from "../../../../scripts/api/post_convert_mermaid_to_pddl";
 
 export default function PostConvertMermaidToPddl() {
   const [text, setText] = useState("");
