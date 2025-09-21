@@ -3,25 +3,22 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/sidebar/Sidebar";
 
 import Home from "./pages/Home";
+import SectionPage from "./pages/SectionPage";
 
-// Solve pages
-import Solve from "./pages/Solve";
+// Solve subpages
 import SolveMinizinc from "./pages/solve/minizinc/Minizinc";
 import SolvePddl from "./pages/solve/pddl/PDDL";
 
-// Validate pages
-import Validate from "./pages/Validate";
+// Validate subpages
 import ValidatePlan from "./pages/validate/plan/Plan";
 import ValidatePddl from "./pages/validate/pddl/Pddl";
 import ValidateMatch from "./pages/validate/match/Match";
 
-// Convert pages
-import Convert from "./pages/Convert";
+// Convert subpages
 import ConvertMermaid from "./pages/convert/mermaid/Mermaid";
 import ConvertNaturalLanguage from "./pages/convert/natural_language/NaturalLanguage";
 
-// Chart pages
-import Chart from "./pages/Chart";
+// Chart subpages
 import ChartRender from "./pages/chart/render/ChartRender";
 
 function App() {
@@ -39,24 +36,23 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
 
-              {/* Solve routes */}
-              <Route path="/solve" element={<Solve />} />
+              {/* Dynamic Section route */}
+              <Route path="/:sectionKey" element={<SectionPage />} />
+
+              {/* Solve subpages */}
               <Route path="/solve/minizinc" element={<SolveMinizinc />} />
               <Route path="/solve/pddl" element={<SolvePddl />} />
 
-              {/* Validate routes */}
-              <Route path="/validate" element={<Validate />} />
+              {/* Validate subpages */}
               <Route path="/validate/plan" element={<ValidatePlan />} />
               <Route path="/validate/pddl" element={<ValidatePddl />} />
               <Route path="/validate/match" element={<ValidateMatch />} />
 
-              {/* Convert routes */}
-              <Route path="/convert" element={<Convert />} />
+              {/* Convert subpages */}
               <Route path="/convert/mermaid" element={<ConvertMermaid />} />
               <Route path="/convert/natural_language" element={<ConvertNaturalLanguage />} />
 
-              {/* Chart routes */}
-              <Route path="/chart" element={<Chart />} />
+              {/* Chart subpages */}
               <Route path="/chart/render" element={<ChartRender />} />
             </Routes>
           </div>
