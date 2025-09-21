@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import GetPlanners from "../components/planners/get-planners/GetPlanners";
-import PostPlan from "../components/planners/post-plan/PostPlan";
-import GetPlan from "../components/planners/get-plan/GetPlan";
+import GetPlanners from "../../../components/planners/get-planners/GetPlanners";
+import PostPlan from "../../../components/solve/pddl/post-plan/PostPlan";
+import GetPlan from "../../../components/solve/pddl/get-plan/GetPlan";
 
-function Planners() {
+
+function PDDL() {
   const [activeTab, setActiveTab] = useState("post"); // "post" or "get"
   const [selectedPlannerId, setSelectedPlannerId] = useState(null);
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Planner Dashboard</h2>
+      <h2 className="mb-4">PDDL Dashboard</h2>
 
       {/* Available Planners above tabs */}
       <div className="mb-4">
@@ -45,4 +46,4 @@ function Planners() {
   );
 }
 
-export default Planners;
+export default PDDL;

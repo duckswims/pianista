@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getSolution } from "../../../scripts/api/get_solution";
+import { getSolution } from "../../../../scripts/api/get_solution";
 
 function GetSolution() {
   const [jobId, setJobId] = useState("");

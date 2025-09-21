@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchApi } from "../../scripts/api";
 import routes from "../data/components.json";
@@ -9,6 +9,9 @@ import "./styles.css";
 function Sidebar() {
   const [apiStatus, setApiStatus] = useState(null);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const location = useLocation(); // current path
+
+  const excludedKeys = ["planners", "solvers"]; 
 
   useEffect(() => {
     async function checkApi() {
@@ -18,9 +21,25 @@ function Sidebar() {
     checkApi();
   }, []);
 
+  // Auto-open dropdown if current path matches a child link
+  useEffect(() => {
+    Object.entries(routes)
+      .filter(([key]) => !excludedKeys.includes(key))
+      .forEach(([key, item]) => {
+        if (item.Children) {
+          const childPaths = Object.values(item.Children).map(c => c.Link);
+          if (childPaths.includes(location.pathname)) {
+            setOpenDropdown(key);
+          }
+        }
+      });
+  }, [location.pathname]);
+
   const toggleDropdown = (key) => {
     setOpenDropdown(openDropdown === key ? null : key);
   };
+
+  const isActive = (link) => location.pathname === link;
 
   return (
     <div className="d-flex flex-column p-3 bg-light" style={{ minHeight: "100%" }}>
@@ -32,10 +51,15 @@ function Sidebar() {
       </h5>
 
       <nav className="nav flex-column">
-        {Object.entries(routes).map(([key, item]) => (
+        {Object.entries(routes)
+          .filter(([key]) => !excludedKeys.includes(key))
+          .map(([key, item]) => (
           <div key={key} className="mb-1">
             <div className="d-flex align-items-center justify-content-between">
-              <Link to={item.Link} className="nav-link flex-grow-1">
+              <Link
+                to={item.Link}
+                className={`nav-link flex-grow-1 ${isActive(item.Link) ? "active" : ""}`}
+              >
                 {item.Title}
               </Link>
 
@@ -52,7 +76,11 @@ function Sidebar() {
             {item.Children && openDropdown === key && (
               <div className="ms-3">
                 {Object.entries(item.Children).map(([childKey, child]) => (
-                  <Link key={childKey} to={child.Link} className="nav-link small">
+                  <Link
+                    key={childKey}
+                    to={child.Link}
+                    className={`nav-link small ${isActive(child.Link) ? "active" : ""}`}
+                  >
                     {child.Title}
                   </Link>
                 ))}

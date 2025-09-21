@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getPlan } from "../../../scripts/api/get_plan";
+import { getPlan } from "../../../../scripts/api/get_plan";
 
 function GetPlan() {
   const [planId, setPlanId] = useState("");

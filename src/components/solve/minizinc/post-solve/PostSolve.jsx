@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { postSolve } from "../../../scripts/api/post_solve";
+import { postSolve } from "../../../../scripts/api/post_solve";
 
 function PostSolve({ solverName: selectedSolverName }) {
   const [modelStr, setModelStr] = useState("");

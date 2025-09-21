@@ -20,10 +20,12 @@
     "Children": {
       "minizinc": {
         "Title": "MiniZinc",
+        "Description": "Solve planning problems defined in MiniZinc format.",
         "Link": "/solve/minizinc"
       },
       "pddl": {
         "Title": "PDDL",
+        "Description": "Solve planning problems defined in PDDL format.",
         "Link": "/solve/pddl"
       }
     }
@@ -35,14 +37,17 @@
     "Children": {
       "plan": {
         "Title": "Plan",
+        "Description": "Validate the correctness of generated plans.",
         "Link": "/validate/plan"
       },
       "pddl": {
         "Title": "PDDL",
+        "Description": "Validate the syntax and structure of PDDL domain/problem files.",
         "Link": "/validate/pddl"
       },
       "match": {
         "Title": "Match",
+        "Description": "Check consistency between domain, problem, and plan files.",
         "Link": "/validate/match"
       }
     }
@@ -54,10 +59,12 @@
     "Children": {
       "natural_language": {
         "Title": "Natural Language",
+        "Description": "Convert natural language descriptions into formal representations.",
         "Link": "/convert/natural_language"
       },
       "mermaid": {
         "Title": "Mermaid",
+        "Description": "Convert between PDDL and Mermaid-style diagrams for visualization.",
         "Link": "/convert/mermaid"
       }
     }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { postPlan } from "../../../scripts/api/post_plan";
+import { postPlan } from "../../../../scripts/api/post_plan";
 
 function PostPlan({ plannerId }) {
   const [domain, setDomain] = useState("");

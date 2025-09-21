@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import PostSolve from "../components/solvers/post-solve/PostSolve";
-import GetSolution from "../components/solvers/get-solution/GetSolution";
-import GetSolvers from "../components/solvers/get-solvers/GetSolvers";
+import GetSolvers from "../../../components/solvers/get-solvers/GetSolvers";
+import PostSolve from "../../../components/solve/minizinc/post-solve/PostSolve";
+import GetSolution from "../../../components/solve/minizinc/get-solution/GetSolution";
 
-function Solvers() {
+function MiniZinc() {
   const [activeTab, setActiveTab] = useState("post");
   const [selectedSolverName, setSelectedSolverName] = useState(null);
 
   return (
     <div className="container mt-4">
-      <h2 className="mb-4">Solver Dashboard</h2>
+      <h2 className="mb-4">MiniZinc Dashboard</h2>
 
       {/* Available Solvers above tabs */}
       <div className="mb-4">
@@ -45,4 +45,4 @@ function Solvers() {
   );
 }
 
-export default Solvers;
+export default MiniZinc;
