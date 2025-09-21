@@ -20,8 +20,9 @@ import Convert from "./pages/Convert";
 import ConvertMermaid from "./pages/convert/mermaid/Mermaid";
 import ConvertNaturalLanguage from "./pages/convert/natural_language/NaturalLanguage";
 
-// Other pages
+// Chart pages
 import Chart from "./pages/Chart";
+import ChartRender from "./pages/chart/render/ChartRender";
 
 function App() {
   return (
@@ -54,8 +55,9 @@ function App() {
               <Route path="/convert/mermaid" element={<ConvertMermaid />} />
               <Route path="/convert/natural_language" element={<ConvertNaturalLanguage />} />
 
-              {/* Other pages */}
+              {/* Chart routes */}
               <Route path="/chart" element={<Chart />} />
+              <Route path="/chart/render" element={<ChartRender />} />
             </Routes>
           </div>
         </div>

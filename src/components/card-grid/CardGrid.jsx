@@ -9,7 +9,7 @@ function CardGrid({ data, onNavigate }) {
           <div className="col-12 col-md-6" key={key}>
             <div className="card shadow-sm h-100 card-hover">
               <div className="card-body text-center">
-                <h2 className="card-title">{comp.Title}</h2>
+                <h3 className="card-title">{comp.Title}</h3>
                 <p className="card-text mt-3">{comp.Description}</p>
                 <button
                   className="btn btn-primary mt-3"

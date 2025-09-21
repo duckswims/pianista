@@ -1,32 +1,31 @@
-import React, { useState } from "react";
-import MermaidRenderer from "../components/chart/mermaid-renderer/MermaidRenderer";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import componentsData from "../components/data/components.json";
+import CardGrid from "../components/card-grid/CardGrid.jsx";
 
+function Chart() {
+  const navigate = useNavigate();
+  const chartData = componentsData.chart;
 
-function ConvertMermaid() {
-  const [activeTab, setActiveTab] = useState("mermaid-renderer");
+  if (!chartData || !chartData.Children) {
+    return (
+      <div className="container mt-4">
+        <h2>No Chart options available</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-4">
-      <h2>Generate Dashboard</h2>
+      <h1 className="mb-4">{chartData.Title}</h1>
+      <p className="mb-4">{chartData.Description}</p>
 
-      {/* Tabs */}
-      <ul className="nav nav-tabs mb-3">
-        <li className="nav-item">
-          <button
-            className={`nav-link ${activeTab === "mermaid-renderer" ? "active" : ""}`}
-            onClick={() => setActiveTab("mermaid-renderer")}
-          >
-            Mermaid Renderer
-          </button>
-        </li>
-      </ul>
-
-      {/* Tab content */}
-      <div>
-        {activeTab === "mermaid-renderer" && <MermaidRenderer />}
-      </div>
+      <CardGrid
+        data={Object.entries(chartData.Children)}
+        onNavigate={(link) => navigate(link)}
+      />
     </div>
   );
 }
 
-export default ConvertMermaid;
+export default Chart;

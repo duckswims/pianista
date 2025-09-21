@@ -32,12 +32,12 @@ function Welcome() {
   const displayMessage = "AI-powered planning made fast and intuitive. Turn your ideas into optimised plans in seconds.";
 
   return (
-    <div className="container py-4">
-      <h1 className="mb-3">Welcome to Pianista! 🚀</h1>
+    <div className="container mt-4">
+      <h1 className="mb-4">Welcome to Pianista! 🚀</h1>
       {error ? (
-        <p className="text-danger">{error}</p>
+        <p className="text-danger mb-4">{error}</p>
       ) : (
-        <p className={loading ? "text-muted" : ""}>{displayMessage}</p>
+        <p className={loading ? "text-muted mb-4" : "mb-4"}>{displayMessage}</p>
       )}
     </div>
   );

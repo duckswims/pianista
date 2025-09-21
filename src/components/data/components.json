@@ -71,7 +71,14 @@
   },
   "chart": {
     "Title": "Interactive Chart",
-    "Description": "Display interactive Gantt charts or timeline components to visualize planning steps and schedules.",
-    "Link": "/chart"
+    "Description": "Display interactive charts to visualize planning steps and schedules.",
+    "Link": "/chart",
+    "Children": {
+      "render": {
+        "Title": "Chart Render",
+        "Description": "Open the interactive chart rendering view.",
+        "Link": "/chart/render"
+      }
+    }
   }
 }
