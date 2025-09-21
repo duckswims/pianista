@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import GetPlanners from "../../../components/planners/get-planners/GetPlanners";
-import PostPlan from "../../../components/solve/pddl/post-plan/PostPlan";
-import GetPlan from "../../../components/solve/pddl/get-plan/GetPlan";
+import GetPlanners from "../../../components/functions/planners/get-planners/GetPlanners";
+import PostPlan from "../../../components/functions/solve/pddl/post-plan/PostPlan";
+import GetPlan from "../../../components/functions/solve/pddl/get-plan/GetPlan";
 
 
 function SolvePddl() {

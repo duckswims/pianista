@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MermaidRenderer from "../../../components/chart/mermaid-renderer/MermaidRenderer";
+import MermaidRenderer from "../../../components/functions/chart/mermaid-renderer/MermaidRenderer";
 
 
 function ChartRender() {

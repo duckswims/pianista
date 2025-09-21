@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import PostConvertPddlToMermaid from "../../../components/convert/mermaid/post-convert-pddl-to-mermaid/PostConvertPddlToMermaid";
-import PostConvertMermaidToPddl from "../../../components/convert/mermaid/post-convert-mermaid-to-pddl/PostConvertMermaidToPddl";
+import PostConvertPddlToMermaid from "../../../components/functions/convert/mermaid/post-convert-pddl-to-mermaid/PostConvertPddlToMermaid";
+import PostConvertMermaidToPddl from "../../../components/functions/convert/mermaid/post-convert-mermaid-to-pddl/PostConvertMermaidToPddl";
 
 function ConvertMermaid() {
   const [activeTab, setActiveTab] = useState("post-convert-pddl-to-mermaid");
