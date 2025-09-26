@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { postValidatePddlMatch } from "../../../../../scripts/api/postValidatePddlMatch";
+import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 
@@ -12,7 +13,12 @@ function PostValidatePddlMatch() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await postValidatePddlMatch(domain, problem);
+    const requestBody = {
+      domain: removeWhitespaces(domain),
+      problem: removeWhitespaces(problem),
+    };
+
+    const response = await postValidatePddlMatch(requestBody);
 
     if (response.error) {
       setError(response);
@@ -55,7 +61,6 @@ function PostValidatePddlMatch() {
         </button>
       </form>
 
-      {/* Error / Result */}
       <ErrorDisplay error={error} />
       <ResultDisplay result={result} />
     </div>

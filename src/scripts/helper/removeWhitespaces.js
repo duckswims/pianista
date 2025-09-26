@@ -3,7 +3,7 @@
  * @param {string} str - Input string
  * @returns {string} Cleaned string
  */
-export function removeExtraWhitespaces(str) {
+export function removeWhitespaces(str) {
   if (!str) return "";
 
   return str

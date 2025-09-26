@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { validateProblemPlan } from "../../../../../scripts/api/validateProblemPlan";
+import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 
@@ -13,7 +14,13 @@ function ValidateProblemPlan() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const response = await validateProblemPlan(domain, problem, plan);
+    const requestBody = {
+      domain: removeWhitespaces(domain),
+      problem: removeWhitespaces(problem),
+      plan: removeWhitespaces(plan),
+    };
+
+    const response = await validateProblemPlan(requestBody);
 
     if (response.error) {
       setError(response);

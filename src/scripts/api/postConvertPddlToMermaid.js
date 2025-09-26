@@ -1,19 +1,15 @@
 import { fetchApi } from ".";
-import { removeExtraWhitespaces } from "../helper/removeExtraWhitespaces";
 
 /**
  * Convert PDDL to Mermaid.
+ * @param {Object} requestBody - Already contains { pddl }
  * @param {string} pddlType - "domain" or "problem"
- * @param {string} pddl - PDDL string to convert
  * @returns {Promise<object>} - API response
  */
-export async function postConvertPddlToMermaid(pddlType, pddl) {
-  const requestBody = {
-    pddl: removeExtraWhitespaces(pddl)
-  }
-
+export async function postConvertPddlToMermaid(requestBody, pddlType) {
   const endpoint = `/convert/mermaid/${pddlType}`;
   
+  console.log("requestBody:", requestBody);
   return await fetchApi(endpoint, {
     method: "POST",
     body: JSON.stringify(requestBody),

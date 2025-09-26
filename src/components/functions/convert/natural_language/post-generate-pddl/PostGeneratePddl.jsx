@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { postGeneratePddl } from "../../../../../scripts/api/postGeneratePddl";
+import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 
@@ -15,10 +16,14 @@ function PostGeneratePddl() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    const requestBody = {
+      text: removeWhitespaces(text),
+      domain: removeWhitespaces(domain),
+    };
+
     const response = await postGeneratePddl(
       pddlType,
-      text, 
-      domain,
+      requestBody,
       generateBoth,
       attempts
     );
@@ -99,13 +104,11 @@ function PostGeneratePddl() {
           />
         </div>
 
-        {/* Submit */}
         <button type="submit" className="btn btn-primary">
           Generate
         </button>
       </form>
 
-      {/* Error / Result */}
       <ErrorDisplay error={error} />
       <ResultDisplay result={result} />
     </div>

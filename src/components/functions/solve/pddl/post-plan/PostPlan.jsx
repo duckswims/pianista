@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { postPlan } from "../../../../../scripts/api/postPlan";
+import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 
@@ -18,10 +19,16 @@ function PostPlan({ plannerId }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const requestBody = { domain, problem };
+    let cleanedDomain = removeWhitespaces(domain);
+    let cleanedProblem = removeWhitespaces(problem);
+
+    const requestBody = {
+      domain: cleanedDomain,
+      problem: cleanedProblem,
+    };
+
     const response = await postPlan(
-      requestBody.domain,
-      requestBody.problem,
+      requestBody,
       plannerIdState || null,
       convertRealTypes
     );
@@ -94,7 +101,6 @@ function PostPlan({ plannerId }) {
         </button>
       </form>
 
-      {/* Error / Result */}
       <ErrorDisplay error={error} />
       <ResultDisplay result={result} />
     </div>

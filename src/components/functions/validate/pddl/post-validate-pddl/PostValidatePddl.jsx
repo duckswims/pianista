@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { postValidatePddl } from "../../../../../scripts/api/postValidatePddl";
+import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 
@@ -12,8 +13,11 @@ function PostValidatePddl() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const type = pddlType || null;
-    const response = await postValidatePddl(pddl, type);
+    const requestBody = {
+      pddl: removeWhitespaces(pddl),
+    };
+
+    const response = await postValidatePddl(requestBody, pddlType || null);
 
     if (response.error) {
       setError(response);

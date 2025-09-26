@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { postSolve } from "../../../../../scripts/api/postSolve";
+import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 
 function PostSolve({ solverName: selectedSolverName }) {
   const [modelStr, setModelStr] = useState("");
-  const [solverName, setSolverName] = useState("or-tools");
+  const [solverName, setSolverName] = useState(null);
   const [parameters, setParameters] = useState([{ key: "", value: "" }]);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
@@ -28,15 +29,27 @@ function PostSolve({ solverName: selectedSolverName }) {
     const modelParams = {};
     for (const param of parameters) {
       if (param.key) {
-        try {
-          modelParams[param.key] = JSON.parse(param.value);
-        } catch {
-          modelParams[param.key] = param.value;
+        let key = param.key.trim()
+        let value = param.value.trim();
+        if (!isNaN(value) && value !== "") {
+          modelParams[key] = String(value);
+        } else {
+          try {
+            modelParams[key] = JSON.parse(value);
+          } catch {
+            modelParams[key] = value;
+          }
         }
       }
     }
 
-    const response = await postSolve(modelStr, modelParams, solverName);
+    let cleanedModelStr = removeWhitespaces(modelStr);
+    const responseBody = {
+      model_str: cleanedModelStr,
+      model_params: modelParams,
+    };
+
+    const response = await postSolve(responseBody, solverName);
 
     if (response.error) {
       setError(response);

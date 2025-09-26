@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { postConvertPddlToMermaid } from "../../../../../scripts/api/postConvertPddlToMermaid";
+import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 
@@ -14,7 +15,9 @@ export default function PostConvertPddlToMermaid() {
     setResult(null);
     setError(null);
 
-    const response = await postConvertPddlToMermaid(pddlType, pddl);
+    const requestBody = { pddl: removeWhitespaces(pddl) };
+
+    const response = await postConvertPddlToMermaid(requestBody, pddlType);
 
     if (response.error) {
       setError(response);
@@ -56,7 +59,6 @@ export default function PostConvertPddlToMermaid() {
         </button>
       </form>
 
-      {/* Error and Result Display */}
       <ErrorDisplay error={error} />
       <ResultDisplay result={result} />
     </div>

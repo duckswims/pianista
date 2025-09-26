@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { postConvertMermaidToPddl } from "../../../../../scripts/api/postConvertMermaidToPddl";
+import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 
@@ -17,11 +18,13 @@ export default function PostConvertMermaidToPddl() {
     setResult(null);
     setError(null);
 
+    const requestBody = {
+      text: removeWhitespaces(text),
+      domain: removeWhitespaces(domain),
+    };
+
     try {
-      const response = await postConvertMermaidToPddl(
-        text, domain,
-        attempts
-      );
+      const response = await postConvertMermaidToPddl(requestBody, attempts);
 
       if (response.error) {
         setError(response);
@@ -34,6 +37,7 @@ export default function PostConvertMermaidToPddl() {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="card shadow-sm p-4 mb-4">
