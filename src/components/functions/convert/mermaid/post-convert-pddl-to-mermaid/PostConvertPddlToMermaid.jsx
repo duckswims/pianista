@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postConvertPddlToMermaid } from "../../../../../scripts/api/postConvertPddlToMermaid";
+import { postConvertPddlToMermaid } from "../../../../../scripts/api/convert";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
