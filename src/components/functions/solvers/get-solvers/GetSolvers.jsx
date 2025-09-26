@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getSolvers } from "../../../../scripts/api/getSolvers";
+import { getSolvers } from "../../../../scripts/api/solvers";
 import ErrorDisplay from "../../../response/error/ErrorDisplay";
 
 function GetSolvers({ onSelectSolver }) {

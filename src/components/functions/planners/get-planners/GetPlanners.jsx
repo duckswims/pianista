@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getPlanners } from "../../../../scripts/api/getPlanners";
+import { getPlanners } from "../../../../scripts/api/planners";
 import ErrorDisplay from "../../../response/error/ErrorDisplay";
 
 function GetPlanners({ onSelectPlanner }) {
