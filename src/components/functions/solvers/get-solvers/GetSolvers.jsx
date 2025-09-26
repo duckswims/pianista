@@ -43,7 +43,7 @@ function GetSolvers({ onSelectSolver }) {
                 key={`${solver.id}-${index}`}
                 className="card p-3 shadow-sm"
                 style={{ cursor: "pointer" }}
-                onClick={() => onSelectSolver && onSelectSolver(solver.name)} // Pass name
+                onClick={() => onSelectSolver && onSelectSolver(solver.id)} // Pass name
               >
                 <h6 className="card-title">{solver.name}</h6>
                 <p

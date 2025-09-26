@@ -4,16 +4,16 @@ import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespac
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 
-function PostSolve({ solverName: selectedSolverName }) {
+function PostSolve({ solverId: selectedSolverId }) {
   const [modelStr, setModelStr] = useState("");
-  const [solverName, setSolverName] = useState(null);
+  const [solverId, setSolverId] = useState(null);
   const [parameters, setParameters] = useState([{ key: "", value: "" }]);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (selectedSolverName) setSolverName(selectedSolverName);
-  }, [selectedSolverName]);
+    if (selectedSolverId) setSolverId(selectedSolverId);
+  }, [selectedSolverId]);
 
   const addParameter = () => setParameters([...parameters, { key: "", value: "" }]);
   const removeParameter = (index) => setParameters(parameters.filter((_, i) => i !== index));
@@ -49,7 +49,7 @@ function PostSolve({ solverName: selectedSolverName }) {
       model_params: modelParams,
     };
 
-    const response = await postSolve(responseBody, solverName);
+    const response = await postSolve(responseBody, solverId);
 
     if (response.error) {
       setError(response);
@@ -69,8 +69,8 @@ function PostSolve({ solverName: selectedSolverName }) {
           <input
             type="text"
             className="form-control"
-            value={solverName}
-            onChange={(e) => setSolverName(e.target.value)}
+            value={solverId || ""}
+            onChange={(e) => setSolverId(e.target.value)}
           />
         </div>
 

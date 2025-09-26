@@ -5,7 +5,7 @@ import GetSolution from "../../../components/functions/solve/minizinc/get-soluti
 
 function SolveMinizinc() {
   const [activeTab, setActiveTab] = useState("post");
-  const [selectedSolverName, setSelectedSolverName] = useState(null);
+  const [selectedSolverId, setSelectedSolverId] = useState(null);
 
   return (
     <div className="container mt-4">
@@ -13,7 +13,7 @@ function SolveMinizinc() {
 
       {/* Available Solvers above tabs */}
       <div className="mb-4">
-        <GetSolvers onSelectSolver={setSelectedSolverName} />
+        <GetSolvers onSelectSolver={setSelectedSolverId} />
       </div>
 
       {/* Tab navigation */}
@@ -38,7 +38,7 @@ function SolveMinizinc() {
 
       {/* Tab content */}
       <div>
-        {activeTab === "post" && <PostSolve solverName={selectedSolverName} />}
+        {activeTab === "post" && <PostSolve solverId={selectedSolverId} />}
         {activeTab === "get" && <GetSolution />}
       </div>
     </div>

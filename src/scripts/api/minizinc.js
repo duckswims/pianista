@@ -18,8 +18,8 @@ export async function getSolution(jobId) {
  * @param {string|null} solverName - Optional solver name (defaults to "or-tools")
  * @returns {Promise<Object>} - Returns JobId or error object
  */
-export async function postSolve(requestBody, solverName = null) {
-  const query = solverName ? `?solver_name=${encodeURIComponent(solverName)}` : "";
+export async function postSolve(requestBody, solverId = null) {
+  const query = solverId ? `?solver_name=${encodeURIComponent(solverId)}` : "";
   const endpoint = `/solve/minizinc${query}`;
 
   console.log("requestBody:", requestBody);
