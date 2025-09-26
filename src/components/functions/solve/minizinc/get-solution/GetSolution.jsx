@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getSolution } from "../../../../../scripts/api/getSolution";
+import { getSolution } from "../../../../../scripts/api/minizinc";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 

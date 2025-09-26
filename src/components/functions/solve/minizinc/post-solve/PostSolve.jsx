@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { postSolve } from "../../../../../scripts/api/postSolve";
+import { postSolve } from "../../../../../scripts/api/minizinc";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
