@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postValidatePddlMatch } from "../../../../../scripts/api/postValidatePddlMatch";
+import { postValidatePddlMatch } from "../../../../../scripts/api/validate";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
