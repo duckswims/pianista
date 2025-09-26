@@ -1,7 +1,8 @@
 import { fetchApi } from ".";
 
 /**
- * Get a previously requested plan by job ID
+ * Get Plan
+ * Get a previously requested plan.
  * @param {string} id - ID of the plan being requested
  * @returns {Promise<Object>} Response plan or error object
  */
@@ -17,7 +18,8 @@ export async function getPlan(id = null) {
 
 
 /**
- * Post a planning request
+ * Post Plan
+ * Post a planning request.
  * @param {Object} requestBody - Must contain { domain, problem }
  * @param {string|null} planner_id - Optional planner ID
  * @param {boolean} convert_real_types - Whether to convert real types

@@ -1,7 +1,8 @@
 import { fetchApi } from ".";
 
 /**
- * Call the API to generate PDDL from natural language
+ * Post Generate Pddl
+ * Generate PDDL domain or problem from a prompt, with GPT.
  * @param {string} pddl_type - "domain" | "problem"
  * @param {Object} requestBody - Already processed body { text, domain }
  * @param {boolean} generate_both - whether to generate both domain and problem
@@ -21,7 +22,8 @@ export async function postGeneratePddl(pddl_type, requestBody, generate_both = f
 }
 
 /**
- * Convert PDDL to Mermaid.
+ * Post Convert Pddl To Mermaid
+ * Post PDDL to convert to Mermaid-style code.
  * @param {Object} requestBody - Already contains { pddl }
  * @param {string} pddlType - "domain" or "problem"
  * @returns {Promise<object>} - API response
@@ -38,8 +40,8 @@ export async function postConvertPddlToMermaid(requestBody, pddlType) {
 }
 
 /**
- * Converts Mermaid code to PDDL via the API.
- * 
+ * Post Convert Mermaid To Pddl
+ * Post Mermaid-style code to convert to PDDL.
  * @param {Object} requestBody - Must contain { text, domain }
  * @param {number} attempts - Number of conversion attempts (default 1)
  * @returns {Promise<Object>} - API response

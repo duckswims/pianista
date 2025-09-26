@@ -1,7 +1,8 @@
 import { fetchApi } from ".";
 
 /**
- * Get available planners, or a single planner by ID
+ * Get Planners
+ * Get available planners.
  * @param {string|null} plannerId - optional planner ID
  * @returns {Promise<Array|Object>} List of planners or single planner object
  */

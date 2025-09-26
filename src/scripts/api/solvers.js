@@ -1,7 +1,8 @@
 import { fetchApi } from ".";
 
 /**
- * Get available solvers, or a single solver by ID
+ * Get Solvers
+ * Get available solvers.
  * @param {string|null} solverId - optional solver ID
  * @returns {Promise<Array|Object>} List of solvers or single solver object
  */
