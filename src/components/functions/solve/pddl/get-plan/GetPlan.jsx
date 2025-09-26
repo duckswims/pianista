@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getPlan } from "../../../../../scripts/api/getPlan";
+import { getPlan } from "../../../../../scripts/api/pddl";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
 

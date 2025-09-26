@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { postPlan } from "../../../../../scripts/api/postPlan";
+import { postPlan } from "../../../../../scripts/api/pddl";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
