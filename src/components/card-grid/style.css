@@ -6,3 +6,19 @@
   transform: translateY(-5px); /* lifts the card */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* stronger shadow */
 }
+
+/* Center image and make it fit nicely */
+.card-img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  background-color: #f8f9fa; /* optional light background for image area */
+}
+
+.card-img-container img {
+  max-width: 80px;  /* adjust size to fit card */
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
