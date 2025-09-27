@@ -40,6 +40,7 @@ export default function PostConvertPddlToMermaid() {
           >
             <option value="domain">Domain</option>
             <option value="problem">Problem</option>
+            <option value="plan">Plan</option>
           </select>
         </div>
 
