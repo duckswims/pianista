@@ -5,6 +5,7 @@ import routes from "../data/components.json";
 
 import "./sidebar.css";
 import "./online-indicator.css";
+import sidebarIcon from "../../assets/sidebar.png"; // import your toggle icon
 
 export default function Sidebar({ isOpen, setIsOpen }) {
   const location = useLocation();
@@ -32,9 +33,15 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
   return (
     <aside className={`sidebar ${isOpen ? "sidebar--open" : "sidebar--collapsed"}`}>
-      <div className="sidebar__toggle-container">
+      {/* Toggle Button */}
+      <div className="sidebar__toggle-container d-flex justify-content-center align-items-center pt-2">
         <button onClick={toggleSidebar} className="sidebar__toggle-btn">
-          {isOpen ? "◀" : "▶"}
+          <img
+            src={sidebarIcon}
+            alt="Toggle Sidebar"
+            className={`sidebar-toggle-icon ${isOpen ? "open" : "collapsed"}`
+          }
+          />
         </button>
       </div>
 

@@ -28,3 +28,8 @@
   cursor: pointer;
   text-align: left;
 }
+
+.sidebar-toggle-icon {
+  width: 30px;   /* set width */
+  transition: transform 0.3s;
+}
