@@ -7,12 +7,11 @@ import "./sidebar.css";
 import logo from "../../assets/logo/VisionSpace_eye_Black.png";
 import sidebarIcon from "../../assets/sidebar.png";
 
-export default function Sidebar({ isOpen, setIsOpen }) {
+export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode }) {
   const location = useLocation();
   const [apiStatus, setApiStatus] = useState(null);
   const [openMenus, setOpenMenus] = useState({});
   const [hovered, setHovered] = useState(false);
-  const [devMode, setDevMode] = useState(false);
   const excludedKeys = ["planners", "solvers"];
   const devKeys = ["solve", "validate", "convert", "chart"];
 

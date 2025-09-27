@@ -6,6 +6,8 @@ import Header from "./components/header/Header";
 
 import Home from "./pages/Home";
 import SectionPage from "./pages/SectionPage";
+import Dev from "./pages/dev/Dev";
+import Client from "./pages/client/Client";
 
 // Solve subpages
 import SolveMinizinc from "./pages/solve/minizinc/Minizinc";
@@ -28,19 +30,28 @@ import "./App.css";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [devMode, setDevMode] = useState(false);
 
   return (
     <BrowserRouter>
       <div className="app-container">
         {/* Sidebar */}
-        <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
+        <Sidebar
+          isOpen={isSidebarOpen}
+          setIsOpen={setIsSidebarOpen}
+          devMode={devMode}
+          setDevMode={setDevMode}
+        />
 
         {/* Main content */}
         <main className={`main-content ${isSidebarOpen ? "sidebar-open" : "sidebar-collapsed"}`}>
           <Header />
 
           <Routes>
-            <Route path="/" element={<Home />} />
+            {/* Home */}
+            <Route path="/" element={devMode ? <Dev /> : <Client />} />
+
+            {/* For main Solve, Validate, Convert, Chart pages */}
             <Route path="/:sectionKey" element={<SectionPage />} />
 
             {/* Solve */}
