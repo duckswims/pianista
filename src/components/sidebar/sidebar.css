@@ -4,7 +4,7 @@
   transition: width 0.3s;
   overflow: hidden;
   border-right: 1px solid #ddd;
-  flex-shrink: 0; /* prevent sidebar from shrinking */
+  flex-shrink: 0;
 }
 
 .sidebar--open {
@@ -13,6 +13,12 @@
 
 .sidebar--collapsed {
   width: 50px;
+}
+
+/* Top container */
+.sidebar__top {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 /* Remove default link underline */
@@ -27,9 +33,27 @@
   font-size: 1rem;
   cursor: pointer;
   text-align: left;
+  padding: 5px;
 }
 
+/* Toggle icon */
 .sidebar-toggle-icon {
-  width: 30px;   /* set width */
+  height: 30px;
+  width: auto;
   transition: transform 0.3s;
+}
+
+/* Collapsed button */
+.collapsed-btn {
+  width: 100%;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Logo inside sidebar */
+.sidebar-logo {
+  height: 25px;
+  width: auto;
 }

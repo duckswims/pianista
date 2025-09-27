@@ -4,13 +4,14 @@ import { fetchApi } from "../../scripts/api";
 import routes from "../data/components.json";
 
 import "./sidebar.css";
-// import "./online-indicator.css";
-import sidebarIcon from "../../assets/sidebar.png"; // import your toggle icon
+import logo from "../../assets/logo/VisionSpace_eye_Black.png";
+import sidebarIcon from "../../assets/sidebar.png";
 
 export default function Sidebar({ isOpen, setIsOpen }) {
   const location = useLocation();
   const [apiStatus, setApiStatus] = useState(null);
   const [openMenus, setOpenMenus] = useState({});
+  const [hovered, setHovered] = useState(false);
   const excludedKeys = ["planners", "solvers"];
 
   useEffect(() => {
@@ -26,72 +27,84 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   };
 
   const toggleSidebar = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(true);
   };
 
   const isActive = (link) => location.pathname === link;
 
   return (
     <aside className={`sidebar ${isOpen ? "sidebar--open" : "sidebar--collapsed"}`}>
-      {/* Toggle Button */}
-      <div className="sidebar__toggle-container d-flex justify-content-center align-items-center pt-2">
-        <button onClick={toggleSidebar} className="sidebar__toggle-btn">
-          <img
-            src={sidebarIcon}
-            alt="Toggle Sidebar"
-            className={`sidebar-toggle-icon ${isOpen ? "open" : "collapsed"}`
-          }
-          />
-        </button>
+      {/* Top: Logo + Toggle */}
+      <div className="sidebar__top d-flex justify-content-between align-items-center p-2">
+        {isOpen ? (
+          <>
+            <img src={logo} alt="Logo" className="sidebar-logo" />
+            <button onClick={() => setIsOpen(false)} className="sidebar__toggle-btn">
+              <img src={sidebarIcon} alt="Toggle Sidebar" className="sidebar-toggle-icon" />
+            </button>
+          </>
+        ) : (
+          <button
+            className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center"
+            onClick={toggleSidebar}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
+            <img
+              src={hovered ? sidebarIcon : logo}
+              alt="Toggle Sidebar"
+              className="sidebar-toggle-icon"
+            />
+          </button>
+        )}
       </div>
 
+      {/* Navigation */}
       {isOpen && (
-        <>
-          <nav className="nav flex-column gap-2">
-            {Object.entries(routes)
-              .filter(([key]) => !excludedKeys.includes(key))
-              .map(([key, item]) => (
-                <div key={key}>
-                  {item.Children ? (
-                    <>
-                      <button
-                        className="btn text-start w-100 d-flex justify-content-between align-items-center px-2 py-1 text-black"
-                        onClick={() => toggleMenu(key)}
-                      >
-                        {item.Title}
-                        <span className="ms-2">{openMenus[key] ? "▾" : "▸"}</span>
-                      </button>
-
-                      {openMenus[key] && (
-                        <div className="ms-3 mt-1">
-                          {Object.entries(item.Children).map(([childKey, child]) => (
-                            <Link
-                              key={childKey}
-                              to={child.Link}
-                              className={`d-block px-2 py-1 rounded ${
-                                isActive(child.Link) ? "bg-primary text-white" : "text-black"
-                              }`}
-                            >
-                              {child.Title}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <Link
-                      to={item.Link}
-                      className={`d-block px-2 py-1 rounded ${
-                        isActive(item.Link) ? "bg-primary text-white" : "text-black"
-                      }`}
+        <nav className="nav flex-column gap-2 mt-2">
+          {Object.entries(routes)
+            .filter(([key]) => !excludedKeys.includes(key))
+            .map(([key, item]) => (
+              <div key={key}>
+                {item.Children ? (
+                  <>
+                    <button
+                      className="btn text-start w-100 d-flex justify-content-between align-items-center px-2 py-1 text-black"
+                      onClick={() => toggleMenu(key)}
                     >
                       {item.Title}
-                    </Link>
-                  )}
-                </div>
-              ))}
-          </nav>
-        </>
+                      <span className="ms-2">{openMenus[key] ? "▾" : "▸"}</span>
+                    </button>
+
+                    {openMenus[key] && (
+                      <div className="ms-3 mt-1">
+                        {Object.entries(item.Children).map(([childKey, child]) => (
+                          <Link
+                            key={childKey}
+                            to={child.Link}
+                            className={`d-block px-2 py-1 rounded ${
+                              isActive(child.Link) ? "bg-primary text-white" : "text-black"
+                            }`}
+                          >
+                            {child.Title}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    to={item.Link}
+                    className={`d-block px-2 py-1 rounded ${
+                      isActive(item.Link) ? "bg-primary text-white" : "text-black"
+                    }`}
+                  >
+                    {item.Title}
+                  </Link>
+                )}
+              </div>
+            ))}
+        </nav>
       )}
     </aside>
   );
