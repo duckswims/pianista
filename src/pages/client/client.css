@@ -52,6 +52,29 @@
   overflow-y: auto;   /* scroll when exceeding max height */
 }
 
+/* API key input form (single-line) styled like text area */
+.client-api-form {
+  display: flex;
+  align-items: center;
+  border: 1px solid #dcdcdc;
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 8px;
+  gap: 8px;
+  width: 100%;
+  background-color: #fff;
+}
+
+.client-api-form input {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 8px 12px;
+  flex-grow: 1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 
 .arrow-button {
   border: none;

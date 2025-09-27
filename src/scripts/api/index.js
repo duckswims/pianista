@@ -1,5 +1,5 @@
 const baseUrl = import.meta.env.VITE_BASE_URL;
-const apiKey = import.meta.env.VITE_API_KEY;
+// const apiKey = import.meta.env.VITE_API_KEY;
 
 /**
  * Generic API fetcher
@@ -9,6 +9,9 @@ const apiKey = import.meta.env.VITE_API_KEY;
  */
 export async function fetchApi(path = "/", options = {}) {
   const url = `${baseUrl}${path}`;
+
+  // Use the global API key if available
+  const apiKey = window.VISIONSPACE_API_KEY || import.meta.env.VITE_API_KEY;
 
   try {
     const response = await fetch(url, {
