@@ -119,7 +119,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode }) {
           </nav>
 
           {/* Dev Mode toggle at bottom */}
-          {apiKey && (
+          {apiStatus === true && (
             <div className="sidebar__dev-mode d-flex justify-content-between align-items-center px-2 py-2">
               <span>Development Mode</span>
               <label className="switch">
