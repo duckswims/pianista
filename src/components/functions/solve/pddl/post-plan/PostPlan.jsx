@@ -46,6 +46,9 @@ function PostPlan({ plannerId }) {
   return (
     <div className="card shadow-sm p-4">
       <h3 className="mb-3">Post Plan</h3>
+      <p className="text-muted fst-italic mb-3">
+        Post a planning request.
+      </p>
 
       <form onSubmit={handleSubmit}>
         {/* Planner ID */}

@@ -35,6 +35,9 @@ function ValidateProblemPlan() {
   return (
     <div className="card shadow-sm p-4 mb-4">
       <h3 className="mb-3">Validate Problem Plan</h3>
+      <p className="text-muted fst-italic mb-3">
+        Validate that a precomputed plan is valid for a given problem.
+      </p>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

@@ -32,6 +32,9 @@ function PostValidatePddl() {
   return (
     <div className="card shadow-sm p-4">
       <h3 className="mb-3">Validate PDDL</h3>
+      <p className="text-muted fst-italic mb-3">
+        Validate PDDL.
+      </p>
 
       <form onSubmit={handleSubmit}>
         {/* PDDL Type */}

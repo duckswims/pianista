@@ -41,6 +41,9 @@ function PostGeneratePddl() {
   return (
     <div className="card shadow-sm p-4 mb-4">
       <h3 className="mb-3">Generate PDDL</h3>
+      <p className="text-muted fst-italic mb-3">
+        Generate PDDL domain or problem from a prompt, with GPT.
+      </p>
 
       <form onSubmit={handleSubmit}>
         {/* PDDL Type */}

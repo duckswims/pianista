@@ -64,6 +64,10 @@ function PostSolve({ solverId: selectedSolverId }) {
   return (
     <div className="card shadow-sm p-4 mb-4">
       <h3 className="mb-3">Post Solve</h3>
+      <p className="text-muted fst-italic mb-3">
+        Post a solver request to Minizinc.
+      </p>
+
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Solver Name</label>

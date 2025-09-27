@@ -33,6 +33,9 @@ function PostValidatePddlMatch() {
   return (
     <div className="card shadow-sm p-4 mb-4">
       <h3 className="mb-3">Validate PDDL Match</h3>
+      <p className="text-muted fst-italic mb-3">
+        Validate that problem references domain.
+      </p>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

@@ -43,6 +43,9 @@ export default function PostConvertMermaidToPddl() {
   return (
     <div className="card shadow-sm p-4 mb-4">
       <h3 className="mb-3">Convert Mermaid to PDDL</h3>
+      <p className="text-muted fst-italic mb-3">
+        Post Mermaid-style code to convert to PDDL.
+      </p>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
