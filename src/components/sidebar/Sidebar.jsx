@@ -10,6 +10,7 @@ export default function Sidebar() {
   const location = useLocation();
   const [apiStatus, setApiStatus] = useState(null);
   const [openMenus, setOpenMenus] = useState({});
+  const [isOpen, setIsOpen] = useState(true); // sidebar open/close state
 
   const excludedKeys = ["planners", "solvers"];
 
@@ -25,63 +26,79 @@ export default function Sidebar() {
     setOpenMenus((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   const isActive = (link) => location.pathname === link;
 
   return (
-    <aside className="sidebar bg-light shadow-sm p-3">
-      <h5 className="fw-bold mb-4 d-flex align-items-center">
-        Pianista API
-        <span className={`online-indicator ms-2 ${apiStatus ? "online" : "offline"}`}>
-          <span className="blink"></span>
-        </span>
-      </h5>
+    <aside className={`sidebar ${isOpen ? "sidebar--open col-2" : "sidebar--collapsed"}`}>
+      {/* Toggle Button */}
+      <div className="sidebar__toggle-container">
+        <button onClick={toggleSidebar} className="sidebar__toggle-btn">
+          {isOpen ? "◀" : "▶"}
+        </button>
+      </div>
 
-      <nav className="nav flex-column gap-2">
-        {Object.entries(routes)
-          .filter(([key]) => !excludedKeys.includes(key))
-          .map(([key, item]) => (
-            <div key={key}>
-              {item.Children ? (
-                <>
-                  <button
-                    className="btn text-start w-100 d-flex justify-content-between align-items-center px-2 py-1 text-black"
-                    onClick={() => toggleMenu(key)}
-                  >
-                    {item.Title} 
-                    <span className="ms-2">{openMenus[key] ? "▾" : "▸"}</span>
-                  </button>
+      {/* Only show content when sidebar is open */}
+      {isOpen && (
+        <>
+          <h5 className="fw-bold mb-4 d-flex align-items-center">
+            Pianista API
+            <span className={`online-indicator ms-2 ${apiStatus ? "online" : "offline"}`}>
+              <span className="blink"></span>
+            </span>
+          </h5>
 
-                  {openMenus[key] && (
-                    <div className="ms-3 mt-1">
-                      {Object.entries(item.Children).map(([childKey, child]) => (
-                        <Link
-                          key={childKey}
-                          to={child.Link}
-                          className={`d-block px-2 py-1 rounded ${
-                            isActive(child.Link)
-                              ? "bg-primary text-white"
-                              : "text-black"
-                          }`}
-                        >
-                          {child.Title}
-                        </Link>
-                      ))}
-                    </div>
+          <nav className="nav flex-column gap-2">
+            {Object.entries(routes)
+              .filter(([key]) => !excludedKeys.includes(key))
+              .map(([key, item]) => (
+                <div key={key}>
+                  {item.Children ? (
+                    <>
+                      <button
+                        className="btn text-start w-100 d-flex justify-content-between align-items-center px-2 py-1 text-black"
+                        onClick={() => toggleMenu(key)}
+                      >
+                        {item.Title}
+                        <span className="ms-2">{openMenus[key] ? "▾" : "▸"}</span>
+                      </button>
+
+                      {openMenus[key] && (
+                        <div className="ms-3 mt-1">
+                          {Object.entries(item.Children).map(([childKey, child]) => (
+                            <Link
+                              key={childKey}
+                              to={child.Link}
+                              className={`d-block px-2 py-1 rounded ${
+                                isActive(child.Link) ? "bg-primary text-white" : "text-black"
+                              }`}
+                            >
+                              {child.Title}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <Link
+                      to={item.Link}
+                      className={`d-block px-2 py-1 rounded ${
+                        isActive(item.Link) ? "bg-primary text-white" : "text-black"
+                      }`}
+                    >
+                      {item.Title}
+                    </Link>
                   )}
-                </>
-              ) : (
-                <Link
-                  to={item.Link}
-                  className={`d-block px-2 py-1 rounded ${
-                    isActive(item.Link) ? "bg-primary text-white" : "text-black"
-                  }`}
-                >
-                  {item.Title}
-                </Link>
-              )}
-            </div>
-          ))}
-      </nav>
+                </div>
+              ))}
+          </nav>
+        </>
+      )}
     </aside>
+
+
   );
 }
