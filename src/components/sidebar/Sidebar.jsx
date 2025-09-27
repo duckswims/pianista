@@ -12,7 +12,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   const [apiStatus, setApiStatus] = useState(null);
   const [openMenus, setOpenMenus] = useState({});
   const [hovered, setHovered] = useState(false);
+  const [devMode, setDevMode] = useState(false);
   const excludedKeys = ["planners", "solvers"];
+  const devKeys = ["solve", "validate", "convert", "chart"];
 
   useEffect(() => {
     async function checkApi() {
@@ -59,52 +61,67 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         )}
       </div>
 
-      {/* Navigation */}
+      {/* Navigation + scrollable */}
       {isOpen && (
-        <nav className="nav flex-column gap-2 mt-2">
-          {Object.entries(routes)
-            .filter(([key]) => !excludedKeys.includes(key))
-            .map(([key, item]) => (
-              <div key={key}>
-                {item.Children ? (
-                  <>
-                    <button
-                      className="btn text-start w-100 d-flex justify-content-between align-items-center px-2 py-1 text-black"
-                      onClick={() => toggleMenu(key)}
+        <div className="sidebar__nav-container d-flex flex-column flex-grow-1">
+          <nav className="nav flex-column gap-2 mt-2 flex-grow-1">
+            {Object.entries(routes)
+              .filter(([key]) => !excludedKeys.includes(key) && (devMode || !devKeys.includes(key)))
+              .map(([key, item]) => (
+                <div key={key}>
+                  {item.Children ? (
+                    <>
+                      <button
+                        className="btn text-start w-100 d-flex justify-content-between align-items-center px-2 py-1 text-black"
+                        onClick={() => toggleMenu(key)}
+                      >
+                        {item.Title}
+                        <span className="ms-2">{openMenus[key] ? "▾" : "▸"}</span>
+                      </button>
+
+                      {openMenus[key] && (
+                        <div className="ms-3 mt-1">
+                          {Object.entries(item.Children).map(([childKey, child]) => (
+                            <Link
+                              key={childKey}
+                              to={child.Link}
+                              className={`d-block px-2 py-1 rounded ${
+                                isActive(child.Link) ? "bg-primary text-white" : "text-black"
+                              }`}
+                            >
+                              {child.Title}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <Link
+                      to={item.Link}
+                      className={`d-block px-2 py-1 rounded ${
+                        isActive(item.Link) ? "bg-primary text-white" : "text-black"
+                      }`}
                     >
                       {item.Title}
-                      <span className="ms-2">{openMenus[key] ? "▾" : "▸"}</span>
-                    </button>
+                    </Link>
+                  )}
+                </div>
+              ))}
+          </nav>
 
-                    {openMenus[key] && (
-                      <div className="ms-3 mt-1">
-                        {Object.entries(item.Children).map(([childKey, child]) => (
-                          <Link
-                            key={childKey}
-                            to={child.Link}
-                            className={`d-block px-2 py-1 rounded ${
-                              isActive(child.Link) ? "bg-primary text-white" : "text-black"
-                            }`}
-                          >
-                            {child.Title}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <Link
-                    to={item.Link}
-                    className={`d-block px-2 py-1 rounded ${
-                      isActive(item.Link) ? "bg-primary text-white" : "text-black"
-                    }`}
-                  >
-                    {item.Title}
-                  </Link>
-                )}
-              </div>
-            ))}
-        </nav>
+          {/* Dev Mode toggle at bottom */}
+          <div className="sidebar__dev-mode d-flex justify-content-between align-items-center px-2 py-2">
+            <span>Development Mode</span>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={devMode}
+                onChange={() => setDevMode((prev) => !prev)}
+              />
+              <span></span>
+            </label>
+          </div>
+        </div>
       )}
     </aside>
   );

@@ -4,6 +4,8 @@
   transition: width 0.3s;
   overflow: hidden;
   border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
   flex-shrink: 0;
 }
 
@@ -13,12 +15,6 @@
 
 .sidebar--collapsed {
   width: 50px;
-}
-
-/* Top container */
-.sidebar__top {
-  padding-top: 10px;
-  padding-bottom: 10px;
 }
 
 /* Remove default link underline */
@@ -33,27 +29,83 @@
   font-size: 1rem;
   cursor: pointer;
   text-align: left;
-  padding: 5px;
 }
 
-/* Toggle icon */
 .sidebar-toggle-icon {
-  height: 30px;
-  width: auto;
   transition: transform 0.3s;
 }
 
-/* Collapsed button */
-.collapsed-btn {
-  width: 100%;
-  padding: 10px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Logo image */
+img {
+  width: 25px;
 }
 
-/* Logo inside sidebar */
-.sidebar-logo {
-  height: 25px;
-  width: auto;
+/* Navigation container */
+.sidebar__nav-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* Dev Mode toggle */
+.sidebar__dev-mode {
+  margin-top: auto; /* push to bottom */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 8px;
+  font-size: inherit; /* default font size */
+}
+
+/* Smaller rounded switch */
+.switch {
+  display: inline-block;
+  position: relative;
+  width: 40px;   /* smaller width */
+  height: 20px;  /* smaller height */
+}
+
+.switch input {
+  display: none;
+}
+
+.switch span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ccc;
+  border-radius: 20px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.switch span::after {
+  content: "";
+  position: absolute;
+  width: 16px;  /* smaller knob */
+  height: 16px;
+  left: 2px;
+  top: 2px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.switch input:checked + span {
+  background: #4caf50;
+}
+
+.switch input:checked + span::after {
+  transform: translateX(20px); /* match smaller width */
+}
+
+
+/* Collapsed button centering */
+.collapsed-btn {
+  width: 100%;
+  height: 50px;
+  padding: 0;
 }
