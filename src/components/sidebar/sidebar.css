@@ -14,7 +14,7 @@
 }
 
 .sidebar--collapsed {
-  width: 50px;
+  width: 40px;
 }
 
 /* Remove default link underline */
@@ -106,6 +106,5 @@ img {
 /* Collapsed button centering */
 .collapsed-btn {
   width: 100%;
-  height: 50px;
   padding: 0;
 }
