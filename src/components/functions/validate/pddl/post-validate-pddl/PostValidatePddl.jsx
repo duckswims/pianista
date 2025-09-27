@@ -3,6 +3,7 @@ import { postValidatePddl } from "../../../../../scripts/api/validate";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
+import "../../../styles.css"
 
 function PostValidatePddl() {
   const [pddl, setPddl] = useState("");
@@ -35,7 +36,7 @@ function PostValidatePddl() {
       <form onSubmit={handleSubmit}>
         {/* PDDL Type */}
         <div className="mb-3">
-          <label className="form-label">PDDL Type (optional)</label>
+          <label className="form-label">PDDL Type</label>
           <select
             className="form-select"
             value={pddlType}
@@ -49,7 +50,9 @@ function PostValidatePddl() {
 
         {/* PDDL Content */}
         <div className="mb-3">
-          <label className="form-label">PDDL Content</label>
+          <label className="form-label">
+            PDDL Content <span className="required">*</span>
+          </label>
           <textarea
             className="form-control"
             rows="6"

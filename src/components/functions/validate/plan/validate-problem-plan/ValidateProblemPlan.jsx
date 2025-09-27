@@ -3,6 +3,7 @@ import { validateProblemPlan } from "../../../../../scripts/api/validate";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
+import "../../../styles.css"
 
 function ValidateProblemPlan() {
   const [domain, setDomain] = useState("");
@@ -37,7 +38,9 @@ function ValidateProblemPlan() {
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Domain</label>
+          <label className="form-label">
+            Domain <span className="required">*</span>
+          </label>
           <textarea
             className="form-control"
             rows="4"
@@ -48,23 +51,28 @@ function ValidateProblemPlan() {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Plan</label>
-          <textarea
-            className="form-control"
-            rows="4"
-            value={plan}
-            onChange={(e) => setPlan(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Problem</label>
+          <label className="form-label">
+            Problem <span className="required">*</span>
+          </label>
           <textarea
             className="form-control"
             rows="4"
             value={problem}
             onChange={(e) => setProblem(e.target.value)}
+            required
+          />
+        </div>
+
+
+        <div className="mb-3">
+          <label className="form-label">
+            Plan <span className="required">*</span>
+          </label>
+          <textarea
+            className="form-control"
+            rows="4"
+            value={plan}
+            onChange={(e) => setPlan(e.target.value)}
             required
           />
         </div>

@@ -3,6 +3,7 @@ import { postValidatePddlMatch } from "../../../../../scripts/api/validate";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
+import "../../../styles.css"
 
 function PostValidatePddlMatch() {
   const [domain, setDomain] = useState("");
@@ -35,7 +36,9 @@ function PostValidatePddlMatch() {
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Domain PDDL</label>
+          <label className="form-label">
+            Domain PDDL <span className="required">*</span>
+          </label>
           <textarea
             className="form-control"
             rows="6"
@@ -46,7 +49,9 @@ function PostValidatePddlMatch() {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Problem PDDL</label>
+          <label className="form-label">
+            Problem PDDL <span className="required">*</span>
+          </label>
           <textarea
             className="form-control"
             rows="6"

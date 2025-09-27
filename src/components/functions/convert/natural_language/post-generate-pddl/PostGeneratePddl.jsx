@@ -3,6 +3,7 @@ import { postGeneratePddl } from "../../../../../scripts/api/convert";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
+import "../../../styles.css"
 
 function PostGeneratePddl() {
   const [pddlType, setPddlType] = useState("domain");
@@ -57,7 +58,9 @@ function PostGeneratePddl() {
 
         {/* Prompt Text */}
         <div className="mb-3">
-          <label className="form-label">Prompt Text</label>
+          <label className="form-label">
+            Prompt Text <span className="required">*</span>
+          </label>
           <textarea
             className="form-control"
             rows="3"
@@ -69,7 +72,7 @@ function PostGeneratePddl() {
 
         {/* Domain (optional) */}
         <div className="mb-3">
-          <label className="form-label">Domain (optional)</label>
+          <label className="form-label">Domain</label>
           <textarea
             className="form-control"
             rows="3"

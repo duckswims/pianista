@@ -3,6 +3,7 @@ import { postConvertPddlToMermaid } from "../../../../../scripts/api/convert";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
+import "../../../styles.css"
 
 export default function PostConvertPddlToMermaid() {
   const [pddlType, setPddlType] = useState("domain");
@@ -45,7 +46,9 @@ export default function PostConvertPddlToMermaid() {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">PDDL Content</label>
+          <label className="form-label">
+            PDDL Content <span className="required">*</span>
+          </label>
           <textarea
             className="form-control"
             rows="6"

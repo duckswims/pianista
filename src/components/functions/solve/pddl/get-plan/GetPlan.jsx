@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { getPlan } from "../../../../../scripts/api/pddl";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
+import "../../../styles.css"
 
 function GetPlan() {
   const [planId, setPlanId] = useState("");
@@ -27,7 +28,9 @@ function GetPlan() {
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Plan ID</label>
+          <label className="form-label">
+            Plan ID <span className="required">*</span>
+          </label>
           <input
             type="text"
             className="form-control"

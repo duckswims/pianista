@@ -3,6 +3,7 @@ import { postSolve } from "../../../../../scripts/api/minizinc";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
+import "../../../styles.css"
 
 function PostSolve({ solverId: selectedSolverId }) {
   const [modelStr, setModelStr] = useState("");
@@ -71,11 +72,14 @@ function PostSolve({ solverId: selectedSolverId }) {
             className="form-control"
             value={solverId || ""}
             onChange={(e) => setSolverId(e.target.value)}
+            placeholder="Select a solver above"
           />
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Model String</label>
+          <label className="form-label">
+            Model String <span className="required">*</span>
+          </label>
           <textarea
             className="form-control"
             rows="4"
@@ -86,7 +90,9 @@ function PostSolve({ solverId: selectedSolverId }) {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Model Parameters</label>
+          <label className="form-label">
+            Model Parameters <span className="required">*</span>
+          </label>
           {parameters.map((param, index) => (
             <div className="d-flex gap-2 mb-2" key={index}>
               <input

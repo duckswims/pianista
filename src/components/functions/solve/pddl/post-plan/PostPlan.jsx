@@ -3,6 +3,7 @@ import { postPlan } from "../../../../../scripts/api/pddl";
 import { removeWhitespaces } from "../../../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
+import "../../../styles.css"
 
 function PostPlan({ plannerId }) {
   const [domain, setDomain] = useState("");
@@ -49,18 +50,21 @@ function PostPlan({ plannerId }) {
       <form onSubmit={handleSubmit}>
         {/* Planner ID */}
         <div className="mb-3">
-          <label className="form-label">Planner ID (optional)</label>
+          <label className="form-label">Planner ID</label>
           <input
             type="text"
             className="form-control"
             value={plannerIdState}
             onChange={(e) => setPlannerIdState(e.target.value)}
+            placeholder="Select a planner above"
           />
         </div>
 
         {/* Domain */}
         <div className="mb-3">
-          <label className="form-label">Domain</label>
+          <label className="form-label">
+            Domain <span className="required">*</span>
+          </label>
           <textarea
             className="form-control"
             rows="4"
@@ -72,7 +76,9 @@ function PostPlan({ plannerId }) {
 
         {/* Problem */}
         <div className="mb-3">
-          <label className="form-label">Problem</label>
+          <label className="form-label">
+            Problem <span className="required">*</span>
+          </label>
           <textarea
             className="form-control"
             rows="4"

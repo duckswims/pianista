@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { getSolution } from "../../../../../scripts/api/minizinc";
 import ErrorDisplay from "../../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../../response/result/ResultDisplay";
+import "../../../styles.css"
 
 function GetSolution() {
   const [jobId, setJobId] = useState("");
@@ -26,7 +27,9 @@ function GetSolution() {
       <h3 className="mb-3">Get Solution</h3>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Job ID</label>
+          <label className="form-label">
+            Job ID <span className="required">*</span>
+          </label>
           <input
             type="text"
             className="form-control"
