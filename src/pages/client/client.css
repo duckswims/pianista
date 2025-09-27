@@ -20,7 +20,8 @@
   margin-bottom: 8px;
 }
 
-.client-welcome {
+.client-welcome,
+.client-warning {
   font-size: 1.2rem;
   margin-bottom: 15px;
   color: #555;
@@ -43,16 +44,15 @@
   outline: none;
   resize: none;
   font-size: 1rem;
-  line-height: 20px; /* same as LINE_HEIGHT in jsx */
-  padding: 10px 8px 8px 16px; /* top, right, bottom, left */
+  line-height: 20px;
+  padding: 10px 8px 8px 16px;
   width: 100%;
   box-sizing: border-box;
-  min-height: 1.5em;  /* ~1 row */
-  max-height: 160px;  /* MAX_LINES * LINE_HEIGHT */
-  overflow-y: auto;   /* scroll when exceeding max height */
+  min-height: 1.5em;
+  max-height: 160px;
+  overflow-y: auto;
 }
 
-/* API key input form (single-line) styled like text area */
 .client-api-form {
   display: flex;
   align-items: center;
@@ -75,7 +75,6 @@
   box-sizing: border-box;
 }
 
-
 .arrow-button {
   border: none;
   background: none;
@@ -88,4 +87,22 @@
 .arrow-btn-image {
   width: 30px;
   height: 30px;
+}
+
+/* ================================================== */
+/* ✨ Smooth fade transition for forms + messages only */
+.form-transition-container {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.form-transition-container.fade-out {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.form-transition-container.fade-in {
+  opacity: 1;
+  transform: translateY(0);
 }
