@@ -2,22 +2,21 @@
 .app-container {
   display: flex;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh; /* change min-height to full viewport height */
+  overflow: hidden; /* prevent body scroll */
 }
 
 /* Main content should expand to fill the remaining space */
 .main-content {
   flex: 1;
   padding: 1rem;
-  transition: margin-left 0.3s, width 0.3s;
-  overflow: auto; /* allows scrolling if content is tall */
+  transition: width 0.3s;
+  overflow-y: auto; /* make vertical scrolling active */
+  height: 100%; /* crucial: allow overflow to work */
 }
 
-/* Optional: adjust main content width when sidebar collapses/expands */
-.main-content.sidebar-open {
-  margin-left: 0; /* no offset, since flex handles space */
-}
-
+/* Remove unnecessary margin adjustments */
+.main-content.sidebar-open,
 .main-content.sidebar-collapsed {
   margin-left: 0;
 }
