@@ -3,15 +3,13 @@ import { useState, useEffect } from "react";
 import { fetchApi } from "../../scripts/api";
 import routes from "../data/components.json";
 
+import "./sidebar.css";
 import "./online-indicator.css";
-import "./styles.css";
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, setIsOpen }) {
   const location = useLocation();
   const [apiStatus, setApiStatus] = useState(null);
   const [openMenus, setOpenMenus] = useState({});
-  const [isOpen, setIsOpen] = useState(true); // sidebar open/close state
-
   const excludedKeys = ["planners", "solvers"];
 
   useEffect(() => {
@@ -33,15 +31,13 @@ export default function Sidebar() {
   const isActive = (link) => location.pathname === link;
 
   return (
-    <aside className={`sidebar ${isOpen ? "sidebar--open col-2" : "sidebar--collapsed"}`}>
-      {/* Toggle Button */}
+    <aside className={`sidebar ${isOpen ? "sidebar--open" : "sidebar--collapsed"}`}>
       <div className="sidebar__toggle-container">
         <button onClick={toggleSidebar} className="sidebar__toggle-btn">
           {isOpen ? "◀" : "▶"}
         </button>
       </div>
 
-      {/* Only show content when sidebar is open */}
       {isOpen && (
         <>
           <h5 className="fw-bold mb-4 d-flex align-items-center">
@@ -98,7 +94,5 @@ export default function Sidebar() {
         </>
       )}
     </aside>
-
-
   );
 }

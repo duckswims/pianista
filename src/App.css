@@ -1,0 +1,23 @@
+/* App container should be flex so sidebar and main content sit side by side */
+.app-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Main content should expand to fill the remaining space */
+.main-content {
+  flex: 1;
+  padding: 1rem;
+  transition: margin-left 0.3s, width 0.3s;
+  overflow: auto; /* allows scrolling if content is tall */
+}
+
+/* Optional: adjust main content width when sidebar collapses/expands */
+.main-content.sidebar-open {
+  margin-left: 0; /* no offset, since flex handles space */
+}
+
+.main-content.sidebar-collapsed {
+  margin-left: 0;
+}

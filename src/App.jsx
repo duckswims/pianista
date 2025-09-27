@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 import Sidebar from "./components/sidebar/Sidebar";
 
@@ -21,42 +22,41 @@ import ConvertNaturalLanguage from "./pages/convert/natural_language/NaturalLang
 // Chart subpages
 import ChartRender from "./pages/chart/render/ChartRender";
 
+
+import "./App.css";
+
 function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   return (
     <BrowserRouter>
-      <div className="container-fluid">
-        <div className="row" style={{ minHeight: "100vh" }}>
-          {/* Sidebar */}
-          <div className="col-2 ps-0 pe-0 pt-2">
-            <Sidebar />
-          </div>
+      <div className="app-container">
+        {/* Sidebar */}
+        <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
 
-          {/* Main content */}
-          <div className="col-10 ps-5 pe-5 pt-2">
-            <Routes>
-              <Route path="/" element={<Home />} />
+        {/* Main content */}
+        <main className={`main-content ${isSidebarOpen ? "sidebar-open" : "sidebar-collapsed"}`}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/:sectionKey" element={<SectionPage />} />
 
-              {/* Dynamic Section route */}
-              <Route path="/:sectionKey" element={<SectionPage />} />
+            {/* Solve */}
+            <Route path="/solve/minizinc" element={<SolveMinizinc />} />
+            <Route path="/solve/pddl" element={<SolvePddl />} />
 
-              {/* Solve subpages */}
-              <Route path="/solve/minizinc" element={<SolveMinizinc />} />
-              <Route path="/solve/pddl" element={<SolvePddl />} />
+            {/* Validate */}
+            <Route path="/validate/plan" element={<ValidatePlan />} />
+            <Route path="/validate/pddl" element={<ValidatePddl />} />
+            <Route path="/validate/match" element={<ValidateMatch />} />
 
-              {/* Validate subpages */}
-              <Route path="/validate/plan" element={<ValidatePlan />} />
-              <Route path="/validate/pddl" element={<ValidatePddl />} />
-              <Route path="/validate/match" element={<ValidateMatch />} />
+            {/* Convert */}
+            <Route path="/convert/mermaid" element={<ConvertMermaid />} />
+            <Route path="/convert/natural_language" element={<ConvertNaturalLanguage />} />
 
-              {/* Convert subpages */}
-              <Route path="/convert/mermaid" element={<ConvertMermaid />} />
-              <Route path="/convert/natural_language" element={<ConvertNaturalLanguage />} />
-
-              {/* Chart subpages */}
-              <Route path="/chart/render" element={<ChartRender />} />
-            </Routes>
-          </div>
-        </div>
+            {/* Chart */}
+            <Route path="/chart/render" element={<ChartRender />} />
+          </Routes>
+        </main>
       </div>
     </BrowserRouter>
   );

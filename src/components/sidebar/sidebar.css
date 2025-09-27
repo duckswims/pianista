@@ -1,0 +1,30 @@
+.sidebar {
+  background-color: #f8f9fa;
+  height: 100vh;
+  transition: width 0.3s;
+  overflow: hidden;
+  border-right: 1px solid #ddd;
+  flex-shrink: 0; /* prevent sidebar from shrinking */
+}
+
+.sidebar--open {
+  width: 200px;
+}
+
+.sidebar--collapsed {
+  width: 50px;
+}
+
+/* Remove default link underline */
+.sidebar a {
+  text-decoration: none;
+}
+
+/* Buttons inside sidebar */
+.sidebar button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: left;
+}
