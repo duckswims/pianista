@@ -4,7 +4,7 @@ import { fetchApi } from "../../scripts/api";
 import routes from "../data/components.json";
 
 import "./sidebar.css";
-import "./online-indicator.css";
+// import "./online-indicator.css";
 import sidebarIcon from "../../assets/sidebar.png"; // import your toggle icon
 
 export default function Sidebar({ isOpen, setIsOpen }) {
@@ -47,13 +47,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
       {isOpen && (
         <>
-          <h5 className="fw-bold mb-4 d-flex align-items-center">
-            Pianista API
-            <span className={`online-indicator ms-2 ${apiStatus ? "online" : "offline"}`}>
-              <span className="blink"></span>
-            </span>
-          </h5>
-
           <nav className="nav flex-column gap-2">
             {Object.entries(routes)
               .filter(([key]) => !excludedKeys.includes(key))

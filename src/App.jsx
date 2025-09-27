@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
 import Sidebar from "./components/sidebar/Sidebar";
+import Header from "./components/header/Header";
 
 import Home from "./pages/Home";
 import SectionPage from "./pages/SectionPage";
@@ -36,6 +37,8 @@ function App() {
 
         {/* Main content */}
         <main className={`main-content ${isSidebarOpen ? "sidebar-open" : "sidebar-collapsed"}`}>
+          <Header />
+
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/:sectionKey" element={<SectionPage />} />
