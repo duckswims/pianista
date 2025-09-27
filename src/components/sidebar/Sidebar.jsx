@@ -1,7 +1,9 @@
+// src/components/sidebar/Sidebar.jsx
 import { Link, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { fetchApi } from "../../scripts/api";
 import routes from "../data/components.json";
+import { ApiKeyContext } from "../../contexts/ApiKeyContext";
 
 import "./sidebar.css";
 import logo from "../../assets/logo/VisionSpace_eye_Black.png";
@@ -9,19 +11,27 @@ import sidebarIcon from "../../assets/sidebar.png";
 
 export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode }) {
   const location = useLocation();
+  const { apiKey } = useContext(ApiKeyContext); // <-- use ApiKeyContext
   const [apiStatus, setApiStatus] = useState(null);
   const [openMenus, setOpenMenus] = useState({});
   const [hovered, setHovered] = useState(false);
+
   const excludedKeys = ["planners", "solvers"];
   const devKeys = ["solve", "validate", "convert", "chart"];
 
   useEffect(() => {
     async function checkApi() {
-      const result = await fetchApi();
+      if (!apiKey) {
+        setApiStatus(false);
+        return;
+      }
+      const result = await fetchApi("/", {
+        headers: { "Ocp-Apim-Subscription-Key": apiKey },
+      });
       setApiStatus(!result?.error);
     }
     checkApi();
-  }, []);
+  }, [apiKey]);
 
   const toggleMenu = (key) => {
     setOpenMenus((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -109,17 +119,19 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode }) {
           </nav>
 
           {/* Dev Mode toggle at bottom */}
-          <div className="sidebar__dev-mode d-flex justify-content-between align-items-center px-2 py-2">
-            <span>Development Mode</span>
-            <label className="switch">
-              <input
-                type="checkbox"
-                checked={devMode}
-                onChange={() => setDevMode((prev) => !prev)}
-              />
-              <span></span>
-            </label>
-          </div>
+          {apiKey && (
+            <div className="sidebar__dev-mode d-flex justify-content-between align-items-center px-2 py-2">
+              <span>Development Mode</span>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={devMode}
+                  onChange={() => setDevMode((prev) => !prev)}
+                />
+                <span></span>
+              </label>
+            </div>
+          )}
         </div>
       )}
     </aside>
