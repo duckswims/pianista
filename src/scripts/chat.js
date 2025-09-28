@@ -2,7 +2,7 @@
 import { postGeneratePddl, postConvertPddlToMermaid } from "./pianista-api/convert";
 import { postValidatePddl, postValidatePddlMatch, validateProblemPlan } from "./pianista-api/validate";
 import { postPlan, getPlan } from "./pianista-api/pddl";
-import { generateMermaidDiagram } from "../mermaid";
+import { generateMermaidDiagram } from "./mermaid-api/mermaid";
 
 /**
  * Push a message to the callback if provided

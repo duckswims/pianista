@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
-import { fetchApi } from "../../scripts/api";
+import { fetchApi } from "../../scripts/pianista-api";
 import routes from "../data/components.json";
 import { ApiKeyContext } from "../../contexts/ApiKeyContext";
 
