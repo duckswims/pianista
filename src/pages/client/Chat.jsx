@@ -1,50 +1,35 @@
 // src/components/chat/Chat.jsx
 import React, { useState, useEffect, useRef } from "react";
 import SendMessageForm from "../../components/chat/SendMessageForm";
-import { generateAndValidatePddl } from "../../scripts/api/chat";
 import "./chat.css";
 
-export default function Chat({ messages: initialMessages, onSend }) {
-  const [messages, setMessages] = useState(initialMessages || []);
+export default function Chat({ messages: initialMessages = [], onSend }) {
+  const [messages, setMessages] = useState(initialMessages);
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
   const chatEndRef = useRef(null);
 
   // Scroll to bottom whenever messages change
   useEffect(() => {
-    if (chatEndRef.current) chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   // Update messages if initialMessages change
-  useEffect(() => setMessages(initialMessages), [initialMessages]);
+  useEffect(() => {
+    if (initialMessages) setMessages(initialMessages);
+  }, [initialMessages]);
 
-  // Handle submitting message + selected planner
   const handleSubmit = async (text, plannerId) => {
-    if (!text.trim()) return;
-
-    // Add user message
-    setMessages((prev) => [...prev, { sender: "user", text, plannerId }]);
-    setInputText("");
+    if (!text.trim() || loading) return;
     setLoading(true);
 
-    try {
-      // Pass a callback so messages are pushed as they happen
-      await generateAndValidatePddl(text, plannerId, (msg) => {
-        setMessages((prev) => [...prev, msg]);
-      });
-    } catch (err) {
-      console.error(err);
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: "Error generating/validating PDDL." },
-      ]);
-    } finally {
-      setLoading(false);
+    if (onSend) {
+      await onSend(text, plannerId); // Messages will be pushed via callback
     }
 
-    if (onSend) onSend(text, plannerId);
+    setInputText("");
+    setLoading(false);
   };
-
 
   return (
     <div className="chat-page">

@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+// src/components/client/Client.jsx
+import React, { useState, useEffect, useContext } from "react";
 import logo from "../../assets/logo/VisionSpace_eye_Black.png";
 import arrowBtn from "../../assets/arrow-button/light.png";
-import { fetchApi } from "../../scripts/api";
+import SendMessageForm from "../chat/SendMessageForm";
+import Chat from "../chat/Chat";
 import { ApiKeyContext } from "../../contexts/ApiKeyContext";
-import Chat from "./Chat";
-import SendMessageForm from "../../components/chat/SendMessageForm";
+import { fetchApi } from "../../scripts/api";
 import { generateAndValidatePddl } from "../../scripts/api/chat";
 import "./Client.css";
 
@@ -15,8 +16,10 @@ export default function Client() {
   const [transitioning, setTransitioning] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatActive, setChatActive] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { apiKey, setApiKey } = useContext(ApiKeyContext);
 
+  // Check API key on load
   useEffect(() => {
     async function checkApiKey() {
       const currentKey = window.VISIONSPACE_API_KEY || import.meta.env.VITE_API_KEY;
@@ -28,7 +31,7 @@ export default function Client() {
         const res = await fetchApi("/", {
           headers: { "Ocp-Apim-Subscription-Key": currentKey },
         });
-        setApiKeyValid(!res?.error || res?.status !== 401);
+        setApiKeyValid(!res?.error && res?.status !== 401);
       } catch {
         setApiKeyValid(false);
       }
@@ -38,37 +41,46 @@ export default function Client() {
 
   const handleSubmitApiKey = async (e) => {
     e.preventDefault();
-    const res = await fetchApi("/", {
-      headers: { "Ocp-Apim-Subscription-Key": apiKeyInput },
-    });
+    try {
+      const res = await fetchApi("/", {
+        headers: { "Ocp-Apim-Subscription-Key": apiKeyInput },
+      });
 
-    if (!res?.error || res?.status !== 401) {
-      setTransitioning(true);
-      setTimeout(() => {
-        setApiKey(apiKeyInput);
-        setApiKeyValid(true);
-        setTransitioning(false);
-      }, 500);
-    } else {
-      alert("Invalid API key!");
+      if (!res?.error && res?.status !== 401) {
+        setTransitioning(true);
+        setTimeout(() => {
+          setApiKey(apiKeyInput);
+          setApiKeyValid(true);
+          setTransitioning(false);
+        }, 500);
+      } else {
+        alert("Invalid API key!");
+      }
+    } catch {
+      alert("Error validating API key!");
     }
   };
 
+  // ✅ handleSendMessage uses push-based updates
   const handleSendMessage = async (text, plannerId) => {
-    if (!text.trim()) return;
+    if (!text.trim() || loading) return;
+
     setChatMessages((prev) => [...prev, { sender: "user", text, plannerId }]);
     setChatActive(true);
+    setLoading(true);
 
     try {
-      // Pass plannerId to your API if it supports it
-      const newMessages = await generateAndValidatePddl(text, plannerId);
-      setChatMessages((prev) => [...prev, ...newMessages]);
+      await generateAndValidatePddl(text, plannerId, (msg) => {
+        setChatMessages((prev) => [...prev, msg]);
+      });
     } catch (err) {
       console.error(err);
       setChatMessages((prev) => [
         ...prev,
         { sender: "bot", text: "Error generating/validating PDDL." },
       ]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,7 +102,7 @@ export default function Client() {
                     handleSendMessage(text, plannerId);
                     setIdea("");
                   }}
-                  loading={false}
+                  loading={loading}
                 />
               </>
             ) : (
@@ -106,7 +118,7 @@ export default function Client() {
                   </a>
                   .
                 </p>
-                <form className="client-api-form d-flex align-items-center" onSubmit={handleSubmitApiKey}>
+                <form className="client-api-form" onSubmit={handleSubmitApiKey}>
                   <input
                     type="text"
                     placeholder="Enter your API key"
@@ -124,7 +136,12 @@ export default function Client() {
         </div>
       )}
 
-      {chatActive && <Chat messages={chatMessages} onSend={handleSendMessage} />}
+      {chatActive && (
+        <Chat
+          messages={chatMessages}
+          onSend={handleSendMessage}
+        />
+      )}
     </div>
   );
 }
