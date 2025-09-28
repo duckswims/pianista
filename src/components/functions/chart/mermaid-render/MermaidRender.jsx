@@ -1,7 +1,8 @@
+// src/components/tools/mermaid/MermaidRender.jsx
 import React, { useState, useRef } from "react";
-import mermaid from "mermaid";
 import ErrorDisplay from "../../../response/error/ErrorDisplay";
 import ResultDisplay from "../../../response/result/ResultDisplay";
+import { generateMermaidDiagram } from "../../../../scripts/mermaid";
 
 function MermaidRender() {
   const [mermaidText, setMermaidText] = useState("");
@@ -10,15 +11,7 @@ function MermaidRender() {
   const [loading, setLoading] = useState(false);
   const diagramRef = useRef(null);
 
-  // Initialize Mermaid
-  mermaid.initialize({
-    startOnLoad: false,
-    theme: "default",
-    securityLevel: "loose",
-    flowchart: { useMaxWidth: true },
-  });
-
-  const generateDiagram = async () => {
+  const handleGenerate = async () => {
     if (!mermaidText.trim()) return;
 
     setLoading(true);
@@ -29,22 +22,19 @@ function MermaidRender() {
       // Clear previous diagram
       if (diagramRef.current) diagramRef.current.innerHTML = "";
 
-      // Validate Mermaid syntax
-      mermaid.parse(mermaidText);
+      // Use helper function from scripts
+      const { svg } = await generateMermaidDiagram(mermaidText);
 
-      // Render diagram
-      const { svg } = await mermaid.render("mermaidDiagram", mermaidText);
+      // Inject SVG into DOM
       if (diagramRef.current) diagramRef.current.innerHTML = svg;
 
-      // Send SVG as result
+      // Set result
       setResult({ generated_mermaid: svg });
-
     } catch (err) {
-      console.error("Mermaid rendering error:", err);
       setError({
         status: "Invalid Syntax",
         message: "Mermaid code could not be rendered.",
-        details: err?.str || err?.message || "Unknown error",
+        details: err.message,
       });
     } finally {
       setLoading(false);
@@ -66,9 +56,9 @@ function MermaidRender() {
         />
       </div>
 
-      <button 
-        className="btn btn-primary mb-3" 
-        onClick={generateDiagram}
+      <button
+        className="btn btn-primary mb-3"
+        onClick={handleGenerate}
         disabled={loading}
       >
         {loading ? "Generating..." : "Generate Diagram"}
