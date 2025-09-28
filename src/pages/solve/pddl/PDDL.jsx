@@ -9,7 +9,7 @@ function SolvePddl() {
   const [selectedPlannerId, setSelectedPlannerId] = useState(null);
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <h2 className="mb-4">PDDL Dashboard</h2>
 
       {/* Available Planners above tabs */}

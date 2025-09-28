@@ -10,7 +10,7 @@ export default function Dev() {
   );
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <h2 className="mb-3">Development Mode</h2>
       <CardGrid
         data={filteredData}

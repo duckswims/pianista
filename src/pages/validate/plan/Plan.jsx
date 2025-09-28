@@ -5,7 +5,7 @@ function ValidatePlan() {
   const [activeTab, setActiveTab] = useState("validate-plan");
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <h2>Validation Dashboard</h2>
 
       {/* Tabs */}

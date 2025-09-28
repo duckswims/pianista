@@ -5,7 +5,7 @@ function ConvertNaturalLanguage() {
   const [activeTab, setActiveTab] = useState("post-generate-pddl");
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <h2>Generate Dashboard</h2>
 
       {/* Tabs */}

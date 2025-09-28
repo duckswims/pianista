@@ -5,7 +5,7 @@ function ValidatePddl() {
   const [activeTab, setActiveTab] = useState("post-pddl");
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <h2>Validation Dashboard</h2>
 
       {/* Tabs */}

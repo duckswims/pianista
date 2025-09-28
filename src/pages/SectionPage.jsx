@@ -10,15 +10,15 @@ function SectionPage() {
 
   if (!sectionData || !sectionData.Children) {
     return (
-      <div className="container mt-4">
+      <div className="container">
         <h2>No {sectionKey} options available</h2>
       </div>
     );
   }
 
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">{sectionData.Title}</h1>
+    <div className="container">
+      <h2 className="mb-4">{sectionData.Title}</h2>
       <p className="mb-4">{sectionData.Description}</p>
 
       <CardGrid

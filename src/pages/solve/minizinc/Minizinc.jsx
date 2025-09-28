@@ -8,7 +8,7 @@ function SolveMinizinc() {
   const [selectedSolverId, setSelectedSolverId] = useState(null);
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <h2 className="mb-4">MiniZinc Dashboard</h2>
 
       {/* Available Solvers above tabs */}

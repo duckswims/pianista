@@ -6,7 +6,7 @@ function ConvertMermaid() {
   const [activeTab, setActiveTab] = useState("post-convert-pddl-to-mermaid");
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <h2>Generate Dashboard</h2>
 
       {/* Tabs */}

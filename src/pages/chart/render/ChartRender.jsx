@@ -6,7 +6,7 @@ function ChartRender() {
   const [activeTab, setActiveTab] = useState("mermaid-render");
 
   return (
-    <div className="container mt-4">
+    <div className="container">
       <h2>Interactive Chart Generator</h2>
 
       {/* Tabs */}
