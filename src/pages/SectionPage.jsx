@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import componentsData from "../components/data/components.json";
-import CardGrid from "../components/card-grid/CardGrid.jsx";
+import CardGrid from "../components/layout/card-grid/CardGrid.jsx";
 
 function SectionPage() {
   const { sectionKey } = useParams();

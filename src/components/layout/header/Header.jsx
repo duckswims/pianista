@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
-import { fetchApi } from "../../scripts/pianista-api";
-import { ApiKeyContext } from "../../contexts/ApiKeyContext";
-import "./online-indicator.css"; 
+import { fetchApi } from "../../../scripts/pianista-api";
+import { ApiKeyContext } from "../../../contexts/ApiKeyContext";
+import "./online-indicator.css";
 
 export default function Header() {
   const { apiKey } = useContext(ApiKeyContext);
@@ -20,9 +20,8 @@ export default function Header() {
       <h5 className="fw-bold mb-0 d-flex align-items-center">
         Pianista API
         <span
-          className={`online-indicator ms-2 ${
-            apiStatus === "valid" ? "online" : "offline"
-          }`}
+          className={`online-indicator ms-2 ${apiStatus === "valid" ? "online" : "offline"
+            }`}
         >
           <span className="blink"></span>
         </span>

@@ -1,16 +1,16 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
-import { fetchApi } from "../../scripts/pianista-api";
-import routes from "../data/components.json";
-import { ApiKeyContext } from "../../contexts/ApiKeyContext";
+import { fetchApi } from "../../../scripts/pianista-api";
+import routes from "../../data/components.json";
+import { ApiKeyContext } from "../../../contexts/ApiKeyContext";
 
 import "./sidebar.css";
-import logo from "../../assets/logo/VisionSpace_eye_Black.png";
-import sidebarIcon from "../../assets/sidebar/light.png";
-import darkIcon from "../../assets/darkmode/dark.png";
-import lightIcon from "../../assets/darkmode/light.png";
-import devOnIcon from "../../assets/dev/devON.png";
-import devOffIcon from "../../assets/dev/devOFF.png";
+import logo from "../../../assets/logo/VisionSpace_eye_Black.png";
+import sidebarIcon from "../../../assets/sidebar/light.png";
+import darkIcon from "../../../assets/darkmode/dark.png";
+import lightIcon from "../../../assets/darkmode/light.png";
+import devOnIcon from "../../../assets/dev/devON.png";
+import devOffIcon from "../../../assets/dev/devOFF.png";
 
 export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMode, setDarkMode }) {
   const location = useLocation();
@@ -113,9 +113,8 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
                             <Link
                               key={childKey}
                               to={child.Link}
-                              className={`d-block px-2 py-1 rounded ${
-                                isActive(child.Link) ? "bg-primary text-white" : ""
-                              }`}
+                              className={`d-block px-2 py-1 rounded ${isActive(child.Link) ? "bg-primary text-white" : ""
+                                }`}
                             >
                               {child.Title}
                             </Link>
@@ -126,9 +125,8 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
                   ) : (
                     <Link
                       to={item.Link}
-                      className={`d-block px-2 py-1 rounded ${
-                        isActive(item.Link) ? "bg-primary text-white" : "text-black"
-                      }`}
+                      className={`d-block px-2 py-1 rounded ${isActive(item.Link) ? "bg-primary text-white" : "text-black"
+                        }`}
                     >
                       {item.Title}
                     </Link>

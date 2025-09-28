@@ -2,8 +2,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
-import Sidebar from "./components/sidebar/Sidebar";
-import Header from "./components/header/Header";
+import Sidebar from "./components/layout/sidebar/Sidebar";
+import Header from "./components/layout/header/Header";
 
 import Home from "./pages/Home";
 import SectionPage from "./pages/SectionPage";

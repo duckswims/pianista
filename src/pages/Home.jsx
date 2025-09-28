@@ -1,4 +1,4 @@
-import CardGrid from "../components/card-grid/CardGrid";
+import CardGrid from "../components/layout/card-grid/CardGrid";
 import componentsData from "../components/data/components.json";
 import { useNavigate } from "react-router-dom";
 
