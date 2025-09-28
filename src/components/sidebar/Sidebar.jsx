@@ -10,6 +10,8 @@ import logo from "../../assets/logo/VisionSpace_eye_Black.png";
 import sidebarIcon from "../../assets/sidebar/light.png";
 import darkIcon from "../../assets/darkmode/dark.png";
 import lightIcon from "../../assets/darkmode/light.png";
+import devOnIcon from "../../assets/dev/devON.png";
+import devOffIcon from "../../assets/dev/devOFF.png";
 
 export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMode, setDarkMode }) {
   const location = useLocation();
@@ -133,7 +135,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
             </label>
           </div>
 
-          {/* Dev Mode toggle */}
+          {/* Dev Mode toggle (expanded) */}
           {apiStatus === true && (
             <div className="sidebar__dev-mode d-flex justify-content-between align-items-center px-2 py-2">
               <span>Development Mode</span>
@@ -152,16 +154,32 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
 
       {/* Dark Mode toggle (collapsed) */}
       {!isOpen && (
-        <button
-          className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center mt-auto mb-2"
-          onClick={() => setDarkMode((prev) => !prev)}
-        >
-          <img
-            src={darkMode ? darkIcon : lightIcon}
-            alt="Dark Mode Toggle"
-            className="sidebar-toggle-icon"
-          />
-        </button>
+        <>
+          <button
+            className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center mt-auto mb-2"
+            onClick={() => setDarkMode((prev) => !prev)}
+          >
+            <img
+              src={darkMode ? darkIcon : lightIcon}
+              alt="Dark Mode Toggle"
+              className="sidebar-toggle-icon"
+            />
+          </button>
+
+          {/* Collapsed Dev Mode toggle */}
+          {apiStatus === true && (
+            <button
+              className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center mb-2"
+              onClick={() => setDevMode((prev) => !prev)}
+            >
+              <img
+                src={devMode ? devOnIcon : devOffIcon}
+                alt="Dev Mode Toggle"
+                className="sidebar-toggle-icon"
+              />
+            </button>
+          )}
+        </>
       )}
     </aside>
   );
