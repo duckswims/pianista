@@ -197,7 +197,7 @@ export async function runChatFlow(text, plannerId, push) {
 
   if (!(await validateGeneratedPlan(domain, problem, plan, push))) return;
 
-  await convertPddlToMermaidDiagram(domain, "domain", push);
-  await convertPddlToMermaidDiagram(problem, "problem", push);
+  // await convertPddlToMermaidDiagram(domain, "domain", push);
+  // await convertPddlToMermaidDiagram(problem, "problem", push);
   await convertPddlToMermaidDiagram(plan, "plan", push);
 }

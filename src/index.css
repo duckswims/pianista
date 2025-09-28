@@ -8,3 +8,7 @@ html, body, #root {
 .mermaid-error {
   display: none !important;
 }
+
+#dmermaidDiagram {
+  display: none;
+}
