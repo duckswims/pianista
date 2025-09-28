@@ -5,7 +5,7 @@ import arrowBtn from "../../assets/arrow-button/light.png";
 import SendMessageForm from "../../components/chat/SendMessageForm";
 import Chat from "./Chat";
 import { ApiKeyContext } from "../../contexts/ApiKeyContext";
-import { fetchApi } from "../../scripts/pianista-api";
+import { fetchApi } from "../../api";
 import { runChatFlow } from "../../scripts/chat";
 import "./Client.css";
 

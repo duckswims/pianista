@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { fetchApi } from "../../../scripts/pianista-api";
+import { fetchApi } from "../../../api";
 import { ApiKeyContext } from "../../../contexts/ApiKeyContext";
 import "./online-indicator.css";
 

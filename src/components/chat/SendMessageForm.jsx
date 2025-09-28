@@ -1,7 +1,7 @@
 // src/components/chat/SendMessageForm.jsx
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import arrowBtn from "../../assets/arrow-button/light.png";
-import { getPlanners } from "../../scripts/pianista-api/planners";
+import { getPlanners } from "../../api/planners";
 import "./SendMessageForm.css";
 
 export default function SendMessageForm({ value, onChange, onSubmit, loading }) {

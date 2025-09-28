@@ -1,8 +1,8 @@
 // src/scripts/api/chat.js
-import { postGeneratePddl, postConvertPddlToMermaid } from "./pianista-api/convert";
-import { postValidatePddl, postValidatePddlMatch, validateProblemPlan } from "./pianista-api/validate";
-import { postPlan, getPlan } from "./pianista-api/pddl";
-import { generateMermaidDiagram } from "./mermaid-api/mermaid";
+import { postGeneratePddl, postConvertPddlToMermaid } from "../api/convert";
+import { postValidatePddl, postValidatePddlMatch, validateProblemPlan } from "../api/validate";
+import { postPlan, getPlan } from "../api/pddl";
+import { generateMermaidDiagram } from "../utils/mermaid";
 
 /**
  * Push a message to the callback if provided
