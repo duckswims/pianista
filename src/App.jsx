@@ -34,7 +34,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/pianista/">
       <div className={`app-container ${darkMode ? "dark-mode" : ""}`}>
         {/* Sidebar */}
         <Sidebar

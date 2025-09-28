@@ -69,10 +69,6 @@
     background-color: #444;
 }
 
-.dark-mode .card .card-img-container {
-    background-color: #3a3a3a;
-}
-
 .dark-mode .card img,
 .dark-mode .client-api-form img,
 .dark-mode .send-message-form img {
