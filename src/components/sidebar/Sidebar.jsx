@@ -50,7 +50,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
 
   const toggleSidebar = () => setIsOpen(true);
 
-  const goHome = () => navigate("/"); // 🆕 Navigate to home
+  const goHome = () => navigate("/"); // Navigate to home
 
   const isActive = (link) => location.pathname === link;
 
@@ -65,7 +65,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
               alt="Logo"
               className="sidebar-logo"
               style={{ cursor: "pointer" }}
-              onClick={goHome} // 🆕 Click logo to go home
+              onClick={goHome}
             />
             <button onClick={() => setIsOpen(false)} className="sidebar__toggle-btn">
               <img src={sidebarIcon} alt="Toggle Sidebar" className="sidebar-toggle-icon" />
@@ -83,7 +83,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
               alt="Toggle Sidebar"
               className="sidebar-toggle-icon"
               style={{ cursor: "pointer" }}
-              onClick={goHome} // 🆕 Click collapsed icon to go home
+              onClick={goHome}
             />
           </button>
         )}
@@ -137,41 +137,45 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
               ))}
           </nav>
 
-          {/* Dark Mode toggle (expanded) */}
-          <div className="sidebar__dark-mode d-flex justify-content-between align-items-center px-2 py-2 mt-auto">
-            <span>Dark Mode</span>
-            <label className="switch">
-              <input
-                type="checkbox"
-                checked={darkMode}
-                onChange={() => setDarkMode((prev) => !prev)}
-              />
-              <span></span>
-            </label>
-          </div>
-
-          {/* Dev Mode toggle (expanded) */}
-          {apiStatus && (
-            <div className="sidebar__dev-mode d-flex justify-content-between align-items-center px-2 py-2">
-              <span>Development Mode</span>
+          {/* Toggles container (expanded) */}
+          <div className="sidebar__toggles d-flex flex-column mt-auto">
+            {/* Dark Mode toggle */}
+            <div className="sidebar__dark-mode d-flex justify-content-between align-items-center p-1">
+              <span>Dark Mode</span>
               <label className="switch">
                 <input
                   type="checkbox"
-                  checked={devMode}
-                  onChange={() => setDevMode((prev) => !prev)}
+                  checked={darkMode}
+                  onChange={() => setDarkMode((prev) => !prev)}
                 />
                 <span></span>
               </label>
             </div>
-          )}
+
+            {/* Dev Mode toggle */}
+            {apiStatus && (
+              <div className="sidebar__dev-mode d-flex justify-content-between align-items-center p-1">
+                <span>Development Mode</span>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={devMode}
+                    onChange={() => setDevMode((prev) => !prev)}
+                  />
+                  <span></span>
+                </label>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Dark Mode toggle (collapsed) */}
+      {/* Collapsed toggles */}
       {!isOpen && (
-        <>
+        <div className="sidebar__toggles-collapsed d-flex flex-column mt-auto mb-2">
+          {/* Dark Mode */}
           <button
-            className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center mt-auto mb-2"
+            className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center mb-2"
             onClick={() => setDarkMode((prev) => !prev)}
           >
             <img
@@ -181,7 +185,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
             />
           </button>
 
-          {/* Collapsed Dev Mode toggle */}
+          {/* Dev Mode */}
           {apiStatus && (
             <button
               className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center mb-2"
@@ -194,7 +198,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
               />
             </button>
           )}
-        </>
+        </div>
       )}
     </aside>
   );

@@ -49,22 +49,30 @@ img {
   overflow-y: auto;
 }
 
-/* Dev Mode toggle */
-.sidebar__dev-mode {
-  margin-top: auto; /* push to bottom */
+/* Toggles container (expanded) */
+.sidebar__toggles {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 8px;
-  font-size: inherit; /* default font size */
+  flex-direction: column;
+  gap: 8px;
+  transition: gap 0.3s ease, margin 0.3s ease, padding 0.3s ease; /* only layout animates */
 }
+
+/* Collapsed toggles container */
+.sidebar__toggles-collapsed {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: gap 0.3s ease, margin 0.3s ease, padding 0.3s ease; /* only layout animates */
+}
+
+
 
 /* Smaller rounded switch */
 .switch {
   display: inline-block;
   position: relative;
-  width: 40px;   /* smaller width */
-  height: 20px;  /* smaller height */
+  width: 40px;
+  height: 20px;
 }
 
 .switch input {
@@ -79,20 +87,20 @@ img {
   bottom: 0;
   background: #ccc;
   border-radius: 20px;
-  transition: 0.3s;
   cursor: pointer;
+  transition: 0.3s; /* knob still moves smoothly */
 }
 
 .switch span::after {
   content: "";
   position: absolute;
-  width: 16px;  /* smaller knob */
+  width: 16px;
   height: 16px;
   left: 2px;
   top: 2px;
   background: white;
   border-radius: 50%;
-  transition: 0.3s;
+  transition: 0.3s; /* knob still moves smoothly */
 }
 
 .switch input:checked + span {
@@ -100,9 +108,8 @@ img {
 }
 
 .switch input:checked + span::after {
-  transform: translateX(20px); /* match smaller width */
+  transform: translateX(20px);
 }
-
 
 /* Collapsed button centering */
 .collapsed-btn {
