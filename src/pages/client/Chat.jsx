@@ -7,6 +7,7 @@ export default function Chat({ messages: initialMessages = [], onSend }) {
   const [messages, setMessages] = useState(initialMessages);
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [modalImage, setModalImage] = useState(null); // 🆕 for popup image
   const chatEndRef = useRef(null);
 
   // Scroll to bottom whenever messages change
@@ -31,6 +32,15 @@ export default function Chat({ messages: initialMessages = [], onSend }) {
     setLoading(false);
   };
 
+  // 🆕 Intercept image clicks inside message HTML
+  const handleBubbleClick = (e) => {
+    const target = e.target;
+    if (target.tagName === "IMG" && target.src.startsWith("data:image/svg+xml")) {
+      e.preventDefault();
+      setModalImage(target.src);
+    }
+  };
+
   return (
     <div className="chat-page">
       <div className="chat-messages">
@@ -38,8 +48,12 @@ export default function Chat({ messages: initialMessages = [], onSend }) {
           <div
             key={idx}
             className={`chat-bubble ${msg.sender === "user" ? "user-bubble" : "bot-bubble"}`}
+            onClick={handleBubbleClick} // 🆕 catch clicks here
           >
-            {msg.text}
+            <div
+              className="message-content"
+              dangerouslySetInnerHTML={{ __html: msg.text }}
+            ></div>
             {msg.plannerId && <div className="planner-tag">Planner: {msg.plannerId}</div>}
           </div>
         ))}
@@ -52,6 +66,16 @@ export default function Chat({ messages: initialMessages = [], onSend }) {
         onSubmit={handleSubmit}
         loading={loading}
       />
+
+      {/* 🆕 Popup modal for image */}
+      {modalImage && (
+        <div className="image-modal" onClick={() => setModalImage(null)}>
+          <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
+            <img src={modalImage} alt="Mermaid diagram" />
+            <button className="close-modal" onClick={() => setModalImage(null)}>✕</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import logo from "../../assets/logo/VisionSpace_eye_Black.png";
 import arrowBtn from "../../assets/arrow-button/light.png";
-import SendMessageForm from "../chat/SendMessageForm";
-import Chat from "../chat/Chat";
+import SendMessageForm from "../../components/chat/SendMessageForm";
+import Chat from "./Chat";
 import { ApiKeyContext } from "../../contexts/ApiKeyContext";
 import { fetchApi } from "../../scripts/api";
 import { generateAndValidatePddl } from "../../scripts/api/chat";

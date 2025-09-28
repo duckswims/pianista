@@ -2,6 +2,7 @@
 import { postGeneratePddl, postConvertPddlToMermaid } from "./convert";
 import { postValidatePddl, postValidatePddlMatch, validateProblemPlan } from "./validate";
 import { postPlan, getPlan } from "./pddl";
+import { generateMermaidDiagram } from "../mermaid";
 
 // Push a message immediately if callback is provided
 function pushMessage(push, text, sender = "bot") {
@@ -45,7 +46,6 @@ async function generatePddl(text, push) {
 
 /**
  * Helper: Validate PDDL (domain or problem)
- * Stops execution if validation fails
  */
 async function validatePddl(pddl, type, push) {
   try {
@@ -151,17 +151,34 @@ async function postAndPollPlan(domain, problem, planner_id, push) {
 }
 
 /**
- * Convert any PDDL text to Mermaid
+ * Convert any PDDL text to Mermaid and push diagram as image
  */
 async function convertPddlToMermaid(pddl, type, push) {
   try {
     const res = await postConvertPddlToMermaid({ pddl }, type);
-    if (res?.result_status === "success") {
-      pushMessage(push, `✅ ${type} converted to Mermaid successfully.`);
-      pushMessage(push, `📊 Mermaid ${type}:\n${res.conversion_result}`);
-      return true;
-    } else {
+    if (res?.result_status !== "success") {
       pushMessage(push, `❌ Failed to convert ${type} to Mermaid: ${res?.message || "Unknown error"}`);
+      return false;
+    }
+
+    const mermaidCode = res.conversion_result;
+
+    // Render Mermaid code to SVG
+    try {
+      const { svg } = await generateMermaidDiagram(mermaidCode);
+
+      // Convert SVG to data URL
+      const svgDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+
+      // Push bold type + <img> tag
+      pushMessage(
+        push,
+        `✅ ${type.charAt(0).toUpperCase() + type.slice(1)} converted to Mermaid<br>**${type.charAt(0).toUpperCase() + type.slice(1)}**<br><img src="${svgDataUrl}" alt="${type} diagram"/>`
+      );
+
+      return true;
+    } catch (err) {
+      pushMessage(push, `⚠️ Mermaid rendering failed for ${type}: ${err.message || err}`);
       return false;
     }
   } catch (err) {
@@ -195,7 +212,7 @@ export async function generateAndValidatePddl(text, planner_id, push) {
   // 6️⃣ Validate plan
   if (!(await validatePlan(generated_domain, generated_problem, plan, push))) return;
 
-  // 7️⃣ Convert domain, problem, plan → Mermaid
+  // 7️⃣ Convert domain, problem, plan → Mermaid (with popup-ready images)
   await convertPddlToMermaid(generated_domain, "domain", push);
   await convertPddlToMermaid(generated_problem, "problem", push);
   await convertPddlToMermaid(plan, "plan", push);
