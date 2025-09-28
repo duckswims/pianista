@@ -1,0 +1,41 @@
+/* Shared SendMessageForm styles */
+.send-message-form {
+  display: flex;
+  align-items: flex-end;
+  border: 1px solid #dcdcdc;
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 8px;
+  gap: 8px;
+  width: 100%;
+  background-color: #fff;
+  flex-shrink: 0; /* prevent shrinking */
+}
+
+.send-message-textarea {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 1rem;
+  line-height: 20px;
+  padding: 10px 16px;
+  min-height: 1.5em;
+  max-height: 160px; /* 5–8 lines approx */
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.send-message-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.send-message-btn-image {
+  width: 30px;
+  height: 30px;
+}

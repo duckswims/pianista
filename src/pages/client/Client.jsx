@@ -4,6 +4,7 @@ import arrowBtn from "../../assets/arrow-button/light.png";
 import { fetchApi } from "../../scripts/api";
 import { ApiKeyContext } from "../../contexts/ApiKeyContext";
 import Chat from "./Chat";
+import SendMessageForm from "../../components/chat/SendMessageForm";
 import { generateAndValidatePddl } from "../../scripts/api/chat";
 import "./Client.css";
 
@@ -14,20 +15,7 @@ export default function Client() {
   const [transitioning, setTransitioning] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatActive, setChatActive] = useState(false);
-  const textareaRef = useRef(null);
   const { apiKey, setApiKey } = useContext(ApiKeyContext);
-
-  const LINE_HEIGHT = 20;
-  const MAX_LINES = 8;
-
-  useEffect(() => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = "auto";
-      const maxHeight = MAX_LINES * LINE_HEIGHT;
-      textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + "px";
-    }
-  }, [idea]);
 
   useEffect(() => {
     async function checkApiKey() {
@@ -68,14 +56,16 @@ export default function Client() {
 
   const handleSendMessage = async (text) => {
     if (!text.trim()) return;
-
-    // Add user message
     setChatMessages((prev) => [...prev, { sender: "user", text }]);
     setChatActive(true);
 
-    // Generate and validate PDDL, append all messages
-    const newMessages = await generateAndValidatePddl(text);
-    setChatMessages((prev) => [...prev, ...newMessages]);
+    try {
+      const newMessages = await generateAndValidatePddl(text);
+      setChatMessages((prev) => [...prev, ...newMessages]);
+    } catch (err) {
+      console.error(err);
+      setChatMessages((prev) => [...prev, { sender: "bot", text: "Error generating/validating PDDL." }]);
+    }
   };
 
   return (
@@ -85,34 +75,20 @@ export default function Client() {
           <img src={logo} alt="Logo" className="client-logo" />
           <h1 className="client-title">Pianista</h1>
 
-          <div
-            className={`form-transition-container ${
-              transitioning ? "fade-out" : "fade-in"
-            }`}
-          >
+          <div className={`form-transition-container ${transitioning ? "fade-out" : "fade-in"}`}>
             {apiKeyValid === true ? (
               <>
                 <p className="client-welcome">Welcome! Share your ideas with us.</p>
-                <form
-                  className="client-input-form d-flex align-items-end"
+                <SendMessageForm
+                  value={idea}
+                  onChange={setIdea}
                   onSubmit={(e) => {
                     e.preventDefault();
                     handleSendMessage(idea);
                     setIdea("");
                   }}
-                >
-                  <textarea
-                    ref={textareaRef}
-                    placeholder="Tell us your idea"
-                    value={idea}
-                    onChange={(e) => setIdea(e.target.value)}
-                    className="client-textarea flex-grow-1"
-                    rows={1}
-                  />
-                  <button type="submit" className="arrow-button ms-2">
-                    <img src={arrowBtn} alt="Submit" className="arrow-btn-image" />
-                  </button>
-                </form>
+                  loading={false}
+                />
               </>
             ) : (
               <>
@@ -127,10 +103,7 @@ export default function Client() {
                   </a>
                   .
                 </p>
-                <form
-                  className="client-api-form d-flex align-items-center"
-                  onSubmit={handleSubmitApiKey}
-                >
+                <form className="client-api-form d-flex align-items-center" onSubmit={handleSubmitApiKey}>
                   <input
                     type="text"
                     placeholder="Enter your API key"
