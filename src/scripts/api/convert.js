@@ -3,7 +3,7 @@ import { fetchApi } from ".";
 /**
  * Post Generate Pddl
  * Generate PDDL domain or problem from a prompt, with GPT.
- * @param {string} pddl_type - "domain" | "problem"
+ * @param {string} pddl_type - "domain" | "problem" | "plan"
  * @param {Object} requestBody - Already processed body { text, domain }
  * @param {boolean} generate_both - whether to generate both domain and problem
  * @param {number} attempts - number of attempts

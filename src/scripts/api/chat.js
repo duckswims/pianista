@@ -1,5 +1,5 @@
 // src/scripts/api/chat.js
-import { postGeneratePddl } from "./convert";
+import { postGeneratePddl, postConvertPddlToMermaid } from "./convert";
 import { postValidatePddl, postValidatePddlMatch, validateProblemPlan } from "./validate";
 import { postPlan, getPlan } from "./pddl";
 
@@ -151,7 +151,28 @@ async function postAndPollPlan(domain, problem, planner_id, push) {
 }
 
 /**
- * Main function: generate, validate, plan
+ * Convert any PDDL text to Mermaid
+ */
+async function convertPddlToMermaid(pddl, type, push) {
+  try {
+    const res = await postConvertPddlToMermaid({ pddl }, type);
+    if (res?.result_status === "success") {
+      pushMessage(push, `✅ ${type} converted to Mermaid successfully.`);
+      pushMessage(push, `📊 Mermaid ${type}:\n${res.conversion_result}`);
+      return true;
+    } else {
+      pushMessage(push, `❌ Failed to convert ${type} to Mermaid: ${res?.message || "Unknown error"}`);
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+    pushMessage(push, `❌ Error converting ${type} to Mermaid: ${err.message || err}`);
+    return false;
+  }
+}
+
+/**
+ * Main function: generate, validate, plan, convert
  */
 export async function generateAndValidatePddl(text, planner_id, push) {
   // 1️⃣ Generate domain & problem
@@ -172,5 +193,10 @@ export async function generateAndValidatePddl(text, planner_id, push) {
   if (!plan) return;
 
   // 6️⃣ Validate plan
-  await validatePlan(generated_domain, generated_problem, plan, push);
+  if (!(await validatePlan(generated_domain, generated_problem, plan, push))) return;
+
+  // 7️⃣ Convert domain, problem, plan → Mermaid
+  await convertPddlToMermaid(generated_domain, "domain", push);
+  await convertPddlToMermaid(generated_problem, "problem", push);
+  await convertPddlToMermaid(plan, "plan", push);
 }
