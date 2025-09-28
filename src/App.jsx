@@ -30,7 +30,7 @@ import "./App.css";
 import "./darkmode.css";
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [devMode, setDevMode] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
