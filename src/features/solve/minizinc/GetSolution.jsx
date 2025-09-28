@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getSolution } from "../../../scripts/api/minizinc";
+import { getSolution } from "../../../scripts/pianista-api/minizinc";
 import ErrorDisplay from "../../../components/response/error/ErrorDisplay";
 import ResultDisplay from "../../../components/response/result/ResultDisplay";
 import "../../styles.css"

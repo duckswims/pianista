@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getPlan } from "../../../scripts/api/pddl";
+import { getPlan } from "../../../scripts/pianista-api/pddl";
 import ErrorDisplay from "../../../components/response/error/ErrorDisplay";
 import ResultDisplay from "../../../components/response/result/ResultDisplay";
 import "../../styles.css"

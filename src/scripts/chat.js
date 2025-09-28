@@ -1,7 +1,7 @@
 // src/scripts/api/chat.js
-import { postGeneratePddl, postConvertPddlToMermaid } from "./convert";
-import { postValidatePddl, postValidatePddlMatch, validateProblemPlan } from "./validate";
-import { postPlan, getPlan } from "./pddl";
+import { postGeneratePddl, postConvertPddlToMermaid } from "./pianista-api/convert";
+import { postValidatePddl, postValidatePddlMatch, validateProblemPlan } from "./pianista-api/validate";
+import { postPlan, getPlan } from "./pianista-api/pddl";
 import { generateMermaidDiagram } from "../mermaid";
 
 /**

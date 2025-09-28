@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getSolvers } from "../../scripts/api/solvers";
+import { getSolvers } from "../../scripts/pianista-api/solvers";
 import ErrorDisplay from "../../components/response/error/ErrorDisplay";
 
 function GetSolvers({ onSelectSolver }) {

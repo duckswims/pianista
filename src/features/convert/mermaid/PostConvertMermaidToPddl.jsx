@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { postConvertMermaidToPddl } from "../../../scripts/api/convert";
+import { postConvertMermaidToPddl } from "../../../scripts/pianista-api/convert";
 import { removeWhitespaces } from "../../../scripts/helper/removeWhitespaces";
 import ErrorDisplay from "../../../components/response/error/ErrorDisplay";
 import ResultDisplay from "../../../components/response/result/ResultDisplay";

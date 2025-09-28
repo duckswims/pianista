@@ -2,7 +2,7 @@
 import React, { useState, useRef } from "react";
 import ErrorDisplay from "../../components/response/error/ErrorDisplay";
 import ResultDisplay from "../../components/response/result/ResultDisplay";
-import { generateMermaidDiagram } from "../../scripts/mermaid";
+import { generateMermaidDiagram } from "../../scripts/mermaid-api/mermaid";
 
 function MermaidRender() {
   const [mermaidText, setMermaidText] = useState("");
