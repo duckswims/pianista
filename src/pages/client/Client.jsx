@@ -1,11 +1,10 @@
-// src/pages/client/Client.jsx
 import React, { useState, useRef, useEffect, useContext } from "react";
 import logo from "../../assets/logo/VisionSpace_eye_Black.png";
 import arrowBtn from "../../assets/arrow-button/light.png";
 import { fetchApi } from "../../scripts/api";
-import { postGeneratePddl } from "../../scripts/api/convert";
 import { ApiKeyContext } from "../../contexts/ApiKeyContext";
 import Chat from "./Chat";
+import { generateAndValidatePddl } from "../../scripts/api/chat";
 import "./Client.css";
 
 export default function Client() {
@@ -74,20 +73,9 @@ export default function Client() {
     setChatMessages((prev) => [...prev, { sender: "user", text }]);
     setChatActive(true);
 
-    try {
-      const res = await postGeneratePddl("problem", { text, domain: "" }, true);
-
-      // Return entire response as string
-      const responseText = JSON.stringify(res, null, 2);
-
-      setChatMessages((prev) => [...prev, { sender: "bot", text: responseText }]);
-    } catch (err) {
-      console.error(err);
-      setChatMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: "Error generating response." },
-      ]);
-    }
+    // Generate and validate PDDL, append all messages
+    const newMessages = await generateAndValidatePddl(text);
+    setChatMessages((prev) => [...prev, ...newMessages]);
   };
 
   return (

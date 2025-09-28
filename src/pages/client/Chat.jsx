@@ -12,22 +12,18 @@ export default function Chat({ messages: initialMessages, onSend }) {
   const LINE_HEIGHT = 20;
   const MAX_LINES = 5;
 
-  // Auto-scroll on new messages
   useEffect(() => {
     if (chatEndRef.current) chatEndRef.current.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Update messages when parent updates
-  useEffect(() => {
-    setMessages(initialMessages);
-  }, [initialMessages]);
+  useEffect(() => setMessages(initialMessages), [initialMessages]);
 
-  // Auto-resize textarea
   useEffect(() => {
     const textarea = textareaRef.current;
     if (textarea) {
-      textarea.style.height = "auto";
+      textarea.style.height = "auto"; // reset height
       const maxHeight = MAX_LINES * LINE_HEIGHT;
+      // only adjust height within max lines, keep CSS font/spacing intact
       textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + "px";
     }
   }, [inputText]);
@@ -40,13 +36,10 @@ export default function Chat({ messages: initialMessages, onSend }) {
     setMessages((prev) => [...prev, { sender: "user", text: inputText }]);
 
     try {
-      await onSend(inputText); // parent adds bot message
+      await onSend(inputText); // parent handles API and bot messages
     } catch (err) {
       console.error(err);
-      setMessages((prev) => [
-        ...prev,
-        { sender: "bot", text: "Error sending message." },
-      ]);
+      setMessages((prev) => [...prev, { sender: "bot", text: "Error sending message." }]);
     } finally {
       setInputText("");
       setLoading(false);
@@ -55,33 +48,32 @@ export default function Chat({ messages: initialMessages, onSend }) {
 
   return (
     <div className="chat-page">
-      <div className="chat-messages">
+    <div className="chat-messages">
         {messages.map((msg, idx) => (
-          <div
+        <div
             key={idx}
-            className={`chat-bubble ${
-              msg.sender === "user" ? "user-bubble" : "bot-bubble"
-            }`}
-          >
+            className={`chat-bubble ${msg.sender === "user" ? "user-bubble" : "bot-bubble"}`}
+        >
             {msg.text}
-          </div>
+        </div>
         ))}
         <div ref={chatEndRef} />
-      </div>
+    </div>
 
-      <form className="chat-input-form" onSubmit={handleSubmit}>
+    <form className="chat-input-form" onSubmit={handleSubmit}>
         <textarea
-          ref={textareaRef}
-          className="chat-textarea"
-          placeholder="Type your idea..."
-          value={inputText}
-          onChange={(e) => setInputText(e.target.value)}
-          rows={1}
+        ref={textareaRef}
+        className="chat-textarea"
+        placeholder="Type your idea..."
+        value={inputText}
+        onChange={(e) => setInputText(e.target.value)}
+        rows={1}
         />
         <button type="submit" className="arrow-button" disabled={loading}>
-          <img src={arrowBtn} alt="Send" className="arrow-btn-image" />
+        <img src={arrowBtn} alt="Send" className="arrow-btn-image" />
         </button>
-      </form>
+    </form>
     </div>
+
   );
 }
