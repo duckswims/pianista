@@ -1,6 +1,6 @@
 // src/scripts/api/chat.js
 import { postGeneratePddl } from "./convert";
-import { postValidatePddl, postValidatePddlMatch } from "./validate";
+import { postValidatePddl, postValidatePddlMatch, validateProblemPlan } from "./validate";
 import { postPlan, getPlan } from "./pddl";
 
 // Push a message immediately if callback is provided
@@ -8,6 +8,15 @@ function pushMessage(push, text, sender = "bot") {
   if (typeof push === "function") {
     push({ sender, text });
   }
+}
+
+/**
+ * Filter plan to remove the planner name
+ */
+function filterPlan(plan) {
+  if (!plan) return "";
+  const idx = plan.indexOf("SequentialPlan:");
+  return idx >= 0 ? plan.slice(idx) : plan;
 }
 
 /**
@@ -34,41 +43,77 @@ async function generatePddl(text, push) {
   }
 }
 
-// Similarly, everywhere else:
+/**
+ * Helper: Validate PDDL (domain or problem)
+ * Stops execution if validation fails
+ */
 async function validatePddl(pddl, type, push) {
   try {
     const validationRes = await postValidatePddl({ pddl }, type);
     if (validationRes?.result === "success") {
       pushMessage(push, `✅ ${type.charAt(0).toUpperCase() + type.slice(1)} validated successfully: ${validationRes.message || ""}`);
+      return true;
     } else {
-      pushMessage(push, `⚠️ ${type.charAt(0).toUpperCase() + type.slice(1)} validation failed: ${validationRes?.message || "Unknown error"}`);
+      pushMessage(push, `❌ ${type.charAt(0).toUpperCase() + type.slice(1)} validation failed: ${validationRes?.message || "Unknown error"}`);
+      return false;
     }
   } catch (err) {
     console.error(err);
     pushMessage(push, `❌ Error validating ${type}: ${err.message || err}`);
+    return false;
   }
 }
 
+/**
+ * Helper: Validate domain/problem match
+ */
 async function validatePddlMatch(domain, problem, push) {
   try {
     const matchRes = await postValidatePddlMatch({ domain, problem });
     if (matchRes?.result === "success") {
       pushMessage(push, `✅ Domain & Problem match validated: ${matchRes.message || ""}`);
+      return true;
     } else {
-      pushMessage(push, `⚠️ Domain & Problem match validation failed: ${matchRes?.message || "Unknown error"}`);
+      pushMessage(push, `❌ Domain & Problem match validation failed: ${matchRes?.message || "Unknown error"}`);
+      return false;
     }
   } catch (err) {
     console.error(err);
     pushMessage(push, `❌ Error validating domain/problem match: ${err.message || err}`);
+    return false;
   }
 }
 
+/**
+ * Helper: Validate plan against domain/problem
+ */
+async function validatePlan(domain, problem, plan, push) {
+  try {
+    const filteredPlan = filterPlan(plan);
+    const validationRes = await validateProblemPlan({ domain, problem, plan: filteredPlan });
+    if (validationRes?.result === "success") {
+      pushMessage(push, `✅ Plan validated: ${validationRes.message || ""}`);
+      return true;
+    } else {
+      pushMessage(push, `❌ Plan validation failed: ${validationRes?.message || "Unknown error"}`);
+      return false;
+    }
+  } catch (err) {
+    console.error(err);
+    pushMessage(push, `❌ Error validating plan: ${err.message || err}`);
+    return false;
+  }
+}
+
+/**
+ * Helper: Post a planning request and poll for completion
+ */
 async function postAndPollPlan(domain, problem, planner_id, push) {
   try {
     const planRes = await postPlan({ domain, problem }, planner_id);
     if (!planRes?.id) {
       pushMessage(push, `❌ Failed to create plan: ${JSON.stringify(planRes)}`);
-      return;
+      return null;
     }
 
     const jobId = planRes.id;
@@ -82,8 +127,9 @@ async function postAndPollPlan(domain, problem, planner_id, push) {
       const planStatus = await getPlan(jobId);
 
       if (planStatus.plan) {
-        pushMessage(push, `✅ Plan ready:\n${planStatus.plan}`);
-        return;
+        const filtered = filterPlan(planStatus.plan);
+        pushMessage(push, `✅ Plan ready:\n${filtered}`);
+        return filtered;
       }
 
       if (planStatus.detail && planStatus.detail.includes("not yet ready")) {
@@ -92,20 +138,20 @@ async function postAndPollPlan(domain, problem, planner_id, push) {
       }
 
       pushMessage(push, `⚠️ Unexpected plan response: ${JSON.stringify(planStatus)}`);
-      return;
+      return null;
     }
 
-    pushMessage(push, `❌ Plan timeout: job ${jobId} did not finish within ${TIMEOUT/1000}s.`);
+    pushMessage(push, `❌ Plan timeout: job ${jobId} did not finish within ${TIMEOUT / 1000}s.`);
+    return null;
   } catch (err) {
     console.error(err);
     pushMessage(push, `❌ Error during plan execution: ${err.message || err}`);
+    return null;
   }
 }
 
-
 /**
  * Main function: generate, validate, plan
- * `push` is a callback: push({ sender, text }) whenever a message is ready
  */
 export async function generateAndValidatePddl(text, planner_id, push) {
   // 1️⃣ Generate domain & problem
@@ -113,14 +159,18 @@ export async function generateAndValidatePddl(text, planner_id, push) {
   if (!generated_domain || !generated_problem) return;
 
   // 2️⃣ Validate domain
-  await validatePddl(generated_domain, "domain", push);
+  if (!(await validatePddl(generated_domain, "domain", push))) return;
 
   // 3️⃣ Validate problem
-  await validatePddl(generated_problem, "problem", push);
+  if (!(await validatePddl(generated_problem, "problem", push))) return;
 
   // 4️⃣ Validate domain/problem match
-  await validatePddlMatch(generated_domain, generated_problem, push);
+  if (!(await validatePddlMatch(generated_domain, generated_problem, push))) return;
 
   // 5️⃣ Post plan & poll
-  await postAndPollPlan(generated_domain, generated_problem, planner_id, push);
+  const plan = await postAndPollPlan(generated_domain, generated_problem, planner_id, push);
+  if (!plan) return;
+
+  // 6️⃣ Validate plan
+  await validatePlan(generated_domain, generated_problem, plan, push);
 }
