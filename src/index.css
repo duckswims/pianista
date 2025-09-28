@@ -1,4 +1,7 @@
-  body {
-    font-family: 'Open Sans', sans-serif;
-    height: 100%;
-  }
+/* Ensure root takes full browser height */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+

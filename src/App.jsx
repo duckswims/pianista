@@ -48,32 +48,36 @@ function App() {
         />
 
         {/* Main content */}
-        <main className={`main-content ${isSidebarOpen ? "sidebar-open" : "sidebar-collapsed"}`}>
+        <main className={`${isSidebarOpen ? "sidebar-open" : "sidebar-collapsed"}`}>
+          {/* Header stays fixed */}
           <Header />
 
-          <Routes>
-            {/* Home / Client */}
-            <Route path="/" element={devMode ? <Dev /> : <Client />} />
+          {/* Scrollable area */}
+          <div className="main-content">
+            <Routes>
+              {/* Home / Client */}
+              <Route path="/" element={devMode ? <Dev /> : <Client />} />
 
-            {/* Main Section pages */}
-            <Route path="/:sectionKey" element={<SectionPage />} />
+              {/* Main Section pages */}
+              <Route path="/:sectionKey" element={<SectionPage />} />
 
-            {/* Solve pages */}
-            <Route path="/solve/minizinc" element={<SolveMinizinc />} />
-            <Route path="/solve/pddl" element={<SolvePddl />} />
+              {/* Solve pages */}
+              <Route path="/solve/minizinc" element={<SolveMinizinc />} />
+              <Route path="/solve/pddl" element={<SolvePddl />} />
 
-            {/* Validate pages */}
-            <Route path="/validate/plan" element={<ValidatePlan />} />
-            <Route path="/validate/pddl" element={<ValidatePddl />} />
-            <Route path="/validate/match" element={<ValidateMatch />} />
+              {/* Validate pages */}
+              <Route path="/validate/plan" element={<ValidatePlan />} />
+              <Route path="/validate/pddl" element={<ValidatePddl />} />
+              <Route path="/validate/match" element={<ValidateMatch />} />
 
-            {/* Convert pages */}
-            <Route path="/convert/mermaid" element={<ConvertMermaid />} />
-            <Route path="/convert/natural_language" element={<ConvertNaturalLanguage />} />
+              {/* Convert pages */}
+              <Route path="/convert/mermaid" element={<ConvertMermaid />} />
+              <Route path="/convert/natural_language" element={<ConvertNaturalLanguage />} />
 
-            {/* Chart pages */}
-            <Route path="/chart/render" element={<ChartRender />} />
-          </Routes>
+              {/* Chart pages */}
+              <Route path="/chart/render" element={<ChartRender />} />
+            </Routes>
+          </div>
         </main>
       </div>
     </BrowserRouter>

@@ -16,7 +16,7 @@ export default function Header() {
   }, [apiKey]);
 
   return (
-    <header className="d-flex align-items-center justify-content-between p-0">
+    <header className="d-flex align-items-center justify-content-between p-3">
       <h5 className="fw-bold mb-0 d-flex align-items-center">
         Pianista API
         <span
