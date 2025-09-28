@@ -1,0 +1,1231 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Pianista",
+        "description": "\nThe Pianista app offers a developer friendly interface to planning engines.\n Its capabilities include: generating plans for a given domain and problem;\n validating domains, problems, and plans expressed in PDDL; and using Large\n Language Model capabilities to convert between PDDL and other formats\n (such as Mermaid-style code).\n",
+        "contact": {
+            "name": "VisionSpace Technologies, GmbH",
+            "url": "https://www.visionspace.com/"
+        },
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://planner-apim.azure-api.net"
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "summary": "Root",
+                "description": "Entry point.\n\nReturns:\n    dict[str, str]: response.",
+                "operationId": "root__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Response Root  Get",
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/planners": {
+            "get": {
+                "summary": "Get Planners",
+                "description": "Get available planners.\n\nReturns:\n    list[Planner]: list with Planner objects.",
+                "operationId": "get_planners_planners_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Response Get Planners Planners Get",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Planner"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "id": "string",
+                                        "name": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/planners/{planner_id}": {
+            "get": {
+                "summary": "Get Planner",
+                "description": "Get a Planner from an id.\n\nArgs:\n    planner_id (str): id alias of the planner.\n\nRaises:\n    HTTPException: if planner id is unrecognized.\n\nReturns:\n    Planner: object with planner id and full name.",
+                "operationId": "get_planner_planners__planner_id__get",
+                "parameters": [
+                    {
+                        "name": "planner_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "title": "Planner Id",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Planner"
+                                },
+                                "example": {
+                                    "id": "string",
+                                    "name": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/convert/mermaid": {
+            "post": {
+                "summary": "Post Convert Mermaid To Pddl",
+                "description": "Post Mermaid-style code to convert to PDDL.\n\nArgs:\n    mermaid_code (GenerationPrompt): Mermaid-style code to be converted.\n    attempts (int): Number of conversion attempts. Defaults to 1.\n\nReturns:\n    ConversionResponse: conversion response.",
+                "operationId": "post_convert_mermaid_to_pddl_convert_mermaid_post",
+                "parameters": [
+                    {
+                        "name": "attempts",
+                        "in": "query",
+                        "schema": {
+                            "title": "Attempts",
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "title": "Mermaid Code",
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/GenerationPrompt"
+                                    }
+                                ]
+                            },
+                            "example": {
+                                "text": "string",
+                                "domain": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConversionResponse"
+                                },
+                                "example": {
+                                    "result_status": "success",
+                                    "conversion_result": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/solve/pddl": {
+            "post": {
+                "summary": "Post Plan",
+                "description": "Post a planning request.\n\nIf no planner id is supplied, the planner automatically selects,\namong the available planners, one that is expressive enough for\nthe problem at hand.\n\nArgs:\n    request (PlanningRequest): domain and problem.\n    planner_id (str | None, optional): id alias of planner.\n      Defaults to None.\n    convert_real_types (bool): Whether or not to convert real fluents and durations\n                               to int.\n      Defaults to True\n\nRaises:\n    HTTPException: if planner id is unrecognized.\n\nReturns:\n    JobId: response job object.",
+                "operationId": "post_plan_solve_pddl_post",
+                "parameters": [
+                    {
+                        "name": "planner_id",
+                        "in": "query",
+                        "schema": {
+                            "title": "Planner Id",
+                            "type": "string",
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "convert_real_types",
+                        "in": "query",
+                        "schema": {
+                            "title": "Convert Real Types",
+                            "type": "boolean",
+                            "default": true
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PlanningRequest"
+                            },
+                            "example": {
+                                "domain": "string",
+                                "problem": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobId"
+                                },
+                                "example": {
+                                    "id": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get Plan",
+                "description": "Get a previously requested plan.\n\nArgs:\n    id (str): ID of plan being requested.\n\nRaises:\n    HTTPException: if plan does not exist, is not ready, or has failed.\n\nReturns:\n    Plan: generated plan.",
+                "operationId": "get_plan_solve_pddl_get",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "title": "Id",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Plan"
+                                },
+                                "example": {
+                                    "plan": "string"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Planning process is still ongoing. Please check back later to retrieve the plan once it is complete."
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/solve/minizinc": {
+            "post": {
+                "summary": "Post Solve",
+                "description": "Post a solver request to Minizinc.\n\nIf no solver_name is supplied, the solver defaults to the\n\"sat\" solver (named \"or-tools\").\n\nArgs:\n    model (str): problem configuration.\n    model_params (dict): initial configuration of problem variables.\n    solver_name (str | None, Optional): name of optimizer to be chosen.\n      Defaults to None\n\nReturns:\n    JobId: response job id object.",
+                "operationId": "post_solve_solve_minizinc_post",
+                "parameters": [
+                    {
+                        "name": "solver_name",
+                        "in": "query",
+                        "schema": {
+                            "title": "Solver Name",
+                            "type": "string",
+                            "default": "or-tools"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MinizincSolutionRequest"
+                            },
+                            "example": {
+                                "model_str": "string",
+                                "model_params": {}
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/JobId"
+                                },
+                                "example": {
+                                    "id": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get Solution",
+                "description": "Get a previously requested Minizinc solution.\n\nArgs:\n    id (str): ID of solution being requested.\n\nRaises:\n    HTTPException: if solution does not exist, is not ready, has failed\n    or has been stopped.\n\nReturns:\n    MinizincSolution: generated solution.",
+                "operationId": "get_solution_solve_minizinc_get",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "title": "Id",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MinizincSolution"
+                                },
+                                "example": {
+                                    "solution": {},
+                                    "status": "string",
+                                    "statistics": {}
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/validate/pddl": {
+            "post": {
+                "summary": "Post Validate Pddl",
+                "description": "Validate PDDL.\n\nDetermines PDDL type (domain or problem) if it is not specified in the request.\n\nArgs:\n    pddl_request (ValidationRequest): request with pddl content to validate.\n    pddl_type (PddlType | None, optional): Defaults to None.\n\nReturns:\n    ValidationResponse: with ReturnStatus.SUCCESS if PDDL is successfully validated,\n    ReturnStatus.FAILURE otherwise.",
+                "operationId": "post_validate_pddl_validate_pddl_post",
+                "parameters": [
+                    {
+                        "name": "pddl_type",
+                        "in": "query",
+                        "schema": {
+                            "title": "Pddl Type",
+                            "type": "string",
+                            "anyOf": [
+                                {
+                                    "$ref": "#/components/schemas/PddlType"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ValidationRequest"
+                            },
+                            "example": {
+                                "pddl": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationResponse"
+                                },
+                                "example": {
+                                    "result": "success",
+                                    "pddl_type": "domain",
+                                    "message": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/validate/match/pddl": {
+            "post": {
+                "summary": "Post Validate Pddl Match",
+                "description": "Validate that problem references domain.\n\nArgs:\n    request (PlanningRequest): request with problem and domain PDDL.\n\nReturns:\n    ValidationResponse: with ReturnStatus.SUCCESS if problem definition matches\n    domain, ReturnStatus.FAILURE otherwise.",
+                "operationId": "post_validate_pddl_match_validate_match_pddl_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PlanningRequest"
+                            },
+                            "example": {
+                                "domain": "string",
+                                "problem": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationResponse"
+                                },
+                                "example": {
+                                    "result": "success",
+                                    "pddl_type": "domain",
+                                    "message": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/validate/plan/pddl": {
+            "post": {
+                "summary": "Validate Problem Plan",
+                "description": "Validate that a precomputed plan is valid for a given problem.\n\nArgs:\n    request (ProblemPlanValidationRequest): domain, problem, and plan.\n\nReturns:\n    ValidationResponse: with ReturnStatus.SUCCESS if the plan is\n    successfully validated, ReturnStatus.FAILURE otherwise.",
+                "operationId": "validate_problem_plan_validate_plan_pddl_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProblemPlanValidationRequest"
+                            },
+                            "example": {
+                                "domain": "string",
+                                "problem": "string",
+                                "plan": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationResponse"
+                                },
+                                "example": {
+                                    "result": "success",
+                                    "pddl_type": "domain",
+                                    "message": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/convert/mermaid/{pddl_type}": {
+            "post": {
+                "summary": "Post Convert Pddl To Mermaid",
+                "description": "Post PDDL to convert to Mermaid-style code.\n\nValidates PDDL syntax before attempting to convert.\n\nArgs:\n    pddl_type (PddlType): type of the PDDL string to convert.\n    pddl_request (ValidationRequest): PDDL validation request.\n\nReturns:\n    ConversionResponse: conversion response.",
+                "operationId": "post_convert_pddl_to_mermaid_convert_mermaid__pddl_type__post",
+                "parameters": [
+                    {
+                        "name": "pddl_type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/PddlType"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ValidationRequest"
+                            },
+                            "example": {
+                                "pddl": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ConversionResponse"
+                                },
+                                "example": {
+                                    "result_status": "success",
+                                    "conversion_result": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/convert/natural_language/{pddl_type}": {
+            "post": {
+                "summary": "Post Generate Pddl",
+                "description": "Generate PDDL domain or problem from a prompt, with GPT.\n\nArgs:\n    pddl_type (PddlType): Enum indicating the type of PDDL to generate.\n    prompt (GenerationPrompt): Prompt containing the text with which to\n        generate PDDL. Optional attribute for defining in PDDL the problem\n        domain.\n    generate_both (Optional[bool], optional): If True, generate both PDDL\n        domain and problem. Defaults to False.\n    attempts (int): Number of generation attempts. Defaults to 1.\n\nReturns:\n    dict: Dictionary containing the generated PDDL domain or problem.\n\nNotes:\n    - If `prompt.domain` is provided, it generates a PDDL problem using the\n    given domain and prompt.\n    - If `generate_both` is True, it generates both PDDL domain and problem\n    using the prompt.\n    - If only PDDL domain or problem is needed, it generates the respective\n    one based on the value of `pddl_type`.",
+                "operationId": "post_generate_pddl_convert_natural_language__pddl_type__post",
+                "parameters": [
+                    {
+                        "name": "pddl_type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/PddlType"
+                        }
+                    },
+                    {
+                        "name": "generate_both",
+                        "in": "query",
+                        "schema": {
+                            "title": "Generate Both",
+                            "type": "string",
+                            "anyOf": [
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ],
+                            "default": ""
+                        }
+                    },
+                    {
+                        "name": "attempts",
+                        "in": "query",
+                        "schema": {
+                            "title": "Attempts",
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GenerationPrompt"
+                            },
+                            "example": {
+                                "text": "string",
+                                "domain": "string"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GenerationResponse"
+                                },
+                                "example": {
+                                    "result_status": "success",
+                                    "generated_domain": "string",
+                                    "generated_problem": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/solvers": {
+            "get": {
+                "summary": "Get Solvers",
+                "description": "Get available solvers.\n\nReturns:\n    list[Solver]: list with Solver objects.",
+                "operationId": "get_solvers_solvers_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Response Get Solvers Solvers Get",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Solver"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "id": "string",
+                                        "name": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/solvers/{solver_id}": {
+            "get": {
+                "summary": "Get Solver",
+                "description": "Get a Solver from an id.\n\nArgs:\n    solver_id (str): id alias of the solver.\n\nRaises:\n    HTTPException: if solver id is unrecognized.\n\nReturns:\n    Solver: object with solver id and full name.",
+                "operationId": "get_solver_solvers__solver_id__get",
+                "parameters": [
+                    {
+                        "name": "solver_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "title": "Solver Id",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Solver"
+                                },
+                                "example": {
+                                    "id": "string",
+                                    "name": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                },
+                                "example": {
+                                    "detail": [
+                                        {
+                                            "loc": [
+                                                {}
+                                            ],
+                                            "msg": "string",
+                                            "type": "string"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ConversionResponse": {
+                "title": "ConversionResponse",
+                "required": [
+                    "result_status",
+                    "conversion_result"
+                ],
+                "type": "object",
+                "properties": {
+                    "result_status": {
+                        "$ref": "#/components/schemas/ReturnStatus"
+                    },
+                    "conversion_result": {
+                        "title": "Conversion Result",
+                        "type": "string"
+                    }
+                },
+                "description": "Conversion response model."
+            },
+            "GenerationPrompt": {
+                "title": "GenerationPrompt",
+                "required": [
+                    "text"
+                ],
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "title": "Text",
+                        "type": "string"
+                    },
+                    "domain": {
+                        "title": "Domain",
+                        "type": "string"
+                    }
+                },
+                "description": "Generation Prompt model."
+            },
+            "GenerationResponse": {
+                "title": "GenerationResponse",
+                "required": [
+                    "result_status",
+                    "generated_domain",
+                    "generated_problem"
+                ],
+                "type": "object",
+                "properties": {
+                    "result_status": {
+                        "$ref": "#/components/schemas/ReturnStatus"
+                    },
+                    "generated_domain": {
+                        "title": "Generated Domain",
+                        "type": "string"
+                    },
+                    "generated_problem": {
+                        "title": "Generated Problem",
+                        "type": "string"
+                    }
+                },
+                "description": "Generation response model."
+            },
+            "HTTPValidationError": {
+                "title": "HTTPValidationError",
+                "type": "object",
+                "properties": {
+                    "detail": {
+                        "title": "Detail",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        }
+                    }
+                }
+            },
+            "JobId": {
+                "title": "JobId",
+                "required": [
+                    "id"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "string"
+                    }
+                },
+                "description": "Model for planning/solving job ids (used as request responses)."
+            },
+            "MinizincSolution": {
+                "title": "MinizincSolution",
+                "required": [
+                    "solution",
+                    "status",
+                    "statistics"
+                ],
+                "type": "object",
+                "properties": {
+                    "solution": {
+                        "title": "Solution",
+                        "type": "object"
+                    },
+                    "status": {
+                        "title": "Status",
+                        "type": "string"
+                    },
+                    "statistics": {
+                        "title": "Statistics",
+                        "type": "object"
+                    }
+                },
+                "description": "Minizinc optimization solution model."
+            },
+            "MinizincSolutionRequest": {
+                "title": "MinizincSolutionRequest",
+                "required": [
+                    "model_str",
+                    "model_params"
+                ],
+                "type": "object",
+                "properties": {
+                    "model_str": {
+                        "title": "Model Str",
+                        "type": "string"
+                    },
+                    "model_params": {
+                        "title": "Model Params",
+                        "type": "object"
+                    }
+                },
+                "description": "Solution request model for Minizinc files."
+            },
+            "PddlType": {
+                "title": "PddlType",
+                "enum": [
+                    "domain",
+                    "problem",
+                    "plan",
+                    "None"
+                ],
+                "type": "string",
+                "description": "PDDL type enum."
+            },
+            "Plan": {
+                "title": "Plan",
+                "required": [
+                    "plan"
+                ],
+                "type": "object",
+                "properties": {
+                    "plan": {
+                        "title": "Plan",
+                        "type": "string"
+                    }
+                },
+                "description": "Plan model."
+            },
+            "Planner": {
+                "title": "Planner",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "string"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    }
+                },
+                "description": "Planner model."
+            },
+            "PlanningRequest": {
+                "title": "PlanningRequest",
+                "required": [
+                    "domain",
+                    "problem"
+                ],
+                "type": "object",
+                "properties": {
+                    "domain": {
+                        "title": "Domain",
+                        "type": "string"
+                    },
+                    "problem": {
+                        "title": "Problem",
+                        "type": "string"
+                    }
+                },
+                "description": "Planning request model."
+            },
+            "ProblemPlanValidationRequest": {
+                "title": "ProblemPlanValidationRequest",
+                "required": [
+                    "domain",
+                    "problem",
+                    "plan"
+                ],
+                "type": "object",
+                "properties": {
+                    "domain": {
+                        "title": "Domain",
+                        "type": "string"
+                    },
+                    "problem": {
+                        "title": "Problem",
+                        "type": "string"
+                    },
+                    "plan": {
+                        "title": "Plan",
+                        "type": "string"
+                    }
+                },
+                "description": "Problem plan validation request model."
+            },
+            "ReturnStatus": {
+                "title": "ReturnStatus",
+                "enum": [
+                    "success",
+                    "failure"
+                ],
+                "type": "string",
+                "description": "Return status enum."
+            },
+            "Solver": {
+                "title": "Solver",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "string"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string"
+                    }
+                },
+                "description": "Solver model."
+            },
+            "ValidationError": {
+                "title": "ValidationError",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "title": "Location",
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        }
+                    },
+                    "msg": {
+                        "title": "Message",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Error Type",
+                        "type": "string"
+                    }
+                }
+            },
+            "ValidationRequest": {
+                "title": "ValidationRequest",
+                "required": [
+                    "pddl"
+                ],
+                "type": "object",
+                "properties": {
+                    "pddl": {
+                        "title": "Pddl",
+                        "type": "string"
+                    }
+                },
+                "description": "Validation request model."
+            },
+            "ValidationResponse": {
+                "title": "ValidationResponse",
+                "required": [
+                    "result",
+                    "pddl_type",
+                    "message"
+                ],
+                "type": "object",
+                "properties": {
+                    "result": {
+                        "$ref": "#/components/schemas/ReturnStatus"
+                    },
+                    "pddl_type": {
+                        "$ref": "#/components/schemas/PddlType"
+                    },
+                    "message": {
+                        "title": "Message",
+                        "type": "string"
+                    }
+                },
+                "description": "Validation response model."
+            }
+        },
+        "securitySchemes": {
+            "apiKeyHeader": {
+                "type": "apiKey",
+                "name": "Ocp-Apim-Subscription-Key",
+                "in": "header"
+            },
+            "apiKeyQuery": {
+                "type": "apiKey",
+                "name": "subscription-key",
+                "in": "query"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyHeader": []
+        },
+        {
+            "apiKeyQuery": []
+        }
+    ]
+}
