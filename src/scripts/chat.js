@@ -166,7 +166,7 @@ export async function convertPddlToMermaidDiagram(pddl, type, push) {
 
       pushMessage(
         push,
-        `<strong>${type.charAt(0).toUpperCase() + type.slice(1)}</strong><br><img src="${svgDataUrl}" alt="${type} diagram"/>`
+        `<strong>${type.charAt(0).toUpperCase() + type.slice(1)}</strong><img src="${svgDataUrl}" alt="${type} diagram"/>`
       );
 
       return true;

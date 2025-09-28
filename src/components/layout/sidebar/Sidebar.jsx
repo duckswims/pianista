@@ -5,7 +5,7 @@ import routes from "../../data/components.json";
 import { ApiKeyContext } from "../../../contexts/ApiKeyContext";
 
 import "./sidebar.css";
-import logo from "../../../assets/logo/VisionSpace_eye_Black.png";
+// import logo from "../../../assets/logo/VisionSpace_eye_Black.png";
 import sidebarIcon from "../../../assets/sidebar/light.png";
 import darkIcon from "../../../assets/darkmode/dark.png";
 import lightIcon from "../../../assets/darkmode/light.png";
@@ -22,6 +22,9 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
 
   const excludedKeys = ["planners", "solvers"];
   const devKeys = ["solve", "validate", "convert", "chart"];
+
+  const logoBlack = "/logo/VisionSpace_eye_Black.png";
+  const logoWhite = "/logo/VisionSpace_eye_White.png";
 
   // Redirect to home if devMode turned off
   useEffect(() => {
@@ -58,35 +61,35 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
     <aside className={`sidebar ${isOpen ? "sidebar--open" : "sidebar--collapsed"}`}>
       {/* Top: Logo + Sidebar Toggle */}
       <div className="sidebar__top d-flex justify-content-between align-items-center p-2">
-        {isOpen ? (
-          <>
-            <img
-              src={logo}
-              alt="Logo"
-              className="sidebar-logo"
-              style={{ cursor: "pointer" }}
-              onClick={goHome}
-            />
-            <button onClick={() => setIsOpen(false)} className="sidebar__toggle-btn">
-              <img src={sidebarIcon} alt="Toggle Sidebar" className="sidebar-toggle-icon" />
-            </button>
-          </>
-        ) : (
-          <button
-            className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center"
-            onClick={toggleSidebar}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-          >
-            <img
-              src={hovered ? sidebarIcon : logo}
-              alt="Toggle Sidebar"
-              className="sidebar-toggle-icon"
-              style={{ cursor: "pointer" }}
-              onClick={goHome}
-            />
+      {isOpen ? (
+        <>
+          <img
+            src={darkMode ? logoWhite : logoBlack} // Use black/white depending on darkMode
+            alt="Logo"
+            className="sidebar-logo"
+            style={{ cursor: "pointer" }}
+            onClick={goHome}
+          />
+          <button onClick={() => setIsOpen(false)} className="sidebar__toggle-btn">
+            <img src={sidebarIcon} alt="Toggle Sidebar" className="sidebar-toggle-icon" />
           </button>
-        )}
+        </>
+      ) : (
+        <button
+          className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center"
+          onClick={toggleSidebar}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          <img
+            src={hovered ? sidebarIcon : darkMode ? logoWhite : logoBlack} // same here
+            alt="Toggle Sidebar"
+            className="sidebar-toggle-icon"
+            style={{ cursor: "pointer" }}
+            onClick={goHome}
+          />
+        </button>
+      )}
       </div>
 
       {/* Navigation + scrollable */}
@@ -138,7 +141,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
           {/* Toggles container (expanded) */}
           <div className="sidebar__toggles d-flex flex-column mt-auto">
             {/* Dark Mode toggle */}
-            <div className="sidebar__dark-mode d-flex justify-content-between align-items-center p-1">
+            <div className="sidebar__dark-mode d-flex justify-content-between align-items-center  ps-2 pe-1">
               <span>Dark Mode</span>
               <label className="switch">
                 <input
@@ -152,7 +155,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
 
             {/* Dev Mode toggle */}
             {apiStatus && (
-              <div className="sidebar__dev-mode d-flex justify-content-between align-items-center p-1">
+              <div className="sidebar__dev-mode d-flex justify-content-between align-items-center ps-2 pe-1">
                 <span>Development Mode</span>
                 <label className="switch">
                   <input

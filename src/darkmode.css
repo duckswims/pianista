@@ -1,8 +1,7 @@
 /* Global */
 .dark-mode {
-  background-color: #333333;
+  background-color: #181818;
   color: #eaeaea;
-  /* transition: background-color 0.5s ease, color 0.3s ease; */
 }
 
 .dark-mode a {
@@ -21,8 +20,11 @@
 }
 
 /* Sidebar toggle button */
-.dark-mode .sidebar__toggle-btn {
-  filter: brightness(0) invert(1);
+.dark-mode .sidebar__toggle-btn img {
+  filter: brightness(0) invert(1); /* default for icons */
+}
+.dark-mode .sidebar__toggle-btn img.sidebar-logo-toggle {
+  filter: none !important;
 }
 
 .dark-mode .sidebar__toggle-btn:hover {
@@ -50,15 +52,7 @@
   background-color: #555;
 }
 
-/* .dark-mode .switch input:checked + span {
-  background-color: #3a7bd5;
-} */
 
-/* Main Content */
-.dark-mode .main-content {
-  background-color: #181818;
-  color: #eaeaea;
-}
 
 .dark-mode h1,
 .dark-mode h2,
@@ -79,9 +73,13 @@
     background-color: #3a3a3a;
 }
 
-.dark-mode .card img {
+.dark-mode .card img,
+.dark-mode .client-api-form img,
+.dark-mode .send-message-form img {
     filter: brightness(0) invert(1);
 }
+
+
 
 .dark-mode .card .card-text {
     color: #e3e3e3;
@@ -122,7 +120,7 @@
 .dark-mode select {
   background-color: #666;
   color: #fff;
-  border: 1px solid #444;
+  /* border: 1px solid #444; */
 }
 
 .dark-mode input::placeholder {
@@ -134,6 +132,33 @@
 .dark-mode select:focus {
   background-color: #666;
   color: #fff;
-  border: 1px solid #888; /* optional: slightly lighter border on focus */
   outline: none; /* optional: remove default blue outline */
+}
+
+.dark-mode .client-api-form,
+.dark-mode .send-message-form {
+  background-color: #666 ;
+  border: none;
+}
+
+.dark-mode .client-api-form button,
+.dark-mode .send-message-form button {
+  cursor: pointer;
+}
+
+/* Remove all other hover effects */
+.dark-mode .client-api-form button:hover,
+.dark-mode .send-message-form button:hover {
+  background-color: inherit; /* or whatever the default is */
+  color: inherit; /* keep text color same */
+}
+
+
+.dark-mode .user-bubble {
+
+}
+
+.dark-mode .bot-bubble {
+  background-color: #555;
+  color: #fff;
 }
