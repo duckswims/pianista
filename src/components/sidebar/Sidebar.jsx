@@ -7,9 +7,9 @@ import { ApiKeyContext } from "../../contexts/ApiKeyContext";
 
 import "./sidebar.css";
 import logo from "../../assets/logo/VisionSpace_eye_Black.png";
-import sidebarIcon from "../../assets/sidebar.png";
+import sidebarIcon from "../../assets/sidebar/light.png";
 
-export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode }) {
+export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMode, setDarkMode }) {
   const location = useLocation();
   const { apiKey } = useContext(ApiKeyContext); // <-- use ApiKeyContext
   const [apiStatus, setApiStatus] = useState(null);
@@ -95,7 +95,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode }) {
                               key={childKey}
                               to={child.Link}
                               className={`d-block px-2 py-1 rounded ${
-                                isActive(child.Link) ? "bg-primary text-white" : "text-black"
+                                isActive(child.Link) ? "bg-primary text-white" : ""
                               }`}
                             >
                               {child.Title}
@@ -117,6 +117,19 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode }) {
                 </div>
               ))}
           </nav>
+
+          {/* Dark Mode toggle at bottom */}
+          <div className="sidebar__dark-mode d-flex justify-content-between align-items-center px-2 py-2">
+            <span>Dark Mode</span>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={darkMode}
+                onChange={() => setDarkMode((prev) => !prev)}
+              />
+              <span></span>
+            </label>
+          </div>
 
           {/* Dev Mode toggle at bottom */}
           {apiStatus === true && (

@@ -1,0 +1,139 @@
+/* Global */
+.dark-mode {
+  background-color: #333333;
+  color: #eaeaea;
+  transition: background-color 0.5s ease, color 0.3s ease;
+}
+
+.dark-mode a {
+  color: #9ad1ff;
+}
+
+.dark-mode a:hover {
+  color: #ffffff;
+}
+
+/* Sidebar */
+.dark-mode .sidebar {
+  background-color: #242424;
+  color: #f5f5f5;
+  border-right: 1px solid #333;
+}
+
+/* Sidebar toggle button */
+.dark-mode .sidebar__toggle-btn {
+  filter: brightness(0) invert(1);
+}
+
+.dark-mode .sidebar__toggle-btn:hover {
+  filter: brightness(0) invert(1);
+  background: none;
+  cursor: pointer;
+}
+
+/* .dark-mode .sidebar-logo {
+  filter: brightness(0) invert(1);
+} */
+
+.dark-mode .sidebar__nav-container .btn,
+.dark-mode .sidebar__nav-container a {
+  color: #ddd !important;
+}
+
+.dark-mode .sidebar__nav-container a.bg-primary {
+  background-color: #3a7bd5 !important;
+  color: #fff !important;
+}
+
+/* Toggle Switch */
+.dark-mode .switch span {
+  background-color: #555;
+}
+
+/* .dark-mode .switch input:checked + span {
+  background-color: #3a7bd5;
+} */
+
+/* Main Content */
+.dark-mode .main-content {
+  background-color: #181818;
+  color: #eaeaea;
+}
+
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6 {
+  color: #ffffff;
+}
+
+
+/* Cards */
+.dark-mode .card {
+    background-color: #444;
+}
+
+.dark-mode .card .card-img-container {
+    background-color: #3a3a3a;
+}
+
+.dark-mode .card img {
+    filter: brightness(0) invert(1);
+}
+
+.dark-mode .card .card-text {
+    color: #e3e3e3;
+}
+
+
+/* Dashboard */
+.dark-mode .card p,
+.dark-mode .card .form-label {
+    color: #e3e3e3 !important;
+}
+
+.dark-mode .container p,
+.dark-mode .form-check-label {
+    color: #e3e3e3 !important;
+}
+
+.dark-mode .nav-item button {
+    color: #3a7bd5;
+    background-color: transparent;
+}
+
+
+
+
+/* Buttons */
+.dark-mode button {
+  color: #eaeaea;
+}
+
+.dark-mode button:hover {
+  background-color: #3a3a3a;
+}
+
+/* Inputs / Forms */
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #666;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+.dark-mode input::placeholder {
+  color: #eee;
+}
+
+.dark-mode input:focus,
+.dark-mode textarea:focus,
+.dark-mode select:focus {
+  background-color: #666;
+  color: #fff;
+  border: 1px solid #888; /* optional: slightly lighter border on focus */
+  outline: none; /* optional: remove default blue outline */
+}

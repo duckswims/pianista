@@ -27,20 +27,23 @@ import ChartRender from "./pages/chart/render/ChartRender";
 
 
 import "./App.css";
+import "./darkmode.css"
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [devMode, setDevMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   return (
     <BrowserRouter>
-      <div className="app-container">
-        {/* Sidebar */}
+      <div className={`app-container ${darkMode ? "dark-mode" : ""}`}> 
         <Sidebar
           isOpen={isSidebarOpen}
           setIsOpen={setIsSidebarOpen}
           devMode={devMode}
           setDevMode={setDevMode}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
         />
 
         {/* Main content */}
