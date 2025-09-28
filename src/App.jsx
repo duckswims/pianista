@@ -1,3 +1,4 @@
+// src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
@@ -25,9 +26,8 @@ import ConvertNaturalLanguage from "./pages/convert/natural_language/NaturalLang
 // Chart subpages
 import ChartRender from "./pages/chart/render/ChartRender";
 
-
 import "./App.css";
-import "./darkmode.css"
+import "./darkmode.css";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -36,7 +36,8 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className={`app-container ${darkMode ? "dark-mode" : ""}`}> 
+      <div className={`app-container ${darkMode ? "dark-mode" : ""}`}>
+        {/* Sidebar */}
         <Sidebar
           isOpen={isSidebarOpen}
           setIsOpen={setIsSidebarOpen}
@@ -51,26 +52,26 @@ function App() {
           <Header />
 
           <Routes>
-            {/* Home */}
+            {/* Home / Client */}
             <Route path="/" element={devMode ? <Dev /> : <Client />} />
 
-            {/* For main Solve, Validate, Convert, Chart pages */}
+            {/* Main Section pages */}
             <Route path="/:sectionKey" element={<SectionPage />} />
 
-            {/* Solve */}
+            {/* Solve pages */}
             <Route path="/solve/minizinc" element={<SolveMinizinc />} />
             <Route path="/solve/pddl" element={<SolvePddl />} />
 
-            {/* Validate */}
+            {/* Validate pages */}
             <Route path="/validate/plan" element={<ValidatePlan />} />
             <Route path="/validate/pddl" element={<ValidatePddl />} />
             <Route path="/validate/match" element={<ValidateMatch />} />
 
-            {/* Convert */}
+            {/* Convert pages */}
             <Route path="/convert/mermaid" element={<ConvertMermaid />} />
             <Route path="/convert/natural_language" element={<ConvertNaturalLanguage />} />
 
-            {/* Chart */}
+            {/* Chart pages */}
             <Route path="/chart/render" element={<ChartRender />} />
           </Routes>
         </main>
