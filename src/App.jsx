@@ -5,7 +5,6 @@ import { useState } from "react";
 import Sidebar from "./components/layout/sidebar/Sidebar";
 import Header from "./components/layout/header/Header";
 
-import Home from "./pages/Home";
 import SectionPage from "./pages/SectionPage";
 import Dev from "./pages/dev/Dev";
 import Client from "./pages/client/Client";
