@@ -54,17 +54,21 @@ export default function Client() {
     }
   };
 
-  const handleSendMessage = async (text) => {
+  const handleSendMessage = async (text, plannerId) => {
     if (!text.trim()) return;
-    setChatMessages((prev) => [...prev, { sender: "user", text }]);
+    setChatMessages((prev) => [...prev, { sender: "user", text, plannerId }]);
     setChatActive(true);
 
     try {
-      const newMessages = await generateAndValidatePddl(text);
+      // Pass plannerId to your API if it supports it
+      const newMessages = await generateAndValidatePddl(text, plannerId);
       setChatMessages((prev) => [...prev, ...newMessages]);
     } catch (err) {
       console.error(err);
-      setChatMessages((prev) => [...prev, { sender: "bot", text: "Error generating/validating PDDL." }]);
+      setChatMessages((prev) => [
+        ...prev,
+        { sender: "bot", text: "Error generating/validating PDDL." },
+      ]);
     }
   };
 
@@ -82,9 +86,8 @@ export default function Client() {
                 <SendMessageForm
                   value={idea}
                   onChange={setIdea}
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSendMessage(idea);
+                  onSubmit={(text, plannerId) => {
+                    handleSendMessage(text, plannerId);
                     setIdea("");
                   }}
                   loading={false}
