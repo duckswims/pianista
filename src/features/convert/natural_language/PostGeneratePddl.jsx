@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { postGeneratePddl } from "../../../scripts/pianista-api/convert";
 import { removeWhitespaces } from "../../../scripts/helper/removeWhitespaces";
-import ErrorDisplay from "../../../components/response/error/ErrorDisplay";
-import ResultDisplay from "../../../components/response/result/ResultDisplay";
+import ErrorDisplay from "../../../components/feedback/ErrorDisplay";
+import ResultDisplay from "../../../components/feedback/ResultDisplay";
 import "../../styles.css"
 
 function PostGeneratePddl() {

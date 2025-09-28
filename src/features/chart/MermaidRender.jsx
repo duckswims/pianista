@@ -1,7 +1,7 @@
 // src/components/tools/mermaid/MermaidRender.jsx
 import React, { useState, useRef } from "react";
-import ErrorDisplay from "../../components/response/error/ErrorDisplay";
-import ResultDisplay from "../../components/response/result/ResultDisplay";
+import ErrorDisplay from "../../components/feedback/ErrorDisplay";
+import ResultDisplay from "../../components/feedback/ResultDisplay";
 import { generateMermaidDiagram } from "../../scripts/mermaid-api/mermaid";
 
 function MermaidRender() {

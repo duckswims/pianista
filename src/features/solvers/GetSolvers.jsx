@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getSolvers } from "../../scripts/pianista-api/solvers";
-import ErrorDisplay from "../../components/response/error/ErrorDisplay";
+import ErrorDisplay from "../../components/feedback/ErrorDisplay";
 
 function GetSolvers({ onSelectSolver }) {
   const [solvers, setSolvers] = useState([]);

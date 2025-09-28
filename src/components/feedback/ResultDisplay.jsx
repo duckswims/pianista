@@ -1,5 +1,5 @@
 import React from "react";
-import { formatKey } from "../../../scripts/helper/formatKey";
+import { formatKey } from "../../scripts/helper/formatKey";
 
 function renderValue(value, key) {
   // Skip empty/null values for certain keys

@@ -1,5 +1,5 @@
 import React from "react";
-import { formatKey } from "../../../scripts/helper/formatKey";
+import { formatKey } from "../../scripts/helper/formatKey";
 
 export default function ErrorDisplay({ error }) {
   if (!error) return null;
