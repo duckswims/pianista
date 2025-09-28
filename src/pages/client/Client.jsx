@@ -1,13 +1,14 @@
-// src/components/client/Client.jsx
 import React, { useState, useEffect, useContext } from "react";
-import logo from "../../assets/logo/VisionSpace_eye_Black.png";
-import arrowBtn from "../../assets/arrow-button/light.png";
 import SendMessageForm from "../../components/chat/SendMessageForm";
 import Chat from "./Chat";
 import { ApiKeyContext } from "../../contexts/ApiKeyContext";
 import { fetchApi } from "../../api";
 import { runChatFlow } from "../../scripts/chat";
 import "./Client.css";
+
+import logoBlack from "../../assets/logo/VisionSpace_eye_Black.png";
+import logoWhite from "../../assets/logo/VisionSpace_eye_White.png";
+import arrowBtn from "../../assets/arrow-button.png";
 
 export default function Client({ darkMode }) {
   const [idea, setIdea] = useState("");
@@ -88,8 +89,9 @@ export default function Client({ darkMode }) {
     <div className="client-page">
       {!chatActive && (
         <div className="client-content">
+          {/* ✅ Use static logo imports */}
           <img
-            src={darkMode ? "/logo/VisionSpace_eye_White.png" : "/logo/VisionSpace_eye_Black.png"}
+            src={darkMode ? logoWhite : logoBlack}
             alt="Logo"
             className="client-logo"
           />

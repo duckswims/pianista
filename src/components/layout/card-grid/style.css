@@ -16,9 +16,14 @@
   background-color: #f8f9fa; /* optional light background for image area */
 }
 
-.card-img-container img {
-  max-width: 80px;  /* adjust size to fit card */
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
+.card-img-container {
+  width: 80px;                /* same as max-width of your old img */
+  height: 80px;               /* fixed height like before */
+  margin: 0 auto;             /* center horizontally */
+  background-size: contain;   /* fit image proportionally */
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;             /* like the img's display:block */
+  padding: 1rem 0;            /* optional spacing above/below */
+  background-color: transparent;  /* optional background */
 }

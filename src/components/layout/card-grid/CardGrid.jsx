@@ -1,28 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import "./style.css";
+
+import chartImg from "../../../assets/chart.png";
+import convertImg from "../../../assets/convert.png";
+import solveImg from "../../../assets/solve.png";
+import validateImg from "../../../assets/validate.png";
+
+const keyToImage = {
+  chart: chartImg,
+  convert: convertImg,
+  solve: solveImg,
+  validate: validateImg,
+};
 
 function CardGrid({ data, onNavigate }) {
   return (
     <div className="container mt-4">
       <div className="row g-4">
         {data.map(([key, comp]) => {
-          const [imgExists, setImgExists] = useState(true);
-
-          const imgSrc = `/assets/${key}/light.png`;
+          const imgSrc = keyToImage[key];
 
           return (
             <div className="col-12 col-md-6" key={key}>
               <div className="card shadow-sm h-100 card-hover text-center">
-                {/* Render image only if it exists */}
-                {imgExists && (
-                  <div className="card-img-container">
-                    <img
-                      src={imgSrc}
-                      alt={comp.Title}
-                      className="card-img-top has-image"
-                      onError={() => setImgExists(false)} // hide if not found
-                    />
-                  </div>
+                {imgSrc && (
+                  <div
+                    className="card-img-container mt-3 mx-auto"
+                    style={{ backgroundImage: `url(${imgSrc})` }}
+                  />
                 )}
 
                 <div className="card-body">

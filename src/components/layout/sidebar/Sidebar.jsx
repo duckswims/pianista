@@ -5,8 +5,9 @@ import routes from "../../data/components.json";
 import { ApiKeyContext } from "../../../contexts/ApiKeyContext";
 
 import "./sidebar.css";
-// import logo from "../../../assets/logo/VisionSpace_eye_Black.png";
-import sidebarIcon from "../../../assets/sidebar/light.png";
+import logoBlack from "../../../assets/logo/VisionSpace_eye_Black.png";
+import logoWhite from "../../../assets/logo/VisionSpace_eye_White.png";
+import sidebarIcon from "../../../assets/sidebar.png";
 import darkIcon from "../../../assets/darkmode/dark.png";
 import lightIcon from "../../../assets/darkmode/light.png";
 import devOnIcon from "../../../assets/dev/devON.png";
@@ -22,9 +23,6 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
 
   const excludedKeys = ["planners", "solvers"];
   const devKeys = ["solve", "validate", "convert", "chart"];
-
-  const logoBlack = "/logo/VisionSpace_eye_Black.png";
-  const logoWhite = "/logo/VisionSpace_eye_White.png";
 
   // Redirect to home if devMode turned off
   useEffect(() => {
@@ -52,44 +50,42 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
   };
 
   const toggleSidebar = () => setIsOpen(true);
-
   const goHome = () => navigate("/"); // Navigate to home
-
   const isActive = (link) => location.pathname === link;
 
   return (
     <aside className={`sidebar ${isOpen ? "sidebar--open" : "sidebar--collapsed"}`}>
       {/* Top: Logo + Sidebar Toggle */}
       <div className="sidebar__top d-flex justify-content-between align-items-center p-2">
-      {isOpen ? (
-        <>
-          <img
-            src={darkMode ? logoWhite : logoBlack} // Use black/white depending on darkMode
-            alt="Logo"
-            className="sidebar-logo"
-            style={{ cursor: "pointer" }}
-            onClick={goHome}
-          />
-          <button onClick={() => setIsOpen(false)} className="sidebar__toggle-btn">
-            <img src={sidebarIcon} alt="Toggle Sidebar" className="sidebar-toggle-icon" />
+        {isOpen ? (
+          <>
+            <img
+              src={darkMode ? logoWhite : logoBlack}
+              alt="Logo"
+              className="sidebar-logo"
+              style={{ cursor: "pointer" }}
+              onClick={goHome}
+            />
+            <button onClick={() => setIsOpen(false)} className="sidebar__toggle-btn">
+              <img src={sidebarIcon} alt="Toggle Sidebar" className="sidebar-toggle-icon" />
+            </button>
+          </>
+        ) : (
+          <button
+            className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center"
+            onClick={toggleSidebar}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
+            <img
+              src={hovered ? sidebarIcon : darkMode ? logoWhite : logoBlack}
+              alt="Toggle Sidebar"
+              className="sidebar-toggle-icon"
+              style={{ cursor: "pointer" }}
+              onClick={goHome}
+            />
           </button>
-        </>
-      ) : (
-        <button
-          className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center"
-          onClick={toggleSidebar}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-        >
-          <img
-            src={hovered ? sidebarIcon : darkMode ? logoWhite : logoBlack} // same here
-            alt="Toggle Sidebar"
-            className="sidebar-toggle-icon"
-            style={{ cursor: "pointer" }}
-            onClick={goHome}
-          />
-        </button>
-      )}
+        )}
       </div>
 
       {/* Navigation + scrollable */}
@@ -109,7 +105,6 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
                         {item.Title}
                         <span className="ms-2">{openMenus[key] ? "▾" : "▸"}</span>
                       </button>
-
                       {openMenus[key] && (
                         <div className="ms-3 mt-1">
                           {Object.entries(item.Children).map(([childKey, child]) => (
