@@ -1,7 +1,5 @@
-// src/scripts/mermaid.js
 import mermaid from "mermaid";
 
-// Initialize Mermaid once
 mermaid.initialize({
   startOnLoad: false,
   theme: "default",
@@ -10,25 +8,25 @@ mermaid.initialize({
 });
 
 /**
- * Generates a Mermaid diagram from text.
+ * Generates a Mermaid diagram inside a specific container.
  * @param {string} code - The Mermaid diagram code
- * @returns {Promise<{ svg: string }>} - The generated SVG
- * @throws {Error} - If parsing or rendering fails
+ * @param {HTMLElement} container - The element to insert the diagram into
  */
-export async function generateMermaidDiagram(code) {
-  if (!code.trim()) {
-    throw new Error("Mermaid code is empty.");
-  }
+export async function generateMermaidDiagram(code, container) {
+  if (!code.trim()) return;
 
   try {
     // Validate syntax first
     mermaid.parse(code);
 
-    // Render diagram
-    const { svg } = await mermaid.render("mermaidDiagram", code);
-    return { svg };
+    // Render diagram into string
+    const svgCode = await mermaid.render("mermaidDiagram", code);
+
+    // Insert SVG into container
+    container.innerHTML = svgCode.svg;
   } catch (err) {
-    console.error("Mermaid rendering error:", err);
-    throw new Error(err?.str || err?.message || "Unknown Mermaid rendering error");
+    console.warn("Mermaid rendering error (ignored):", err);
+    // Optional: clear the container if rendering failed
+    container.innerHTML = "";
   }
 }
