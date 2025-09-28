@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PostGeneratePddl from "../../../components/functions/convert/natural_language/post-generate-pddl/PostGeneratePddl";
+import PostGeneratePddl from "../../../features/convert/natural_language/PostGeneratePddl";
 
 function ConvertNaturalLanguage() {
   const [activeTab, setActiveTab] = useState("post-generate-pddl");

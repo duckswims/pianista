@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ValidateProblemPlan from "../../../components/functions/validate/plan/validate-problem-plan/ValidateProblemPlan";
+import ValidateProblemPlan from "../../../features/validate/plan/ValidateProblemPlan";
 
 function ValidatePlan() {
   const [activeTab, setActiveTab] = useState("validate-plan");

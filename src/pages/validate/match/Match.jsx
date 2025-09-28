@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PostValidatePddlMatch from "../../../components/functions/validate/match/post-validate-pddl-match/PostValidatePddlMatch";
+import PostValidatePddlMatch from "../../../features/validate/match/PostValidatePddlMatch";
 
 function ValidateMatch() {
   const [activeTab, setActiveTab] = useState("post-pddl-match");

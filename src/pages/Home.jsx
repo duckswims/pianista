@@ -1,4 +1,3 @@
-import Welcome from "../components/home/welcome/Welcome";
 import CardGrid from "../components/card-grid/CardGrid";
 import componentsData from "../components/data/components.json";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +14,6 @@ function Home() {
   return (
     <>
       <div>
-        <Welcome />
       </div>
       <CardGrid
         data={filteredData}

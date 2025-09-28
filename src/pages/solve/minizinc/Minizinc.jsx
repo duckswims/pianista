@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import GetSolvers from "../../../components/functions/solvers/get-solvers/GetSolvers";
-import PostSolve from "../../../components/functions/solve/minizinc/post-solve/PostSolve";
-import GetSolution from "../../../components/functions/solve/minizinc/get-solution/GetSolution";
+import GetSolvers from "../../../features/solvers/GetSolvers";
+import PostSolve from "../../../features/solve/minizinc/PostSolve";
+import GetSolution from "../../../features/solve/minizinc/GetSolution";
 
 function SolveMinizinc() {
   const [activeTab, setActiveTab] = useState("post");

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import GetPlanners from "../../../components/functions/planners/get-planners/GetPlanners";
-import PostPlan from "../../../components/functions/solve/pddl/post-plan/PostPlan";
-import GetPlan from "../../../components/functions/solve/pddl/get-plan/GetPlan";
+import GetPlanners from "../../../features/planners/GetPlanners";
+import GetPlan from "../../../features/solve/pddl/GetPlan";
+import PostPlan from "../../../features/solve/pddl/PostPlan";
 
 
 function SolvePddl() {
@@ -17,32 +17,32 @@ function SolvePddl() {
         <GetPlanners onSelectPlanner={setSelectedPlannerId} />
       </div>
 
-        {/* Tab navigation */}
-        <ul className="nav nav-tabs mb-3">
-          <li className="nav-item">
-            <button
-              className={`nav-link ${activeTab === "post" ? "active" : ""}`}
-              onClick={() => setActiveTab("post")}
-            >
-              Post Plan
-            </button>
-          </li>
-          <li className="nav-item">
-            <button
-              className={`nav-link ${activeTab === "get" ? "active" : ""}`}
-              onClick={() => setActiveTab("get")}
-            >
-              Get Plan
-            </button>
-          </li>
-        </ul>
+      {/* Tab navigation */}
+      <ul className="nav nav-tabs mb-3">
+        <li className="nav-item">
+          <button
+            className={`nav-link ${activeTab === "post" ? "active" : ""}`}
+            onClick={() => setActiveTab("post")}
+          >
+            Post Plan
+          </button>
+        </li>
+        <li className="nav-item">
+          <button
+            className={`nav-link ${activeTab === "get" ? "active" : ""}`}
+            onClick={() => setActiveTab("get")}
+          >
+            Get Plan
+          </button>
+        </li>
+      </ul>
 
-        {/* Tab content */}
-        <div>
-          {activeTab === "post" && <PostPlan plannerId={selectedPlannerId} />}
-          {activeTab === "get" && <GetPlan />}
-        </div>
+      {/* Tab content */}
+      <div>
+        {activeTab === "post" && <PostPlan plannerId={selectedPlannerId} />}
+        {activeTab === "get" && <GetPlan />}
       </div>
+    </div>
   );
 }
 

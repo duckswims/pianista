@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import PostConvertPddlToMermaid from "../../../components/functions/convert/mermaid/post-convert-pddl-to-mermaid/PostConvertPddlToMermaid";
-import PostConvertMermaidToPddl from "../../../components/functions/convert/mermaid/post-convert-mermaid-to-pddl/PostConvertMermaidToPddl";
+import PostConvertPddlToMermaid from "../../../features/convert/mermaid/PostConvertPddlToMermaid";
+import PostConvertMermaidToPddl from "../../../features/convert/mermaid/PostConvertMermaidToPddl";
 
 function ConvertMermaid() {
   const [activeTab, setActiveTab] = useState("post-convert-pddl-to-mermaid");
 
   return (
     <div className="container">
-      <h2>Generate Dashboard</h2>
+      <h2>Conversion Dashboard</h2>
 
       {/* Tabs */}
       <ul className="nav nav-tabs mb-3">
