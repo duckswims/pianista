@@ -15,7 +15,10 @@ export async function generateAndValidatePddl(text) {
     const genRes = await postGeneratePddl("problem", { text, domain: "" }, true);
 
     if (genRes?.result_status === "success") {
-      messages.push({ sender: "bot", text: "✅ Domain and Problem generated." });
+      messages.push({
+        sender: "bot",
+        text: "✅ Domain and Problem generated."
+      });
 
       const { generated_domain, generated_problem } = genRes;
 
@@ -25,12 +28,15 @@ export async function generateAndValidatePddl(text) {
         "domain"
       );
 
-      if (domainValidation?.valid) {
-        messages.push({ sender: "bot", text: "✅ Domain validated successfully." });
+      if (domainValidation?.result === "success") {
+        messages.push({
+          sender: "bot",
+          text: `✅ Domain validated successfully: ${domainValidation.message || ""}`
+        });
       } else {
         messages.push({
           sender: "bot",
-          text: `⚠️ Domain validation failed: ${JSON.stringify(domainValidation)}`,
+          text: `⚠️ Domain validation failed: ${domainValidation?.message || "Unknown error"}`
         });
       }
 
@@ -40,23 +46,31 @@ export async function generateAndValidatePddl(text) {
         "problem"
       );
 
-      if (problemValidation?.valid) {
-        messages.push({ sender: "bot", text: "✅ Problem validated successfully." });
+      if (problemValidation?.result === "success") {
+        messages.push({
+          sender: "bot",
+          text: `✅ Problem validated successfully: ${problemValidation.message || ""}`
+        });
       } else {
         messages.push({
           sender: "bot",
-          text: `⚠️ Problem validation failed: ${JSON.stringify(problemValidation)}`,
+          text: `⚠️ Problem validation failed: ${problemValidation?.message || "Unknown error"}`
         });
       }
+
     } else {
       messages.push({
         sender: "bot",
-        text: `❌ PDDL generation failed: ${JSON.stringify(genRes)}`,
+        text: `❌ PDDL generation failed: ${genRes?.message || JSON.stringify(genRes)}`
       });
     }
+
   } catch (err) {
     console.error(err);
-    messages.push({ sender: "bot", text: "❌ Error generating/validating PDDL." });
+    messages.push({
+      sender: "bot",
+      text: `❌ Error generating or validating PDDL: ${err.message || err}`
+    });
   }
 
   return messages;
