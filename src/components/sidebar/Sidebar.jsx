@@ -8,10 +8,12 @@ import { ApiKeyContext } from "../../contexts/ApiKeyContext";
 import "./sidebar.css";
 import logo from "../../assets/logo/VisionSpace_eye_Black.png";
 import sidebarIcon from "../../assets/sidebar/light.png";
+import darkIcon from "../../assets/darkmode/dark.png";
+import lightIcon from "../../assets/darkmode/light.png";
 
 export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMode, setDarkMode }) {
   const location = useLocation();
-  const { apiKey } = useContext(ApiKeyContext); // <-- use ApiKeyContext
+  const { apiKey } = useContext(ApiKeyContext);
   const [apiStatus, setApiStatus] = useState(null);
   const [openMenus, setOpenMenus] = useState({});
   const [hovered, setHovered] = useState(false);
@@ -45,7 +47,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
 
   return (
     <aside className={`sidebar ${isOpen ? "sidebar--open" : "sidebar--collapsed"}`}>
-      {/* Top: Logo + Toggle */}
+      {/* Top: Logo + Sidebar Toggle */}
       <div className="sidebar__top d-flex justify-content-between align-items-center p-2">
         {isOpen ? (
           <>
@@ -118,8 +120,8 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
               ))}
           </nav>
 
-          {/* Dark Mode toggle at bottom */}
-          <div className="sidebar__dark-mode d-flex justify-content-between align-items-center px-2 py-2">
+          {/* Dark Mode toggle (expanded) */}
+          <div className="sidebar__dark-mode d-flex justify-content-between align-items-center px-2 py-2 mt-auto">
             <span>Dark Mode</span>
             <label className="switch">
               <input
@@ -131,7 +133,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
             </label>
           </div>
 
-          {/* Dev Mode toggle at bottom */}
+          {/* Dev Mode toggle */}
           {apiStatus === true && (
             <div className="sidebar__dev-mode d-flex justify-content-between align-items-center px-2 py-2">
               <span>Development Mode</span>
@@ -146,6 +148,20 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
             </div>
           )}
         </div>
+      )}
+
+      {/* Dark Mode toggle (collapsed) */}
+      {!isOpen && (
+        <button
+          className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center mt-auto mb-2"
+          onClick={() => setDarkMode((prev) => !prev)}
+        >
+          <img
+            src={darkMode ? darkIcon : lightIcon}
+            alt="Dark Mode Toggle"
+            className="sidebar-toggle-icon"
+          />
+        </button>
       )}
     </aside>
   );
