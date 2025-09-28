@@ -2,7 +2,8 @@
 .chat-page {
   display: flex;
   flex-direction: column;
-  height: 100%; /* depends on parent height */
+  height: 100%; 
+  width: 100%;
   padding: 16px 16px 0 16px; /* remove bottom padding so input sits higher */
   box-sizing: border-box;
 }

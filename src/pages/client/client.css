@@ -1,11 +1,12 @@
 .client-page {
-  height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .client-content {
+  width: 100%;
   text-align: center;
   width: 85%;
 }
