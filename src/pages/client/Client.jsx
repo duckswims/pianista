@@ -126,7 +126,7 @@ export default function Client({ darkMode }) {
                 </p>
                 <form className="client-api-form" onSubmit={handleSubmitApiKey}>
                   <input
-                    type="text"
+                    type="password"
                     placeholder="Enter your API key"
                     value={apiKeyInput}
                     onChange={(e) => setApiKeyInput(e.target.value)}
