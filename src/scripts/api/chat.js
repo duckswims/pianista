@@ -4,136 +4,134 @@ import { postValidatePddl, postValidatePddlMatch, validateProblemPlan } from "./
 import { postPlan, getPlan } from "./pddl";
 import { generateMermaidDiagram } from "../mermaid";
 
-// Push a message immediately if callback is provided
+/**
+ * Push a message to the callback if provided
+ */
 function pushMessage(push, text, sender = "bot") {
-  if (typeof push === "function") {
-    push({ sender, text });
-  }
+  if (typeof push === "function") push({ sender, text });
 }
 
 /**
- * Filter plan to remove the planner name
+ * Extract meaningful error message from a response,
+ * including handling 422 Unprocessable Entity responses.
  */
-function filterPlan(plan) {
+function extractErrorMessage(err) {
+  if (err?.response?.status === 422 && Array.isArray(err.response.data?.detail)) {
+    return err.response.data.detail.map(d => d.msg).join("; ");
+  }
+  return err.message || JSON.stringify(err);
+}
+
+/**
+ * Remove planner name from plan for cleaner display
+ */
+function cleanPlan(plan) {
   if (!plan) return "";
   const idx = plan.indexOf("SequentialPlan:");
   return idx >= 0 ? plan.slice(idx) : plan;
 }
 
 /**
- * Helper: Generate PDDL (domain + problem)
+ * Generate PDDL domain and problem from natural language
  */
-async function generatePddl(text, push) {
+export async function generatePddlFromText(text, push) {
   try {
-    const genRes = await postGeneratePddl("problem", { text, domain: "" }, true);
-
-    if (genRes?.result_status !== "success") {
-      pushMessage(push, `❌ PDDL generation failed: ${genRes?.message || JSON.stringify(genRes)}`);
+    const res = await postGeneratePddl("problem", { text, domain: "" }, true);
+    if (res?.result_status !== "success") {
+      pushMessage(push, `❌ PDDL generation failed: ${res?.message || JSON.stringify(res)}`);
       return {};
     }
-
-    pushMessage(push, "✅ Domain and Problem generated.");
-    return {
-      generated_domain: genRes.generated_domain,
-      generated_problem: genRes.generated_problem,
-    };
+    pushMessage(push, "✅ PDDL generated successfully.");
+    return { domain: res.generated_domain, problem: res.generated_problem };
   } catch (err) {
-    console.error(err);
-    pushMessage(push, `❌ Error generating PDDL: ${err.message || err}`);
+    pushMessage(push, `❌ Error generating PDDL: ${extractErrorMessage(err)}`);
     return {};
   }
 }
 
 /**
- * Helper: Validate PDDL (domain or problem)
+ * Validate PDDL content (domain or problem)
  */
-async function validatePddl(pddl, type, push) {
+export async function validatePddlContent(pddl, type, push) {
   try {
-    const validationRes = await postValidatePddl({ pddl }, type);
-    if (validationRes?.result === "success") {
-      pushMessage(push, `✅ ${type.charAt(0).toUpperCase() + type.slice(1)} validated successfully: ${validationRes.message || ""}`);
+    const res = await postValidatePddl({ pddl }, type);
+    if (res?.result === "success") {
+      pushMessage(push, `✅ ${res.message || `${type} validated successfully.`}`);
       return true;
-    } else {
-      pushMessage(push, `❌ ${type.charAt(0).toUpperCase() + type.slice(1)} validation failed: ${validationRes?.message || "Unknown error"}`);
-      return false;
     }
+    pushMessage(push, `❌ ${type} validation failed: ${res?.message || "Unknown error"}`);
+    return false;
   } catch (err) {
-    console.error(err);
-    pushMessage(push, `❌ Error validating ${type}: ${err.message || err}`);
+    pushMessage(push, `❌ Error validating ${type}: ${extractErrorMessage(err)}`);
     return false;
   }
 }
 
 /**
- * Helper: Validate domain/problem match
+ * Validate that domain and problem match
  */
-async function validatePddlMatch(domain, problem, push) {
+export async function validateDomainProblemMatch(domain, problem, push) {
   try {
-    const matchRes = await postValidatePddlMatch({ domain, problem });
-    if (matchRes?.result === "success") {
-      pushMessage(push, `✅ Domain & Problem match validated: ${matchRes.message || ""}`);
+    const res = await postValidatePddlMatch({ domain, problem });
+    if (res?.result === "success") {
+      pushMessage(push, `✅ ${res.message || `Domain & Problem match validated.`}`);
       return true;
-    } else {
-      pushMessage(push, `❌ Domain & Problem match validation failed: ${matchRes?.message || "Unknown error"}`);
-      return false;
     }
+    pushMessage(push, `❌ Domain & Problem match validation failed: ${res?.message || "Unknown error"}`);
+    return false;
   } catch (err) {
-    console.error(err);
-    pushMessage(push, `❌ Error validating domain/problem match: ${err.message || err}`);
+    pushMessage(push, `❌ Error validating domain/problem match: ${extractErrorMessage(err)}`);
     return false;
   }
 }
 
 /**
- * Helper: Validate plan against domain/problem
+ * Validate a generated plan against domain/problem
  */
-async function validatePlan(domain, problem, plan, push) {
+export async function validateGeneratedPlan(domain, problem, plan, push) {
   try {
-    const filteredPlan = filterPlan(plan);
-    const validationRes = await validateProblemPlan({ domain, problem, plan: filteredPlan });
-    if (validationRes?.result === "success") {
-      pushMessage(push, `✅ Plan validated: ${validationRes.message || ""}`);
+    const res = await validateProblemPlan({ domain, problem, plan: cleanPlan(plan) });
+    if (res?.result === "success") {
+      pushMessage(push, `✅ ${res.message || `Plan validated.`}`);
       return true;
-    } else {
-      pushMessage(push, `❌ Plan validation failed: ${validationRes?.message || "Unknown error"}`);
-      return false;
     }
+    pushMessage(push, `❌ Plan validation failed: ${res?.message || "Unknown error"}`);
+    return false;
   } catch (err) {
-    console.error(err);
-    pushMessage(push, `❌ Error validating plan: ${err.message || err}`);
+    pushMessage(push, `❌ Error validating plan: ${extractErrorMessage(err)}`);
     return false;
   }
 }
 
 /**
- * Helper: Post a planning request and poll for completion
+ * Submit planning request and poll for completion
  */
-async function postAndPollPlan(domain, problem, planner_id, push) {
+export async function submitAndPollPlan(domain, problem, plannerId, push) {
   try {
-    const planRes = await postPlan({ domain, problem }, planner_id);
-    if (!planRes?.id) {
-      pushMessage(push, `❌ Failed to create plan: ${JSON.stringify(planRes)}`);
+    const res = await postPlan({ domain, problem }, plannerId);
+    if (!res?.id) {
+      pushMessage(push, `❌ Failed to create plan: ${JSON.stringify(res)}`);
       return null;
     }
 
-    const jobId = planRes.id;
+    const jobId = res.id;
     pushMessage(push, `⏳ Job created: ${jobId}. Waiting for plan...`);
 
-    const startTime = Date.now();
+    const start = Date.now();
     const TIMEOUT = 30000;
     const INTERVAL = 5000;
 
-    while (Date.now() - startTime < TIMEOUT) {
+    while (Date.now() - start < TIMEOUT) {
       const planStatus = await getPlan(jobId);
 
       if (planStatus.plan) {
-        const filtered = filterPlan(planStatus.plan);
-        pushMessage(push, `✅ Plan ready:\n${filtered}`);
-        return filtered;
+        const cleaned = cleanPlan(planStatus.plan);
+        pushMessage(push, `✅ Plan ready:<br>${cleaned}`);
+        return cleaned;
       }
 
-      if (planStatus.detail && planStatus.detail.includes("not yet ready")) {
-        await new Promise((r) => setTimeout(r, INTERVAL));
+      if (planStatus.detail?.includes("not yet ready")) {
+        await new Promise(r => setTimeout(r, INTERVAL));
         continue;
       }
 
@@ -141,19 +139,18 @@ async function postAndPollPlan(domain, problem, planner_id, push) {
       return null;
     }
 
-    pushMessage(push, `❌ Plan timeout: job ${jobId} did not finish within ${TIMEOUT / 1000}s.`);
+    pushMessage(push, `❌ Plan timeout: Job ${jobId} did not finish within ${TIMEOUT / 1000}s.`);
     return null;
   } catch (err) {
-    console.error(err);
-    pushMessage(push, `❌ Error during plan execution: ${err.message || err}`);
+    pushMessage(push, `❌ Error during plan execution: ${extractErrorMessage(err)}`);
     return null;
   }
 }
 
 /**
- * Convert any PDDL text to Mermaid and push diagram as image
+ * Convert PDDL or plan to Mermaid diagram and push as image
  */
-async function convertPddlToMermaid(pddl, type, push) {
+export async function convertPddlToMermaidDiagram(pddl, type, push) {
   try {
     const res = await postConvertPddlToMermaid({ pddl }, type);
     if (res?.result_status !== "success") {
@@ -163,17 +160,13 @@ async function convertPddlToMermaid(pddl, type, push) {
 
     const mermaidCode = res.conversion_result;
 
-    // Render Mermaid code to SVG
     try {
       const { svg } = await generateMermaidDiagram(mermaidCode);
-
-      // Convert SVG to data URL
       const svgDataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 
-      // Push bold type + <img> tag
       pushMessage(
         push,
-        `✅ ${type.charAt(0).toUpperCase() + type.slice(1)} converted to Mermaid<br>**${type.charAt(0).toUpperCase() + type.slice(1)}**<br><img src="${svgDataUrl}" alt="${type} diagram"/>`
+        `<strong>${type.charAt(0).toUpperCase() + type.slice(1)}</strong><br><img src="${svgDataUrl}" alt="${type} diagram"/>`
       );
 
       return true;
@@ -189,31 +182,22 @@ async function convertPddlToMermaid(pddl, type, push) {
 }
 
 /**
- * Main function: generate, validate, plan, convert
+ * Main chat flow: generate → validate → plan → convert
  */
-export async function generateAndValidatePddl(text, planner_id, push) {
-  // 1️⃣ Generate domain & problem
-  const { generated_domain, generated_problem } = await generatePddl(text, push);
-  if (!generated_domain || !generated_problem) return;
+export async function runChatFlow(text, plannerId, push) {
+  const { domain, problem } = await generatePddlFromText(text, push);
+  if (!domain || !problem) return;
 
-  // 2️⃣ Validate domain
-  if (!(await validatePddl(generated_domain, "domain", push))) return;
+  if (!(await validatePddlContent(domain, "domain", push))) return;
+  if (!(await validatePddlContent(problem, "problem", push))) return;
+  if (!(await validateDomainProblemMatch(domain, problem, push))) return;
 
-  // 3️⃣ Validate problem
-  if (!(await validatePddl(generated_problem, "problem", push))) return;
-
-  // 4️⃣ Validate domain/problem match
-  if (!(await validatePddlMatch(generated_domain, generated_problem, push))) return;
-
-  // 5️⃣ Post plan & poll
-  const plan = await postAndPollPlan(generated_domain, generated_problem, planner_id, push);
+  const plan = await submitAndPollPlan(domain, problem, plannerId, push);
   if (!plan) return;
 
-  // 6️⃣ Validate plan
-  if (!(await validatePlan(generated_domain, generated_problem, plan, push))) return;
+  if (!(await validateGeneratedPlan(domain, problem, plan, push))) return;
 
-  // 7️⃣ Convert domain, problem, plan → Mermaid (with popup-ready images)
-  await convertPddlToMermaid(generated_domain, "domain", push);
-  await convertPddlToMermaid(generated_problem, "problem", push);
-  await convertPddlToMermaid(plan, "plan", push);
+  await convertPddlToMermaidDiagram(domain, "domain", push);
+  await convertPddlToMermaidDiagram(problem, "problem", push);
+  await convertPddlToMermaidDiagram(plan, "plan", push);
 }

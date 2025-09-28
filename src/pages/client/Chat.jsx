@@ -43,22 +43,33 @@ export default function Chat({ messages: initialMessages = [], onSend }) {
 
   return (
     <div className="chat-page">
-      <div className="chat-messages">
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`chat-bubble ${msg.sender === "user" ? "user-bubble" : "bot-bubble"}`}
-            onClick={handleBubbleClick} // 🆕 catch clicks here
-          >
+    <div className="chat-messages">
+      {messages.map((msg, idx) => (
+        <div
+          key={idx}
+          className={`chat-bubble ${msg.sender === "user" ? "user-bubble" : "bot-bubble"}`}
+          onClick={handleBubbleClick}
+        >
+          {msg.sender === "user" ? (
+            <div className="message-content">
+              {msg.plannerId && (
+                <div>
+                  <div><b>Planner:</b> {msg.plannerId}</div>
+                  <div><b>Text:</b> {msg.text}</div>
+                </div>
+              )}
+            </div>
+          ) : (
             <div
               className="message-content"
               dangerouslySetInnerHTML={{ __html: msg.text }}
             ></div>
-            {msg.plannerId && <div className="planner-tag">Planner: {msg.plannerId}</div>}
-          </div>
-        ))}
-        <div ref={chatEndRef} />
-      </div>
+          )}
+        </div>
+      ))}
+      <div ref={chatEndRef} />
+    </div>
+
 
       <SendMessageForm
         value={inputText}

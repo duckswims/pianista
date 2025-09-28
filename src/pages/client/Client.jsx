@@ -6,7 +6,7 @@ import SendMessageForm from "../../components/chat/SendMessageForm";
 import Chat from "./Chat";
 import { ApiKeyContext } from "../../contexts/ApiKeyContext";
 import { fetchApi } from "../../scripts/api";
-import { generateAndValidatePddl } from "../../scripts/api/chat";
+import { runChatFlow } from "../../scripts/api/chat";
 import "./Client.css";
 
 export default function Client() {
@@ -70,7 +70,7 @@ export default function Client() {
     setLoading(true);
 
     try {
-      await generateAndValidatePddl(text, plannerId, (msg) => {
+      await runChatFlow(text, plannerId, (msg) => {
         setChatMessages((prev) => [...prev, msg]);
       });
     } catch (err) {
