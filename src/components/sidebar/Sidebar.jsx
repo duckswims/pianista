@@ -1,5 +1,4 @@
-// src/components/sidebar/Sidebar.jsx
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { fetchApi } from "../../scripts/api";
 import routes from "../data/components.json";
@@ -15,6 +14,7 @@ import devOffIcon from "../../assets/dev/devOFF.png";
 
 export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMode, setDarkMode }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const { apiKey } = useContext(ApiKeyContext);
   const [apiStatus, setApiStatus] = useState(null);
   const [openMenus, setOpenMenus] = useState({});
@@ -22,6 +22,13 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
 
   const excludedKeys = ["planners", "solvers"];
   const devKeys = ["solve", "validate", "convert", "chart"];
+
+  // Redirect to home if devMode turned off
+  useEffect(() => {
+    if (!devMode && location.pathname !== "/") {
+      navigate("/");
+    }
+  }, [devMode, navigate, location.pathname]);
 
   useEffect(() => {
     async function checkApi() {
@@ -41,9 +48,9 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
     setOpenMenus((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const toggleSidebar = () => {
-    setIsOpen(true);
-  };
+  const toggleSidebar = () => setIsOpen(true);
+
+  const goHome = () => navigate("/"); // 🆕 Navigate to home
 
   const isActive = (link) => location.pathname === link;
 
@@ -53,7 +60,13 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
       <div className="sidebar__top d-flex justify-content-between align-items-center p-2">
         {isOpen ? (
           <>
-            <img src={logo} alt="Logo" className="sidebar-logo" />
+            <img
+              src={logo}
+              alt="Logo"
+              className="sidebar-logo"
+              style={{ cursor: "pointer" }}
+              onClick={goHome} // 🆕 Click logo to go home
+            />
             <button onClick={() => setIsOpen(false)} className="sidebar__toggle-btn">
               <img src={sidebarIcon} alt="Toggle Sidebar" className="sidebar-toggle-icon" />
             </button>
@@ -69,6 +82,8 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
               src={hovered ? sidebarIcon : logo}
               alt="Toggle Sidebar"
               className="sidebar-toggle-icon"
+              style={{ cursor: "pointer" }}
+              onClick={goHome} // 🆕 Click collapsed icon to go home
             />
           </button>
         )}
@@ -136,7 +151,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
           </div>
 
           {/* Dev Mode toggle (expanded) */}
-          {apiStatus === true && (
+          {apiStatus && (
             <div className="sidebar__dev-mode d-flex justify-content-between align-items-center px-2 py-2">
               <span>Development Mode</span>
               <label className="switch">
@@ -167,7 +182,7 @@ export default function Sidebar({ isOpen, setIsOpen, devMode, setDevMode, darkMo
           </button>
 
           {/* Collapsed Dev Mode toggle */}
-          {apiStatus === true && (
+          {apiStatus && (
             <button
               className="sidebar__toggle-btn collapsed-btn d-flex justify-content-center align-items-center mb-2"
               onClick={() => setDevMode((prev) => !prev)}
