@@ -55,7 +55,7 @@ function App() {
           <div className="main-content">
             <Routes>
               {/* Home / Client */}
-              <Route path="/" element={devMode ? <Dev /> : <Client />} />
+              <Route path="/" element={devMode ? <Dev /> : <Client darkMode={darkMode} />} />
 
               {/* Main Section pages */}
               <Route path="/:sectionKey" element={<SectionPage />} />

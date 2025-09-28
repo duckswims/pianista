@@ -9,7 +9,7 @@ import { fetchApi } from "../../api";
 import { runChatFlow } from "../../scripts/chat";
 import "./Client.css";
 
-export default function Client() {
+export default function Client({ darkMode }) {
   const [idea, setIdea] = useState("");
   const [apiKeyInput, setApiKeyInput] = useState("");
   const [apiKeyValid, setApiKeyValid] = useState(null);
@@ -88,7 +88,11 @@ export default function Client() {
     <div className="client-page">
       {!chatActive && (
         <div className="client-content">
-          <img src={logo} alt="Logo" className="client-logo" />
+          <img
+            src={darkMode ? "/logo/VisionSpace_eye_White.png" : "/logo/VisionSpace_eye_Black.png"}
+            alt="Logo"
+            className="client-logo"
+          />
           <h1 className="client-title">Pianista</h1>
 
           <div className={`form-transition-container ${transitioning ? "fade-out" : "fade-in"}`}>
